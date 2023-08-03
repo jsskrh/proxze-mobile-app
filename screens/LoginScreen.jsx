@@ -10,8 +10,15 @@ import {
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { testLogin } from "../redux/auth/authSlice";
 
 const LoginScreen = ({ navigation: { navigate, goBack } }) => {
+  const { loading, error, success, userInfo, userToken } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,6 +34,12 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
     // Perform login logic here using email and password
     console.log("Email:", email);
     console.log("Password:", password);
+
+    if (email === "principal@sage-grey.com") {
+      dispatch(testLogin("principal"));
+    } else if (email === "proxze@sage-grey.com") {
+      dispatch(testLogin("proxze"));
+    }
   };
 
   return (
@@ -121,7 +134,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
         </View>
         <View className="mt-10">
           <TouchableOpacity
-            onPress={() => navigate("Tabs")}
+            onPress={handleLogin}
             className="border flex p-4 rounded-xl bg-black"
           >
             <Text className="text-center text-white">Login</Text>

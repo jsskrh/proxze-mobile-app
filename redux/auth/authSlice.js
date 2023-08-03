@@ -16,19 +16,19 @@ import { AsyncStorage } from "react-native";
 // initialize userToken from local storage
 let userToken = null;
 
-_retrieveData = async () => {
-  try {
-    const value = await AsyncStorage.getItem("userToken");
-    if (value !== null) {
-      userToken = value;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+// _retrieveData = async () => {
+//   try {
+//     const value = await AsyncStorage.getItem("userToken");
+//     if (value !== null) {
+//       userToken = value;
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const initialState = {
-  loading: false,
+  loading: true,
   userInfo: null,
   userToken,
   error: null,
@@ -56,6 +56,22 @@ const authSlice = createSlice({
 
     setCredentials: (state, { payload }) => {
       state.userInfo = payload;
+    },
+
+    setLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
+    testLogin: (state, { payload }) => {
+      state.userToken = payload;
+      state.loading = false;
+    },
+    testLogout: (state) => {
+      state.userToken = null;
+      state.loading = false;
+    },
+    testRegister: (state, { payload }) => {
+      state.userToken = payload;
+      state.loading = false;
     },
   },
   extraReducers: {
@@ -113,4 +129,11 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { logout, setCredentials } = authSlice.actions;
+export const {
+  logout,
+  setCredentials,
+  testLogin,
+  testLogout,
+  testRegister,
+  setLoading,
+} = authSlice.actions;

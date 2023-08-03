@@ -17,18 +17,6 @@ import Notification from "../components/Notifications/Notification";
 
 const notifications = [
   {
-    id: "64949ad58e1f8887ba07287c",
-    type: "start",
-    seen: true,
-    read: false,
-    recipient: "642aa17e47159b317ef5cbbe",
-    task: {
-      id: "647928de06b56acb9134d574",
-      type: "Verification",
-    },
-    createdAt: "2023-06-22T19:02:45.054Z",
-  },
-  {
     id: "6479b37968b699ea77c6fcdd",
     type: "assign",
     seen: true,
@@ -78,6 +66,32 @@ const notifications = [
       type: "Consultation",
     },
     createdAt: "2023-05-22T19:28:02.319Z",
+  },
+  {
+    id: "643fa45803a3e25388bb326g",
+    type: "review",
+    seen: true,
+    read: false,
+    recipient: "642aa17e47159b317ef5cbbe",
+    sender: "641a27bd5bb881c39313c9ea",
+    task: {
+      id: "6438fd7fe99e092cf77b96e2",
+      type: "Errand",
+    },
+    createdAt: "2023-04-19T08:20:40.262Z",
+  },
+  {
+    id: "643fa45803a3e25388bb326f",
+    type: "review",
+    seen: true,
+    read: false,
+    recipient: "642aa17e47159b317ef5cbbe",
+    sender: "641a27bd5bb881c39313c9ea",
+    task: {
+      id: "6438fd7fe99e092cf77b96e2",
+      type: "Errand",
+    },
+    createdAt: "2023-04-19T08:20:40.262Z",
   },
   {
     id: "646bc18b34865ff36f32d4bd",

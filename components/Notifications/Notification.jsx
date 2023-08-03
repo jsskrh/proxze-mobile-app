@@ -8,6 +8,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import {
+  ClipboardDocumentListIcon,
+  WalletIcon,
+  StarIcon,
+} from "react-native-heroicons/outline";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import { useEffect, useState, useRef } from "react";
 import { timeAgo } from "../../utils/helpers";
@@ -58,7 +63,7 @@ const Notification = ({
     <TouchableOpacity
       className={`${style.container} notification`}
       ref={boxRef}
-      onPress={() => navigate("notification")}
+      onPress={() => navigate("Task")}
     >
       <View className={style.containerInner}>
         {/* <View className="flex-row mb-7 justify-between items-center">
@@ -96,14 +101,21 @@ const Notification = ({
         <View className="mr-5">
           <View className="py-3 items-center">
             {/* <UserCircleIcon size={57} /> */}
-            <View className="h-6 w-6 mb-2 items-center justify-center bg-gray-400 rounded-full">
+            <View className="h-6 w-6 mb-2.5 items-center justify-center rounded-full">
               {/* <Text className="text-white text-lg">
               {converserInfo.firstName.charAt(0)}
               {converserInfo.lastName.charAt(0)}
             </Text> */}
+              {notification.type === "credit" ? (
+                <WalletIcon size={23} color="rgb(34, 197, 94)" />
+              ) : notification.type === "review" ? (
+                <StarIcon size={23} color="#FFD700" />
+              ) : (
+                <ClipboardDocumentListIcon size={23} color="rgb(59 130 246)" />
+              )}
             </View>
             {notification.read && (
-              <View className="h-3 w-3 items-center justify-center bg-[#91e6b3] rounded-full"></View>
+              <View className="h-2.5 w-2.5 items-center justify-center bg-[#91e6b3] rounded-full"></View>
             )}
           </View>
         </View>
@@ -125,29 +137,15 @@ const Notification = ({
                 <Text className={style.strong}>{notification.task.title}</Text>
               </>
             ) : notification.type === "approve" ? (
-              <>
-                Your request,{" "}
-                <Text className={style.strong}>{notification.task.title}</Text>{" "}
-                has been approved
-              </>
+              <>Your request has been approved</>
             ) : notification.type === "confirm" ? (
-              <>
-                Your task,{" "}
-                <Text className={style.strong}>{notification.task.title}</Text>{" "}
-                has been confirmed complete
-              </>
+              <>Your task has been confirmed complete</>
+            ) : notification.type === "assign" ? (
+              <>You have been assigned a task</>
             ) : notification.type === "start" ? (
-              <>
-                Your task,{" "}
-                <Text className={style.strong}>{notification.task.title}</Text>{" "}
-                has started
-              </>
+              <>Your task has started</>
             ) : notification.type === "complete" ? (
-              <>
-                Your request,{" "}
-                <Text className={style.strong}>{notification.task.title}</Text>{" "}
-                has been completed
-              </>
+              <>Your request has been completed</>
             ) : notification.type === "ticket" ? (
               <>
                 Response for ticket{" "}

@@ -24,7 +24,7 @@ const style = {
   containerInner: `p-5 py-4`,
   title: `text-base font-semibold text-white`,
   description: `text-sm mb-3 text-gray-300`,
-  topInfo: `text-xs mb-3 flex-row justify-between`,
+  topInfo: `text-xs flex-row justify-between`,
   bill: `text-white`,
   date: `text-gray-500 capitalize`,
   bold: `font-semibold`,
@@ -36,7 +36,7 @@ const style = {
   locationText: `ml-1 text-gray-500`,
 };
 
-const Task = ({ task, lastActivity, pending, navigate, archive }) => {
+const Task = ({ task, lastActivity, pending, home, navigate, archive }) => {
   const boxRef = useRef(null);
 
   const [color, setColor] = useState("rgb(255, 255, 255)");
@@ -53,7 +53,7 @@ const Task = ({ task, lastActivity, pending, navigate, archive }) => {
       onPress={() => navigate("Task")}
     >
       <View className={style.containerInner}>
-        <View className="flex-row mb-7 justify-between items-center">
+        <View className="flex-row mb-3 justify-between items-center">
           <View className="flex-row items-center">
             <Text className={style.title}>{task.type}</Text>
             <View className="p-1 px-3 ml-3 rounded bg-blue-300">

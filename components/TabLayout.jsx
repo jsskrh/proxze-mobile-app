@@ -22,7 +22,10 @@ const TabLayout = ({ config, children }) => {
   // };
 
   return (
-    <SafeAreaView className="bg-black flex-1 text-white">
+    <SafeAreaView
+      className={`${config.bg ? config.bg : "bg-black"} flex-1 text-white`}
+      style={{ backgroundColor: config.bg ? config.bg : "black" }}
+    >
       <View className="mt-0 flex-1">
         {/* <View
           className={`mt-2 px-5 flex-row h-9 border-b items-center justify-evenly`}

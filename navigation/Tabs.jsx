@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   BriefcaseIcon,
+  HomeIcon,
   ClipboardDocumentListIcon,
   BellIcon,
   InboxIcon,
@@ -8,6 +9,7 @@ import {
 } from "react-native-heroicons/solid";
 import {
   BriefcaseIcon as BriefcaseIconOutline,
+  HomeIcon as HomeIconOutline,
   ClipboardDocumentListIcon as ClipboardDocumentListIconOutline,
   BellIcon as BellIconOutline,
   InboxIcon as InboxIconOutline,
@@ -19,6 +21,7 @@ import {
   ArchiveBoxIcon,
 } from "react-native-heroicons/outline";
 import TaskpoolScreen from "../screens/TaskpoolScreen";
+import HomeScreen from "../screens/HomeScreen";
 import AccountScreen from "../screens/AccountScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -35,10 +38,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
+import { useSelector, useDispatch } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
+  const { loading, error, success, userInfo, userToken } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
   return (
     <Tab.Navigator
       initialRouteName="Taskpool"
@@ -59,40 +68,77 @@ const Tabs = () => {
         ),
       }}
     >
-      <Tab.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: "#000000",
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
-          },
-          headerTitle: () => (
-            <Text className="text-white font-semibold">Taskpool</Text>
-          ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row", marginRight: 20 }}>
-              <TouchableOpacity style={{ marginRight: 12 }}>
-                <FunnelIcon color="#91e6b3" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Bars3BottomRightIcon color="#91e6b3" />
-              </TouchableOpacity>
-            </View>
-          ),
-          tabBarIcon: ({ color, size, focused }) => (
-            <View>
-              {focused ? (
-                <BriefcaseIcon color={color} size={size} />
-              ) : (
-                <BriefcaseIconOutline color={color} size={size} />
-              )}
-            </View>
-          ),
-        }}
-        name="Taskpool"
-        component={TaskpoolScreen}
-      />
+      {userToken === "proxze" ? (
+        <Tab.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#000000",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitle: () => (
+              <Text className="text-white font-semibold">Taskpool</Text>
+            ),
+            headerRight: () => (
+              <View style={{ flexDirection: "row", marginRight: 20 }}>
+                <TouchableOpacity style={{ marginRight: 12 }}>
+                  <FunnelIcon color="#91e6b3" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Bars3BottomRightIcon color="#91e6b3" />
+                </TouchableOpacity>
+              </View>
+            ),
+            tabBarIcon: ({ color, size, focused }) => (
+              <View>
+                {focused ? (
+                  <BriefcaseIcon color={color} size={size} />
+                ) : (
+                  <BriefcaseIconOutline color={color} size={size} />
+                )}
+              </View>
+            ),
+          }}
+          name="Taskpool"
+          component={TaskpoolScreen}
+        />
+      ) : (
+        <Tab.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#000000",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitle: () => (
+              <Text className="text-white font-semibold">Taskpool</Text>
+            ),
+            // headerRight: () => (
+            //   <View style={{ flexDirection: "row", marginRight: 20 }}>
+            //     <TouchableOpacity style={{ marginRight: 12 }}>
+            //       <FunnelIcon color="#91e6b3" />
+            //     </TouchableOpacity>
+            //     <TouchableOpacity>
+            //       <Bars3BottomRightIcon color="#91e6b3" />
+            //     </TouchableOpacity>
+            //   </View>
+            // ),
+            tabBarIcon: ({ color, size, focused }) => (
+              <View>
+                {focused ? (
+                  <HomeIcon color={color} size={size} />
+                ) : (
+                  <HomeIconOutline color={color} size={size} />
+                )}
+              </View>
+            ),
+          }}
+          name="Homme"
+          component={HomeScreen}
+        />
+      )}
 
       <Tab.Screen
         options={{
@@ -122,16 +168,16 @@ const Tabs = () => {
           headerTitle: () => (
             <Text className="text-white font-semibold">Messages</Text>
           ),
-          //   headerRight: () => (
-          //     <View style={{ flexDirection: "row", marginRight: 20 }}>
-          //       <TouchableOpacity style={{ marginRight: 12 }}>
-          //         <FunnelIcon color="#91e6b3" />
-          //       </TouchableOpacity>
-          //       <TouchableOpacity>
-          //         <Bars3BottomRightIcon color="#91e6b3" />
-          //       </TouchableOpacity>
-          //     </View>
-          //   ),
+          headerRight: () => (
+            <View style={{ flexDirection: "row", marginRight: 20 }}>
+              <TouchableOpacity style={{ marginRight: 12 }}>
+                <FunnelIcon color="#91e6b3" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Bars3BottomRightIcon color="#91e6b3" />
+              </TouchableOpacity>
+            </View>
+          ),
           tabBarIcon: ({ color, size, focused }) => (
             <View>
               {focused ? (
@@ -180,9 +226,28 @@ const Tabs = () => {
         name="Notifications"
         component={NotificationsScreen}
       />
+
       <Tab.Screen
         options={{
-          headerShown: false,
+          headerStyle: {
+            backgroundColor: "#000000",
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
+          headerTitle: () => (
+            <Text className="text-white font-semibold">Account</Text>
+          ),
+          //   headerRight: () => (
+          //     <View style={{ flexDirection: "row", marginRight: 20 }}>
+          //       <TouchableOpacity style={{ marginRight: 12 }}>
+          //         <FunnelIcon color="#91e6b3" />
+          //       </TouchableOpacity>
+          //       <TouchableOpacity>
+          //         <Bars3BottomRightIcon color="#91e6b3" />
+          //       </TouchableOpacity>
+          //     </View>
+          //   ),
           tabBarIcon: ({ color, size, focused }) => (
             <View>
               {focused ? (
