@@ -13,7 +13,11 @@ export const makeRequest = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      await axios.post(`/api/task`, data, config);
+      await axios.post(
+        `https://proxze-backend-app.onrender.com/api/task`,
+        data,
+        config
+      );
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -35,7 +39,10 @@ export const getPendingRequests = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/task/pending`, config);
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/task/pending`,
+        config
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -49,8 +56,10 @@ export const getPendingRequests = createAsyncThunk(
 
 export const getOngoingTasks = createAsyncThunk(
   "task/get-ongoing-tasks",
-  async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+  async (credentials, { rejectWithValue }) => {
+    // const userToken = localStorage.getItem("userToken");
+    const userToken = credentials.userToken;
+    console.log("userToken", userToken);
     try {
       const config = {
         headers: {
@@ -58,7 +67,10 @@ export const getOngoingTasks = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/task/ongoing`, config);
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/task/ongoing`,
+        config
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -81,7 +93,10 @@ export const getTaskHistory = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/task/history`, config);
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/task/history`,
+        config
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -96,7 +111,11 @@ export const getTaskHistory = createAsyncThunk(
 export const getTask = createAsyncThunk(
   "task/get-task",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    console.log(credentials);
+    const userToken = credentials.userToken;
+    // const userToken = await AsyncStorage.getItem("userToken");
+    console.log("userToken", userToken);
+    // const userToken = localStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -105,11 +124,13 @@ export const getTask = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `/api/task/view/${credentials.id}`,
+        `https://proxze-backend-app.onrender.com/api/task/view/${credentials.taskId}`,
         config
       );
+      console.log(data);
       return data;
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -131,7 +152,7 @@ export const approveRejectRequest = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/task/view/${task}/admin/approve/${type}`,
+        `https://proxze-backend-app.onrender.com/api/task/view/${task}/admin/approve/${type}`,
         { task, type },
         config
       );
@@ -158,7 +179,7 @@ export const makeRequestPayment = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/transaction/deposit/task/${task}`,
+        `https://proxze-backend-app.onrender.com/api/transaction/deposit/task/${task}`,
         { task },
         config
       );
@@ -175,8 +196,10 @@ export const makeRequestPayment = createAsyncThunk(
 
 export const getTaskpool = createAsyncThunk(
   "task/get-taskpool",
-  async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+  async (credentials, { rejectWithValue }) => {
+    console.log("touched", credentials);
+    const userToken = credentials.userToken;
+    // const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -184,7 +207,10 @@ export const getTaskpool = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/task/taskpool`, config);
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/task/taskpool`,
+        config
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -198,8 +224,12 @@ export const getTaskpool = createAsyncThunk(
 
 export const makeOffer = createAsyncThunk(
   "task/make-offer",
-  async ({ task, coverLetter, timestamp }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+  async (
+    { taskId, coverLetter, userToken, timestamp },
+    { rejectWithValue }
+  ) => {
+    // const userToken = localStorage.getItem("userToken");
+    console.log("temptation");
     try {
       const config = {
         headers: {
@@ -208,7 +238,7 @@ export const makeOffer = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/task/view/${task}/proxzi/make-offer`,
+        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/proxze/make-offer`,
         { coverLetter, timestamp },
         config
       );
@@ -225,7 +255,7 @@ export const makeOffer = createAsyncThunk(
 
 export const acceptOffer = createAsyncThunk(
   "task/accept-offer",
-  async ({ task, proxzi, timestamp }, { rejectWithValue }) => {
+  async ({ task, proxze, timestamp }, { rejectWithValue }) => {
     const userToken = localStorage.getItem("userToken");
     try {
       const config = {
@@ -236,7 +266,7 @@ export const acceptOffer = createAsyncThunk(
       };
       const { data } = await axios.put(
         `/api/task/view/${task}/principal/accept-offer`,
-        { proxzi, timestamp },
+        { proxze, timestamp },
         config
       );
       return data;
@@ -289,7 +319,7 @@ export const uploadAttachment = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/task/view/${task}/proxzi/upload`,
+        `/api/task/view/${task}/proxze/upload`,
         { url, timestamp, location },
         config
       );
@@ -316,7 +346,7 @@ export const completeTask = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/task/view/${task}/proxzi/complete-task`,
+        `/api/task/view/${task}/proxze/complete-task`,
         { timestamp },
         config
       );

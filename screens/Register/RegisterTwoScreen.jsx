@@ -29,7 +29,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
   return (
     <SafeAreaView
       className={`flex-1 ${
-        userType === "proxzi"
+        userType === "proxze"
           ? "bg-[#91e6b3]"
           : userType === "principal"
           ? "bg-[#135446]"
@@ -41,14 +41,14 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text className="mt-10 font-bold text-2xl mb-2">
-          {userType === "proxzi"
+          {userType === "proxze"
             ? "Start doing jobs and offering your services"
             : "Create tasks and outsource them to the best of the best"}
         </Text>
         <View className="flex-row">
           <Text
             className={`text-sm font-poppins text-center ${
-              userType === "proxzi" ? "text-gray-500" : "text-gray-400"
+              userType === "proxze" ? "text-gray-500" : "text-gray-400"
             }`}
           >
             Already have an account?
@@ -74,6 +74,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                     value={field.value}
                     onChangeText={field.onChange}
                     placeholder="First Name"
+                    placeholderTextColor={"grey"}
                     id="firstName"
                     name="firstName"
                     className={`p-5 border rounded-md ${
@@ -101,6 +102,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                     value={field.value}
                     onChangeText={field.onChange}
                     placeholder="Last Name"
+                    placeholderTextColor={"grey"}
                     id="lastName"
                     name="lastName"
                     className={`p-5 border rounded-md ${
@@ -119,7 +121,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
             <View className="flex flex-row mt-4">
               <Text
                 className={`${
-                  userType === "proxzi" ? "text-gray-500" : "text-gray-400"
+                  userType === "proxze" ? "text-gray-500" : "text-gray-400"
                 }`}
               >
                 By proceeding you agree to our
@@ -129,7 +131,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
               </TouchableOpacity>
               <Text
                 className={`${
-                  userType === "proxzi" ? "text-gray-500" : "text-gray-400"
+                  userType === "proxze" ? "text-gray-500" : "text-gray-400"
                 }`}
               >
                 and

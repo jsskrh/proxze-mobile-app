@@ -22,6 +22,7 @@ const initialState = {
   error: null,
   success: false,
   uploadSuccess: false,
+  location: null,
   tasks: [],
   taskpool: [],
   ongoingTasks: [],
@@ -42,10 +43,20 @@ const taskSlice = createSlice({
       state.task = null;
       state.tasks = [];
       state.taskpool = [];
+      state.location = null;
       state.ongoingTasks = [];
       state.taskHistory = [];
       state.newRequests = [];
     },
+
+    setLocation: (state, { payload }) => {
+      state.location = payload;
+    },
+
+    resetLocation: (state) => {
+      state.location = null;
+    },
+
     resetTaskState: (state) => {
       state.loading = false;
       state.error = null;
@@ -278,4 +289,5 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const { clearTaskState, resetTaskState } = taskSlice.actions;
+export const { clearTaskState, resetTaskState, setLocation, resetLocation } =
+  taskSlice.actions;

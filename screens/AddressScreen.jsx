@@ -9,42 +9,52 @@ import {
   useContext,
   TouchableOpacity,
 } from "react-native";
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { MapPinIcon } from "react-native-heroicons/outline";
 import * as Location from "expo-location";
+import { useSelector, useDispatch } from "react-redux";
 import TabLayout from "../components/TabLayout";
 import { RequestContext } from "../components/RequestProvider";
+import { setLocation } from "../redux/task/taskSlice";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_API_KEY } from "@env";
 
 const AddressScreen = ({ navigation: { navigate, goBack } }) => {
-  // const { setValue, watch, control, errors, trigger } =
-  //   useContext(RequestContext);
+  const { error } = useSelector((state) => state.task);
+  // const { setValue, errors } = useContext(RequestContext);
 
-  console.log(RequestContext);
+  // console.log(RequestContext);
 
-  const [location, setLocation] = useState(null);
+  const dispatch = useDispatch();
+
+  // const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+  const ref = useRef();
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+  const [predefinedPlaces, setPredefinedPlaces] = useState([]);
 
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
+
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
+
+  // let text = "Waiting..";
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location);
+  // }
 
   const tabConfig = {
     title: "Location",
@@ -69,7 +79,7 @@ const AddressScreen = ({ navigation: { navigate, goBack } }) => {
 
   return (
     <TabLayout config={tabConfig}>
-      <FlatList
+      {/* <FlatList
         data={data}
         ListHeaderComponent={() => (
           <View className="">
@@ -92,9 +102,6 @@ const AddressScreen = ({ navigation: { navigate, goBack } }) => {
                   </Text>
                 </View>
               </View>
-              {/* <Text className="text-white text-base font-semibold">
-              Tasks you might like...
-            </Text> */}
             </TouchableOpacity>
             <View className="mx-5 border-b pb-4 border-zinc-600">
               <Text className="text-white uppercase font-semibold">
@@ -137,7 +144,76 @@ const AddressScreen = ({ navigation: { navigate, goBack } }) => {
         )}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index}
+      /> */}
+      {/* {currentLocation && ( */}
+      {/* <View className="m-5"> */}
+      <GooglePlacesAutocomplete
+        placeholder="Search"
+        autoFocus
+        focus
+        ref={ref}
+        onPress={(data, details = null) => {
+          // console.log(details.geometry.location);
+          // console.log({
+          //   label: data.description,
+          //   coords: details.geometry.location,
+          // });
+          dispatch(
+            setLocation({
+              label: data.description,
+              coords: details.geometry.location,
+            })
+          );
+          goBack();
+        }}
+        query={{
+          key: GOOGLE_API_KEY,
+          language: "en",
+          components: "country:ng",
+        }}
+        fetchDetails={true}
+        onFail={(error) => console.log(error)}
+        onNotFound={() => console.log("no results")}
+        listEmptyComponent={() => (
+          <View style={{ flex: 1 }}>
+            <Text>No results were found</Text>
+          </View>
+        )}
+        // currentLocation={true}
+        // currentLocationLabel="Your location!"
+        // suppressDefaultStyles
+        // nearbyPlacesAPI="GoogleReverseGeocoding"
+        predefinedPlaces={predefinedPlaces}
+        renderRow={(data, index) => (
+          <View className="py-1 flex-row items-center">
+            <View
+              className="p-1 mr-4 rounded-full items-center justify-center"
+              style={{ backgroundColor: "grey" }}
+            >
+              <MapPinIcon size={22} color="#91e6b3" />
+            </View>
+            <View className="truncate flex-1">
+              <Text className="text-[#5B7184] text-base">
+                {data.description}
+              </Text>
+              <Text
+                className="text-white text-sm"
+                style={{ color: "gray" }}
+                numberOfLines={1}
+              >
+                {data.description}
+              </Text>
+            </View>
+          </View>
+        )}
+        // styles={{
+        //   row: {
+        //     height: 44,
+        //   },
+        // }}
       />
+      {/* </View> */}
+      {/* )} */}
     </TabLayout>
   );
 };

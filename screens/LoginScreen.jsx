@@ -5,18 +5,18 @@ import {
   Image,
   TextInput,
   ScrollView,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { testLogin } from "../redux/auth/authSlice";
+import { userLogin } from "../redux/auth/authActions";
 
 const LoginScreen = ({ navigation: { navigate, goBack } }) => {
-  const { loading, error, success, userInfo, userToken } = useSelector(
-    (state) => state.auth
-  );
+  const { loading, waiting, error, success, userInfo, userToken, pushToken } =
+    useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -32,14 +32,17 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
 
   const handleLogin = () => {
     // Perform login logic here using email and password
-    console.log("Email:", email);
-    console.log("Password:", password);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    const data = { email, password, token: pushToken.data };
+    console.log(data);
+    dispatch(userLogin(data));
 
-    if (email === "principal@sage-grey.com") {
-      dispatch(testLogin("principal"));
-    } else if (email === "proxze@sage-grey.com") {
-      dispatch(testLogin("proxze"));
-    }
+    // if (email === "principal@sage-grey.com") {
+    //   dispatch(testLogin("principal"));
+    // } else if (email === "proxze@sage-grey.com") {
+    //   dispatch(testLogin("proxze"));
+    // }
   };
 
   return (
@@ -114,6 +117,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             value={email}
             onChangeText={handleEmailChange}
             placeholder="Enter email"
+            placeholderTextColor="grey"
             keyboardType="email-address"
             autoCapitalize="none"
             className="p-5 border rounded-md"
@@ -122,6 +126,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             value={password}
             onChangeText={handlePasswordChange}
             placeholder="Enter password"
+            placeholderTextColor="grey"
             secureTextEntry
             className="p-5 border rounded-md mt-8"
           />
@@ -137,7 +142,11 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             onPress={handleLogin}
             className="border flex p-4 rounded-xl bg-black"
           >
-            <Text className="text-center text-white">Login</Text>
+            {waiting ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text className="text-center text-white">Login</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>

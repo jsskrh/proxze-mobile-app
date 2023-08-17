@@ -7,12 +7,15 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
 import { Controller } from "react-hook-form";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
 import { RegisterContext } from "../../components/RegisterProvider";
 
 const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
@@ -25,7 +28,21 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
     trigger,
     submitHandler,
     handleSubmit,
+    registerHandler,
   } = useContext(RegisterContext);
+
+  const { waiting, error, success, userInfo, userToken } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (success) {
+      navigate("Login");
+    }
+    if (error) {
+      console.log(error);
+    }
+  }, [success, error]);
 
   const userType = watch("userType");
 
@@ -45,26 +62,28 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
   return (
     <SafeAreaView
       className={`flex-1 ${
-        userType === "proxzi"
+        userType === "proxze"
           ? "bg-[#91e6b3]"
           : userType === "principal"
           ? "bg-[#135446]"
           : ""
       }`}
     >
-      <View className="m-5">
+      <View className="mx-5 mt-5">
         <TouchableOpacity onPress={() => goBack()}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
+      </View>
+      <ScrollView className="m-5 mt-0">
         <Text className="mt-10 font-bold text-2xl mb-2">
-          {userType === "proxzi"
+          {userType === "proxze"
             ? "Start doing jobs and offering your services"
             : "Create tasks and outsource them to the best of the best"}
         </Text>
         <View className="flex-row">
           <Text
             className={`text-sm font-poppins text-center ${
-              userType === "proxzi" ? "text-gray-500" : "text-gray-400"
+              userType === "proxze" ? "text-gray-500" : "text-gray-400"
             }`}
           >
             Already have an account?
@@ -75,9 +94,10 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {error && <Text className="mt-3 text-[#ff0000] text-xs">{error}</Text>}
 
         <View className="flex flex-col mt-10 justify-between">
-          <View className=" justify-start">
+          <KeyboardAvoidingView className=" justify-start">
             <Controller
               name="email"
               control={control}
@@ -94,6 +114,7 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                     value={field.value}
                     onChangeText={field.onChange}
                     placeholder="Email"
+                    placeholderTextColor={"grey"}
                     id="email"
                     name="email"
                     autoCapitalize="none"
@@ -122,6 +143,7 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                     value={field.value}
                     onChangeText={field.onChange}
                     placeholder="Phone Number"
+                    placeholderTextColor={"grey"}
                     id="phoneNumber"
                     name="phoneNumber"
                     autoCapitalize="none"
@@ -166,6 +188,7 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                     id="password"
                     name="password"
                     placeholder="Password"
+                    placeholderTextColor={"grey"}
                     autoCapitalize="none"
                     secureTextEntry
                     className={`p-5 border rounded-md ${
@@ -196,6 +219,7 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm Password"
+                    placeholderTextColor={"grey"}
                     autoCapitalize="none"
                     secureTextEntry
                     className={`p-5 border rounded-md ${
@@ -212,22 +236,24 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                 </>
               )}
             />
-          </View>
+          </KeyboardAvoidingView>
 
           <View className="mt-14">
             <TouchableOpacity
               onPress={async () => {
-                if (await validationChecker()) {
-                  handleSubmit(submitHandler);
-                }
+                if (await validationChecker()) registerHandler();
               }}
               className="border flex p-4 rounded-xl bg-black"
             >
-              <Text className="text-center text-white">Register</Text>
+              {waiting ? (
+                <ActivityIndicator size="small" />
+              ) : (
+                <Text className="text-center text-white">Register</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -27,13 +27,13 @@ const Timeline = ({ timeline }) => {
               ?.timestamp,
           },
           {
-            type: "approved",
-            date: timeline.find((block) => block.status === "approved")
+            type: "assigned",
+            date: timeline.find((block) => block.status === "assigned")
               ?.timestamp,
           },
           {
-            type: "assigned",
-            date: timeline.find((block) => block.status === "assigned")
+            type: "approved",
+            date: timeline.find((block) => block.status === "approved")
               ?.timestamp,
           },
           {

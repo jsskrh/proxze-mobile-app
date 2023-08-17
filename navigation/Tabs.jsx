@@ -27,6 +27,7 @@ import MessagesScreen from "../screens/MessagesScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import TasksScreen from "../screens/TasksScreen";
 import TasksStack from "./TasksStack";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -39,14 +40,80 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { useSelector, useDispatch } from "react-redux";
+import * as Location from "expo-location";
+import { setCurrentLocation, setLocationError } from "../redux/auth/authSlice";
+import {
+  useGetUserDetailsQuery,
+  useUpdateUserLocationMutation,
+} from "../redux/services/authService";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
-  const { loading, error, success, userInfo, userToken } = useSelector(
-    (state) => state.auth
-  );
+  const { loading, error, success, userInfo, userToken, currentLocation } =
+    useSelector((state) => state.auth);
+  // const { location } = useSelector((state) => state.location);
+
   const dispatch = useDispatch();
+
+  const [updateLocation, { isLoading }] = useUpdateUserLocationMutation();
+
+  // const handleUpdateLocation = (newLocation) => {
+  //   updateLocation(location);
+  // };
+
+  useEffect(() => {
+    if (currentLocation) {
+      console.log(currentLocation);
+      const location = {
+        lat: currentLocation.coords.latitude,
+        lng: currentLocation.coords.longitude,
+      };
+      updateLocation({ location });
+    }
+  }, [currentLocation]);
+
+  // // Run the updateLocation function every 105 minutes
+  // const updateLocationInterval = 15 * 60 * 1000; // 105 minutes in milliseconds
+
+  // setInterval(() => {
+  //   // const [updateLocation] = useUpdateUserLocationMutation();
+
+  //   const newLocation = {
+  //     // Define the new location details here
+  //   };
+
+  //   updateLocation(newLocation);
+  // }, updateLocationInterval);
+
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        dispatch(setLocationError("Permission to access location was denied"));
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      // console.log(location);
+      dispatch(setCurrentLocation(location));
+      // setLocation(location);
+    };
+
+    // Fetch location initially
+    fetchLocation();
+
+    // Set up an interval to fetch a new location every 15 minutes
+    const locationUpdateInterval = setInterval(fetchLocation, 15 * 60 * 1000); // 15 minutes in milliseconds
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(locationUpdateInterval);
+    };
+  }, []);
 
   return (
     <Tab.Navigator
@@ -68,7 +135,7 @@ const Tabs = () => {
         ),
       }}
     >
-      {userToken === "proxze" ? (
+      {userInfo.userType === "proxze" ? (
         <Tab.Screen
           options={{
             headerStyle: {
@@ -135,7 +202,7 @@ const Tabs = () => {
               </View>
             ),
           }}
-          name="Homme"
+          name="Home"
           component={HomeScreen}
         />
       )}

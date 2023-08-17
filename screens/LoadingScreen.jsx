@@ -1,7 +1,10 @@
-import { View, Text, Animated } from "react-native";
+import { View, Text, Animated, useColorScheme } from "react-native";
 import React, { useEffect, useRef } from "react";
 
 const LoadingScreen = ({ word, duration }) => {
+  const theme = useColorScheme();
+  console.log(theme);
+
   const animatedValues = useRef([]);
   const wordArr = word.split("");
   wordArr.forEach((_, index) => {
@@ -24,41 +27,21 @@ const LoadingScreen = ({ word, duration }) => {
     animated();
   }, []);
 
-  //   useEffect(() => {
-  //     wordArr.forEach((_, index) => {
-  //       animatedValues.current[index] = new Animated.Value(0);
-  //     });
-  //     const animations = wordArr.map((_, index) => {
-  //       return Animated.timing(animatedValues.current[index], {
-  //         toValue: 1,
-  //         duration: duration,
-  //         useNativeDriver: true,
-  //         // delay: index * duration,
-  //       });
-  //     });
-  //     // Animated.parallel(animations).start();
-  //     Animated.stagger(duration / 2, animations).start();
-  //   }, []);
+  const style = {
+    container: `flex-1 justify-center items-center ${
+      theme === "light" ? "bg-white" : "bg-black"
+    }`,
+  };
 
   return (
-    <View className="flex-1 justify-center items-center bg-black">
-      {/* <Text className="text-white text-6xl font-bold">
-        {wordArr.map((letter, index) => (
-          <Animated.Text
-            key={index}
-            style={{ opacity: animatedValues.current[index] }}
-          >
-            {letter}
-          </Animated.Text>
-        ))}
-      </Text> */}
+    <View className={style.container}>
       <View className="flex-row">
         {wordArr.map((letter, index) => (
           <Animated.Text
             key={index}
             style={{
               opacity: animatedValues.current[index],
-              color: "white",
+              color: theme === "light" ? "black" : "white",
               fontWeight: 700,
               fontSize: 60,
             }}

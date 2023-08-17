@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
+  ActivityIndicator,
   useWindowDimensions,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -29,6 +30,7 @@ import React, {
   useRef,
   useContext,
 } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -38,18 +40,30 @@ import { BlurView } from "expo-blur";
 import Task from "../components/Task";
 import TabLayout from "../components/TabLayout";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import axios from "axios";
 import { RequestContext } from "../components/RequestProvider";
+import { setLocation } from "../redux/task/taskSlice";
 
 const requestTypes = ["Confirmation/Validation"];
 
-const RequestScreen = ({ navigation: { navigate, setOptions } }) => {
+const RequestScreen = ({
+  navigation: { navigate, goBack, popToTop, setOptions },
+}) => {
+  const { location } = useSelector((state) => state.task);
+  const { userToken } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+
   const {
     setValue,
     watch,
     control,
     errors,
+    reset,
     trigger,
-    submitHandler,
+    // submitHandler,
     handleSubmit,
   } = useContext(RequestContext);
 
@@ -97,6 +111,53 @@ const RequestScreen = ({ navigation: { navigate, setOptions } }) => {
     const currentDate = selectedDate;
     setEndDate(currentDate);
     setValue("endDate", currentDate);
+  };
+
+  const makeRequest = async (details) => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axios.post(
+        `https://proxze-backend-app.onrender.com/api/task`,
+        details,
+        config
+      );
+      // console.log(data);
+      setLoading(false);
+      dispatch(setLocation(null));
+      reset();
+      navigate("Task", { taskId: data.data._id });
+      // goBack();
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      return error;
+    }
+  };
+
+  const submitHandler = async ({
+    requestType,
+    description,
+    startDate,
+    endDate,
+    // location,
+  }) => {
+    const data = {
+      type: requestType,
+      description,
+      startDate,
+      endDate,
+      location,
+      bill: 500500,
+    };
+    console.log(data);
+    // dispatch(makeRequest(data));
+    makeRequest(data);
   };
 
   return (
@@ -188,12 +249,20 @@ const RequestScreen = ({ navigation: { navigate, setOptions } }) => {
 
         <TouchableWithoutFeedback onPress={() => navigate("Address")}>
           <View className="mx-5 px-5 py-2 mt-8 bg-zinc-800 rounded-lg flex-row justify-between items-center">
-            <Text className="capitalize text-base" style={{ color: "gray" }}>
-              Location
-            </Text>
-            <View className="flex-row items-center h-7">
-              <XCircleIcon color="gray" />
-            </View>
+            {location ? (
+              <>
+                <Text className="capitalize text-base text-white">
+                  {location.label}
+                </Text>
+                <View className="flex-row items-center h-7">
+                  <XCircleIcon color="gray" />
+                </View>
+              </>
+            ) : (
+              <Text className="capitalize text-base" style={{ color: "gray" }}>
+                Location
+              </Text>
+            )}
           </View>
         </TouchableWithoutFeedback>
 
@@ -270,14 +339,23 @@ const RequestScreen = ({ navigation: { navigate, setOptions } }) => {
           //   });
           // }}
         >
-          <TouchableOpacity
-            className="p-4 items-center bg-[#38a139] rounded-lg"
-            onPress={handleSubmit(submitHandler)}
-          >
-            <Text className="text-white capitalize font-semibold text-base">
-              Proceed
-            </Text>
-          </TouchableOpacity>
+          {loading ? (
+            <TouchableOpacity
+              className="p-4 items-center bg-[#38a139] rounded-lg"
+              // onPress={handleSubmit(submitHandler)}
+            >
+              <ActivityIndicator color="white" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              className="p-4 items-center bg-[#38a139] rounded-lg"
+              onPress={handleSubmit(submitHandler)}
+            >
+              <Text className="text-white capitalize font-semibold text-base">
+                Proceed
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
       <TypePicker

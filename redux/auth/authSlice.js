@@ -11,10 +11,10 @@ import {
 } from "../user/userActions";
 import { clearUserState } from "../user/userSlice";
 import { registerUser, userLogin } from "./authActions";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // initialize userToken from local storage
-let userToken = null;
+// let userToken = null;
 
 // _retrieveData = async () => {
 //   try {
@@ -27,12 +27,20 @@ let userToken = null;
 //   }
 // };
 
+// _retrieveData();
+
+// console.log(userToken);
+
 const initialState = {
   loading: true,
+  waiting: false,
+  loadingLocation: true,
   userInfo: null,
-  userToken,
+  userToken: null,
+  pushToken: null,
   error: null,
   success: false,
+  currentLocation: null,
 };
 
 const authSlice = createSlice({
@@ -40,22 +48,42 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("userToken");
-      state.loading = false;
+      // localStorage.removeItem("userToken");
+      state.loading = true;
+      state.loadingLocation = true;
+      state.waiting = false;
       state.userInfo = null;
       state.userToken = null;
       state.error = null;
-      clearUserState();
-      clearTaskState();
-      clearNotifications();
-      clearTransactionState();
-      clearTicketState();
-      clearMessageState();
-      clearTransactionState();
+      state.currentLocation = null;
+      // clearUserState();
+      // clearTaskState();
+      // clearNotifications();
+      // clearTransactionState();
+      // clearTicketState();
+      // clearMessageState();
+      // clearTransactionState();
     },
 
     setCredentials: (state, { payload }) => {
       state.userInfo = payload;
+    },
+
+    setUserToken: (state, { payload }) => {
+      state.userToken = payload;
+    },
+
+    setPushToken: (state, { payload }) => {
+      state.pushToken = payload;
+    },
+
+    setCurrentLocation: (state, { payload }) => {
+      state.currentLocation = payload;
+      state.loadingLocation = false;
+    },
+
+    setLocationError: (state, { payload }) => {
+      state.error = payload;
     },
 
     setLoading: (state, { payload }) => {
@@ -77,31 +105,31 @@ const authSlice = createSlice({
   extraReducers: {
     // login user
     [userLogin.pending]: (state) => {
-      state.loading = true;
+      state.waiting = true;
       state.error = null;
     },
     [userLogin.fulfilled]: (state, { payload }) => {
-      state.loading = false;
+      state.waiting = false;
       state.userInfo = payload;
       state.userToken = payload.userToken;
       state.success = true;
     },
     [userLogin.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.waiting = false;
       state.error = payload;
     },
 
     // register user
     [registerUser.pending]: (state) => {
-      state.loading = true;
+      state.waiting = true;
       state.error = null;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      state.loading = false;
+      state.waiting = false;
       state.success = true; // registration successful
     },
     [registerUser.rejected]: (state, { payload }) => {
-      state.loading = false;
+      state.waiting = false;
       state.error = payload;
     },
 
@@ -136,4 +164,8 @@ export const {
   testLogout,
   testRegister,
   setLoading,
+  setPushToken,
+  setUserToken,
+  setCurrentLocation,
+  setLocationError,
 } = authSlice.actions;

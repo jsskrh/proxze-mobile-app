@@ -33,12 +33,15 @@ const Details = ({ task }) => {
     <View className={style.subSection}>
       <Text className={style.subSectionHeader}>Task Details</Text>
       <View className={style.list}>
-        {taskDetails.map((detail, index) => (
-          <View className={style.listItem} key={index}>
-            <Text className={`${style.listName}`}>{detail.name}:</Text>
-            <Text className={`${style.listValue}`}>{detail.value}</Text>
-          </View>
-        ))}
+        {taskDetails.map((detail, index) => {
+          if (detail.value)
+            return (
+              <View className={style.listItem} key={index}>
+                <Text className={`${style.listName}`}>{detail.name}:</Text>
+                <Text className={`${style.listValue}`}>{detail.value}</Text>
+              </View>
+            );
+        })}
       </View>
     </View>
   );

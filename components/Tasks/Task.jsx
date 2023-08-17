@@ -50,7 +50,7 @@ const Task = ({ task, lastActivity, pending, home, navigate, archive }) => {
     <TouchableOpacity
       className={`${style.container} task`}
       ref={boxRef}
-      onPress={() => navigate("Task")}
+      onPress={() => navigate("Task", { taskId: task.id })}
     >
       <View className={style.containerInner}>
         <View className="flex-row mb-3 justify-between items-center">
@@ -70,11 +70,12 @@ const Task = ({ task, lastActivity, pending, home, navigate, archive }) => {
             {archive
               ? convertDateWithoutTime(lastActivity.timestamp)
               : timeAgo(
-                  pending
-                    ? task.timeline.find((block) => block.status === "created")
-                        .timestamp
-                    : task.timeline.find((block) => block.status === "approved")
-                        .timestamp
+                  // pending
+                  //   ?
+                  task.timeline.find((block) => block.status === "created")
+                    .timestamp
+                  // : task.timeline.find((block) => block.status === "approved")
+                  //     .timestamp
                 )}
           </Text>
           {archive ? (

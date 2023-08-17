@@ -6,12 +6,16 @@ import {
   TextInput,
   FlatList,
   ScrollView,
+  RefreshControl,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import axios from "axios";
 import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
 import TabLayout from "../components/TabLayout";
 import Task from "../components/Tasks/Task";
 
@@ -52,7 +56,7 @@ const tasks = [
       },
     ],
     bill: 979776,
-    proxzi: "Test1 Akorah",
+    proxze: "Test1 Akorah",
     principal: "Jesse Akorah",
   },
   {
@@ -91,7 +95,7 @@ const tasks = [
       },
     ],
     bill: 6096384,
-    proxzi: "Test1 Akorah",
+    proxze: "Test1 Akorah",
     principal: "Test0 Akorah",
   },
   {
@@ -130,7 +134,7 @@ const tasks = [
       },
     ],
     bill: 15676416,
-    proxzi: "Test1 Akorah",
+    proxze: "Test1 Akorah",
     principal: "Test0 Akorah",
   },
 ];
@@ -167,7 +171,7 @@ const tasks = [
 //       },
 //     ],
 //     bill: 7838208,
-//     proxzi: "Test1 Akorah",
+//     proxze: "Test1 Akorah",
 //     principal: "Jesse Akorah",
 //     startDate: "2023-02-14T07:15:11.345Z",
 //     endDate: "2023-08-14T07:15:11.345Z",
@@ -203,7 +207,7 @@ const tasks = [
 //       },
 //     ],
 //     bill: 4572288,
-//     proxzi: "Test1 Akorah",
+//     proxze: "Test1 Akorah",
 //     principal: "Jesse Akorah",
 //     startDate: "2023-03-14T07:15:11.345Z",
 //     endDate: "2023-07-14T07:15:11.345Z",
@@ -239,7 +243,7 @@ const tasks = [
 //       },
 //     ],
 //     bill: 1469664,
-//     proxzi: "Test1 Akorah",
+//     proxze: "Test1 Akorah",
 //     principal: "Jesse Akorah",
 //     startDate: "2023-05-14T07:15:11.345Z",
 //     endDate: "2023-09-14T07:15:11.345Z",
@@ -275,7 +279,7 @@ const tasks = [
 //       },
 //     ],
 //     bill: 1306368,
-//     proxzi: "Test1 Akorah",
+//     proxze: "Test1 Akorah",
 //     principal: "Jesse Akorah",
 //     startDate: "2023-07-14T07:15:11.345Z",
 //     endDate: "2023-08-14T07:15:11.345Z",
@@ -283,6 +287,8 @@ const tasks = [
 // ];
 
 const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
+  const { userToken } = useSelector((state) => state.auth);
+
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollRef = useRef(0);
 
@@ -293,44 +299,108 @@ const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
 
   const tabConfig = { title: "Archived Tasks", headerTitle: "Archived Tasks" };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [archive, setArchive] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const fetcher = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/task/history`,
+        config
+      );
+      setArchive(data.data);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return error;
+      // if (error.response && error.response.data.message) {
+      //   return rejectWithValue(error.response.data.message);
+      // } else {
+      //   return rejectWithValue(error.message);
+      // }
+    }
+  };
+
+  useEffect(() => {
+    fetcher();
+    // console.log(test);
+    if (!loading) {
+      setRefreshing(false);
+      // console.log("archive", archive);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    console.log("archive", archive);
+  }, [archive]);
+
+  // useEffect(() => {
+  //   fetcher();
+  // }, []);
+
   return (
     <TabLayout config={tabConfig}>
-      <FlatList
-        data={tasks}
-        ListHeaderComponent={() => (
-          <View className="pb-3 mx-5 border-b-[1px] border-zinc-600">
-            <View className="mb-7">
-              <Text className="text-white text-3xl font-bold">
-                {tabConfig.title}
-              </Text>
-            </View>
-            {/* <Text className="text-white text-base font-semibold">
+      {loading || refreshing ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <FlatList
+          data={archive}
+          ListHeaderComponent={() => (
+            <View className="pb-3 mx-5 border-b-[1px] border-zinc-600">
+              <View className="mb-7">
+                <Text className="text-white text-3xl font-bold">
+                  {tabConfig.title}
+                </Text>
+              </View>
+              {/* <Text className="text-white text-base font-semibold">
               Tasks you might like...
             </Text> */}
-          </View>
-        )}
-        ListFooterComponent={() => (
-          <View className="mx-5 border-t-[1px] border-zinc-600"></View>
-        )}
-        contentContainerStyle={{
-          paddingBottom: useBottomTabBarHeight(),
-          paddingTop: 4,
-        }}
-        renderItem={({ item, index }) => (
-          <Task
-            task={item}
-            index={index}
-            navigate={navigate}
-            lastActivity={item.timeline[item.timeline.length - 1]}
-            archive
-          />
-        )}
-        ItemSeparatorComponent={() => (
-          <View className="h-[1px] bg-zinc-600 mx-5"></View>
-        )}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-      />
+            </View>
+          )}
+          ListFooterComponent={() => (
+            <View className="mx-5 border-t-[1px] border-zinc-600"></View>
+          )}
+          contentContainerStyle={{
+            paddingBottom: useBottomTabBarHeight(),
+            paddingTop: 4,
+          }}
+          renderItem={({ item, index }) => (
+            <Task
+              task={item}
+              index={index}
+              navigate={navigate}
+              lastActivity={item.timeline[item.timeline.length - 1]}
+              archive
+            />
+          )}
+          ItemSeparatorComponent={() => (
+            <View className="h-[1px] bg-zinc-600 mx-5"></View>
+          )}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                dispatch(getOngoingTasks({ userToken }));
+              }}
+            />
+          }
+        />
+      )}
     </TabLayout>
   );
 };

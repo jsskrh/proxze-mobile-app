@@ -6,10 +6,13 @@ import React, {
   useContext,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { registerUser } from "../redux/auth/authActions";
 
 const RegisterContext = createContext();
 
 const RegisterProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [userType, setUserType] = useState("");
   // const [firstName, setFirstName] = useState("");
   // const [lastName, setLastName] = useState("");
@@ -36,6 +39,7 @@ const RegisterProvider = ({ children }) => {
     phoneNumber,
     password,
   }) => {
+    console.log("test");
     const data = {
       userType,
       firstName,
@@ -46,6 +50,30 @@ const RegisterProvider = ({ children }) => {
     };
     console.log(data);
     // dispatch(makeRequest(data));
+  };
+
+  const registerHandler = async () => {
+    // console.log(
+    const userType = watch("userType");
+    const firstName = watch("firstName");
+    const lastName = watch("lastName");
+    const email = watch("email");
+    const phoneNumber = watch("phoneNumber");
+    const password = watch("password");
+    // );
+
+    const data = {
+      userType,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+    };
+
+    console.log(data);
+    dispatch(registerUser(data));
+    handleSubmit(submitHandler);
   };
 
   return (
@@ -72,6 +100,7 @@ const RegisterProvider = ({ children }) => {
         control,
         trigger,
         reset,
+        registerHandler,
       }}
     >
       {children}

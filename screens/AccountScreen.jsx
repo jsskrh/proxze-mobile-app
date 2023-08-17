@@ -28,7 +28,8 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import TabLayout from "../components/TabLayout";
-import { testLogout } from "../redux/auth/authSlice";
+import { testLogout, logout } from "../redux/auth/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AccountScreen = () => {
   const { loading, error, success, userInfo, userToken } = useSelector(
@@ -43,8 +44,9 @@ const AccountScreen = () => {
   //   scrollRef.current = contentOffset.y;
   // };
 
-  const handleLogout = () => {
-    dispatch(testLogout());
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("userToken");
+    dispatch(logout());
   };
 
   const tabConfig = { title: "Account", headerTitle: "Jesse Akorah" };
@@ -127,10 +129,10 @@ const AccountScreen = () => {
               ></View>
               <View className="">
                 <Text className="text-white text-3xl font-semibold">
-                  John Doe
+                  {userInfo.firstName} {userInfo.lastName}
                 </Text>
                 <Text className="text-gray-500 text-base">
-                  test@sage-grey.com
+                  {userInfo.email}
                 </Text>
               </View>
             </View>

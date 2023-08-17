@@ -6,11 +6,16 @@ import React, {
   useContext,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+// import { makeRequest } from "../redux/task/taskActions";
 
 const RequestContext = createContext();
 
 const RequestProvider = ({ children }) => {
-  const [userType, setUserType] = useState("");
+  const { location } = useSelector((state) => state.task);
+  const { userToken } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -21,31 +26,20 @@ const RequestProvider = ({ children }) => {
     setValue,
     getValues,
     reset,
-  } = useForm();
-
-  const submitHandler = async ({
-    requestType,
-    description,
-    startDate,
-    endDate,
-    location,
-  }) => {
-    const data = {
-      requestType,
-      description,
-      startDate,
-      endDate,
-      location,
-    };
-    console.log(data);
-    // dispatch(makeRequest(data));
-  };
+  } = useForm({
+    defaultValues: {
+      type: "Confirmation/Validation",
+      description: "",
+      startDate: "",
+      endDate: "",
+    },
+  });
 
   return (
     <RequestContext.Provider
       value={{
         handleSubmit,
-        submitHandler,
+        // submitHandler,
         setValue,
         getValues,
         errors,

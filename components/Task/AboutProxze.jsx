@@ -22,25 +22,25 @@ const style = {
   date: `text-xs text-gray-600`,
 };
 
-const AboutProxzi = ({ proxzi }) => {
+const AboutProxze = ({ proxze }) => {
   return (
     <View className={style.container}>
-      <Text className={style.subSectionHeader}>About the proxzi</Text>
+      <Text className={style.subSectionHeader}>About the proxze</Text>
       <View className={style.ratingsContainer}>
-        <Rating reviews={proxzi.reviews} rating={proxzi.rating} />
+        <Rating reviews={proxze.reviews} rating={proxze.rating} />
       </View>
-      <Text className={style.name}>{proxzi.name}</Text>
+      <Text className={style.name}>{proxze.name}</Text>
       {/* <View className={style.rateContainer}>
         <Text className={style.rate}>96% success rate</Text>
         <Text>19 jobs done</Text>
       </View> */}
       <View>
         <Text className={style.date}>
-          Member since {convertDateWithoutTime(proxzi.createdAt)}
+          Member since {convertDateWithoutTime(proxze.createdAt)}
         </Text>
       </View>
     </View>
   );
 };
 
-export default AboutProxzi;
+export default AboutProxze;

@@ -10,7 +10,7 @@ const UserType = ({ item, handleUserTypeChange, userType }) => {
     >
       <View
         className={`w-full rounded-xl ${
-          item.type === "proxzi" ? "bg-[#91e6b3]" : "bg-[#135446]"
+          item.type === "proxze" ? "bg-[#91e6b3]" : "bg-[#135446]"
         } ${userType === item.type ? "shadow-lg" : ""} flex-row`}
       >
         <View className="w-[40%] h-[150px]">
@@ -19,14 +19,14 @@ const UserType = ({ item, handleUserTypeChange, userType }) => {
         <View className="p-4 w-[60%] justify-center">
           <Text
             className={`${
-              item.type === "proxzi" ? "text-[#212121]" : "text-[#91e6b3]"
+              item.type === "proxze" ? "text-[#212121]" : "text-[#91e6b3]"
             }`}
           >
             As a {item.type}
           </Text>
           <Text
             className={`text-2xl ${
-              item.type === "proxzi" ? "text-[#135446]" : "text-white"
+              item.type === "proxze" ? "text-[#135446]" : "text-white"
             }`}
           >
             {item.text}

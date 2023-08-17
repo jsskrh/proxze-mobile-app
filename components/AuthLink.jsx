@@ -6,7 +6,7 @@ const AuthLink = ({ navigate, userType }) => {
     <View className="flex-row">
       <Text
         className={`text-sm font-poppins text-center ${
-          userType === "proxzi"
+          userType === "proxze"
             ? "text-gray-500"
             : userType === "principal"
             ? "text-gray-400"
@@ -18,7 +18,7 @@ const AuthLink = ({ navigate, userType }) => {
       <TouchableOpacity onPress={() => navigate("Login")}>
         <Text
           className={`text-sm font-poppins text-center font-semibold ml-2 ${
-            userType === "proxzi"
+            userType === "proxze"
               ? "text-black"
               : userType === "principal"
               ? "text-white"

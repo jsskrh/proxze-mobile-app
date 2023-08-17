@@ -53,7 +53,7 @@ const Task = ({ task, pending, navigate }) => {
       ref={boxRef}
       // onMouseEnter={handleHover}
       // onMouseLeave={handleHoverExit}
-      onPress={() => navigate("Task")}
+      onPress={() => navigate("Task", { taskId: task.id })}
     >
       <View className={style.containerInner}>
         <Text className={style.title}>{task.type}</Text>
@@ -62,11 +62,12 @@ const Task = ({ task, pending, navigate }) => {
           <Text className={style.date}>
             Posted{" "}
             {timeAgo(
-              pending
-                ? task.timeline.find((block) => block.status === "created")
-                    .timestamp
-                : task.timeline.find((block) => block.status === "approved")
-                    .timestamp
+              // pending
+              //   ?
+              task.timeline.find((block) => block.status === "created")
+                .timestamp
+              // : task.timeline.find((block) => block.status === "approved")
+              //     .timestamp
             )}
           </Text>
         </View>
@@ -83,9 +84,7 @@ const Task = ({ task, pending, navigate }) => {
           <Rating rating={task.rating} taskpool />
           <View className={style.location}>
             <MapPinIcon className={style.heroIcon} size={16} color="#91e6b3" />
-            <Text className={style.locationText}>
-              {task.lga}, {task.state}
-            </Text>
+            <Text className={style.locationText}>{task.location.label}</Text>
           </View>
         </View>
       </View>

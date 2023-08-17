@@ -32,8 +32,8 @@ const style = {
 const Status = ({ status, statusDate, type }) => {
   const timeline = [
     "created",
-    "approved",
     "assigned",
+    "approved",
     "started",
     "completed",
     "confirmed",

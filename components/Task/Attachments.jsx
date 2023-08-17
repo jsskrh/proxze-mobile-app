@@ -23,7 +23,7 @@ const style = {
 const Attachments = ({
   setPopup,
   attachments,
-  isProxzi,
+  isProxze,
   started,
   isPrincipal,
   task,
@@ -70,7 +70,7 @@ const Attachments = ({
             )}
           </>
         )} */}
-        {/* {started && isProxzi && (
+        {/* {started && isProxze && (
           <View className={style.addAttachmentContainer}>
             <TouchableOpacity
               className={style.addAttachment}

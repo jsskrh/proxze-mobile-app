@@ -22,7 +22,7 @@ const style = {
   activePage: `font-bold`,
 };
 
-const Offers = ({ offers, assigned, isProxzi, task }) => {
+const Offers = ({ offers, assigned, isProxze, task }) => {
   const [expandedOffer, setExpandedOffer] = useState();
   const [page, setPage] = useState(1);
 
@@ -54,14 +54,14 @@ const Offers = ({ offers, assigned, isProxzi, task }) => {
             offer={offer}
             assigned={assigned}
             last={
-              offer.proxzi.id === offers[offers.length - 1].proxzi.id ||
+              offer.proxze.id === offers[offers.length - 1].proxze.id ||
               index % 2 !== 0
             }
             expandedOffer={expandedOffer}
             handleExpand={handleExpand}
             key={index}
             index={index}
-            isProxzi={isProxzi}
+            isProxze={isProxze}
           />
         ))}
       </ul>

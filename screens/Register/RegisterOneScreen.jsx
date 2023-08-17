@@ -27,7 +27,7 @@ const userTypes = [
     image: require("../../assets/images/contract.jpg"),
   },
   {
-    type: "proxzi",
+    type: "proxze",
     text: "I am a proxy, looking for work",
     image: require("../../assets/images/freelancer.webp"),
   },
@@ -45,7 +45,7 @@ const RegisterOneScreen = ({ navigation: { navigate, goBack } }) => {
   return (
     <SafeAreaView
       className={`${
-        userType === "proxzi"
+        userType === "proxze"
           ? "bg-[#91e6b3]"
           : userType === "principal"
           ? "bg-[#135446]"
@@ -58,7 +58,7 @@ const RegisterOneScreen = ({ navigation: { navigate, goBack } }) => {
         </TouchableOpacity>
         <Text
           className={`mt-10 font-bold text-2xl mb-2 ${
-            userType === "proxzi"
+            userType === "proxze"
               ? "text-black"
               : userType === "principal"
               ? "text-white"

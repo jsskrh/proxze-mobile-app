@@ -21,17 +21,7 @@ export const authApi = createApi({
         method: "GET",
       }),
     }),
-
-    // New mutation endpoint to update user's location
-    updateUserLocation: builder.mutation({
-      query: (updatedLocation) => ({
-        url: "api/user/location",
-        method: "PUT",
-        body: updatedLocation,
-      }),
-    }),
   }),
 });
 
-export const { useGetUserDetailsQuery, useUpdateUserLocationMutation } =
-  authApi;
+export const { useGetUserDetailsQuery } = authApi;
