@@ -30,6 +30,7 @@ import WelcomeStack from "./navigation/WelcomeStack";
 import RequestStack from "./navigation/RequestStack";
 import AddressScreen from "./screens/AddressScreen";
 import OfferScreen from "./screens/OfferScreen";
+import ContactInfoScreen from "./screens/ContactInfoScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import Tabs from "./navigation/Tabs";
 import { Provider } from "react-redux";
@@ -244,6 +245,27 @@ const RootStack = () => {
             })}
             name="Offers"
             component={OffersScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Contact Info</Text>
+              ),
+            })}
+            name="ContactInfo"
+            component={ContactInfoScreen}
           />
 
           <Stack.Screen

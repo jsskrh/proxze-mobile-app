@@ -33,7 +33,7 @@ import AboutProxze from "../components/Task/AboutProxze";
 // import Offers from "../components/Task/Offers";
 import { timeAgo, shortenId } from "../utils/helpers";
 import { getTask } from "../redux/task/taskActions";
-// import { Paystack } from "react-native-paystack-webview";
+import { Paystack } from "react-native-paystack-webview";
 import { PAYSTACK_PUBLIC_KEY } from "@env";
 
 const style = {
@@ -117,6 +117,55 @@ const TasksScreen = ({
       };
       const { data } = await axios.put(
         `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/proxze/complete-task`,
+        { timestamp: Date.now() },
+        config
+      );
+      setTask(data.data);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      return error;
+    }
+  };
+
+  const makeRequestPayment = async () => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axios.put(
+        `https://proxze-backend-app.onrender.com/api/transaction/deposit/task/${taskId}`,
+        { taskId },
+        config
+      );
+      setTask(data.data);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      return error;
+    }
+  };
+
+  const confirmTask = async () => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axios.put(
+        // `/api/task/view/${task}/principal/confirm-task`,
+        `https://proxze-backend-app.onrender.com/api/transaction/transfer/task/${taskId}`,
         { timestamp: Date.now() },
         config
       );
@@ -388,9 +437,8 @@ const TasksScreen = ({
                     </TouchableOpacity>
                   )
                 ))}
-              {/* {userInfo.userType === "principal" &&
-                taskStatus === "assigned" &&
-                !task.paymentStatus && (
+              {userInfo.userType === "principal" &&
+                (taskStatus === "assigned" && !task.paymentStatus ? (
                   <TouchableOpacity
                     className="p-3 items-center bg-[#38a139] rounded-lg"
                     onPress={() => setPay(true)}
@@ -399,16 +447,27 @@ const TasksScreen = ({
                       Make Payment
                     </Text>
                   </TouchableOpacity>
-                )} */}
+                ) : (
+                  taskStatus === "completed" && (
+                    <TouchableOpacity
+                      className="p-3 items-center bg-[#38a139] rounded-lg"
+                      onPress={() => confirmTask()}
+                    >
+                      <Text className="text-white capitalize font-semibold text-base">
+                        Confirm Task
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                ))}
             </BlurView>
           )}
         </>
       )}
-      {/* {pay && (
+      {pay && (
         <View style={{ flex: 1 }}>
           <Paystack
             paystackKey={PAYSTACK_PUBLIC_KEY}
-            amount={task.bill}
+            amount={500}
             billingEmail={userInfo.email}
             billingMobile={userInfo.phone}
             activityIndicatorColor="green"
@@ -423,9 +482,10 @@ const TasksScreen = ({
               // handle response here
               // console.log(response);
               const responseObject = response.transactionRef.message;
-              // console.log(responseObject);
+              console.log(responseObject);
               if (responseObject === "Approved") {
                 // setTransactionRef(response.transactionRef);
+                makeRequestPayment();
               } else {
                 console.log("fail");
                 // console.log(response);
@@ -434,7 +494,7 @@ const TasksScreen = ({
             autoStart={pay}
           />
         </View>
-      )} */}
+      )}
     </TabLayout>
   );
 };

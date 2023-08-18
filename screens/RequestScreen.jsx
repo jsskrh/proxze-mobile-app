@@ -44,7 +44,7 @@ import axios from "axios";
 import { RequestContext } from "../components/RequestProvider";
 import { setLocation } from "../redux/task/taskSlice";
 
-const requestTypes = ["Confirmation/Validation"];
+const requestTypes = ["Verification"];
 
 const RequestScreen = ({
   navigation: { navigate, goBack, popToTop, setOptions },
@@ -93,7 +93,7 @@ const RequestScreen = ({
   // }, []);
 
   useEffect(() => {
-    setValue("requestType", "Confirmation/Validation");
+    setValue("requestType", "Verification");
     setValue("endDate", new Date());
     setValue("startDate", new Date());
   }, []);

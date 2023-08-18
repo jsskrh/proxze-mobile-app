@@ -31,7 +31,7 @@ import TabLayout from "../components/TabLayout";
 import { testLogout, logout } from "../redux/auth/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation: { navigate } }) => {
   const { loading, error, success, userInfo, userToken } = useSelector(
     (state) => state.auth
   );
@@ -52,21 +52,21 @@ const AccountScreen = () => {
   const tabConfig = { title: "Account", headerTitle: "Jesse Akorah" };
 
   const accountSections = [
-    {
-      title: "Settings",
-      data: [
-        {
-          title: "Earnings",
-          color: "rgb(22, 163, 74)",
-          icon: <CurrencyDollarIcon color="white" size={20} />,
-        },
-        {
-          title: "Rating & Reviews",
-          color: "#FFD700",
-          icon: <StarIcon color="white" size={20} />,
-        },
-      ],
-    },
+    // {
+    //   title: "Settings",
+    //   data: [
+    //     {
+    //       title: "Earnings",
+    //       color: "rgb(22, 163, 74)",
+    //       icon: <CurrencyDollarIcon color="white" size={20} />,
+    //     },
+    //     // {
+    //     //   title: "Rating & Reviews",
+    //     //   color: "#FFD700",
+    //     //   icon: <StarIcon color="white" size={20} />,
+    //     // },
+    //   ],
+    // },
     {
       title: "Settings",
       data: [
@@ -74,39 +74,40 @@ const AccountScreen = () => {
           color: "rgb(156 163 175)",
           title: "Contact Info",
           icon: <DevicePhoneMobileIcon color="white" size={20} />,
+          screen: "ContactInfo",
         },
-        {
-          color: "rgb(107, 114, 128)",
-          title: "Account",
-          icon: <CogIcon color="white" size={20} />,
-        },
-        {
-          color: "#C0C0C0",
-          title: "Billing & Payment",
-          icon: <CreditCardIcon color="white" size={20} />,
-        },
-        {
-          color: "rgb(125, 211, 252)",
-          title: "Profile Settings",
-          icon: <UserIcon color="white" size={20} />,
-        },
-        {
-          color: "#000",
-          title: "Password & Security",
-          icon: <LockClosedIcon color="white" size={20} />,
-        },
+        // {
+        //   color: "rgb(107, 114, 128)",
+        //   title: "Account",
+        //   icon: <CogIcon color="white" size={20} />,
+        // },
+        // {
+        //   color: "#C0C0C0",
+        //   title: "Billing & Payment",
+        //   icon: <CreditCardIcon color="white" size={20} />,
+        // },
+        // {
+        //   color: "rgb(125, 211, 252)",
+        //   title: "Profile Settings",
+        //   icon: <UserIcon color="white" size={20} />,
+        // },
+        // {
+        //   color: "#000",
+        //   title: "Password & Security",
+        //   icon: <LockClosedIcon color="white" size={20} />,
+        // },
       ],
     },
-    {
-      title: "Resources",
-      data: [
-        {
-          color: "rgb(37, 99, 235)",
-          title: "Support",
-          icon: <UserGroupIcon color="white" size={20} />,
-        },
-      ],
-    },
+    // {
+    //   title: "Resources",
+    //   data: [
+    //     {
+    //       color: "rgb(37, 99, 235)",
+    //       title: "Support",
+    //       icon: <UserGroupIcon color="white" size={20} />,
+    //     },
+    //   ],
+    // },
   ];
 
   const settingsOptions = [];
@@ -144,6 +145,7 @@ const AccountScreen = () => {
           <TouchableHighlight
             className={`bg-zinc-900 mx-5`}
             underlayColor="white"
+            onPress={() => item.screen && navigate(item.screen)}
           >
             <View className="flex-row items-center gap-2 px-4 ">
               <View className="w-[14%] items-center justify-center">

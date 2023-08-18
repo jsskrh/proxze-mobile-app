@@ -289,6 +289,8 @@ const tasks = [
 const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
   const { userToken } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch();
+
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollRef = useRef(0);
 
@@ -319,6 +321,7 @@ const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
       );
       setArchive(data.data);
       setLoading(false);
+      setRefreshing(false);
       return data;
     } catch (error) {
       console.log(error);
@@ -395,7 +398,8 @@ const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
               refreshing={refreshing}
               onRefresh={() => {
                 setRefreshing(true);
-                dispatch(getOngoingTasks({ userToken }));
+                // dispatch(getOngoingTasks({ userToken }));
+                fetcher();
               }}
             />
           }
