@@ -164,12 +164,13 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (taskpool.length === 0) dispatch(getTaskpool());
-    dispatch(getTaskpool({ userToken: userInfo.userToken }));
+    if (taskpool.length === 0)
+      dispatch(getTaskpool({ userToken: userInfo.userToken }));
   }, []);
 
   useEffect(() => {
-    console.log(taskpool);
+    // console.log(taskpool);
+    setRefreshing(false);
   }, [taskpool]);
 
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -227,14 +228,14 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
           ItemSeparatorComponent={() => <View className="h-7"></View>}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={refreshing}
-          //     onRefresh={dispatch(
-          //       getTaskpool({ userToken: userInfo.userToken })
-          //     )}
-          //   />
-          // }
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() =>
+                dispatch(getTaskpool({ userToken: userInfo.userToken }))
+              }
+            />
+          }
         />
       )}
     </TabLayout>
