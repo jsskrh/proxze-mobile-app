@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clearMessageState } from "../message/messageSlice";
-import { clearNotifications } from "../notifications/notificationsSlice";
+import { clearMessageState } from "../notification/notificationSlice";
+// import { clearNotifications } from "../notifications/notificationsSlice";
 import { clearTaskState } from "../task/taskSlice";
 import { clearTicketState } from "../ticket/ticketSlice";
 import { clearTransactionState } from "../transaction/transactionSlice";
@@ -57,11 +57,11 @@ const authSlice = createSlice({
       state.error = null;
       state.currentLocation = null;
       // clearUserState();
-      // clearTaskState();
+      clearTaskState();
       // clearNotifications();
       // clearTransactionState();
       // clearTicketState();
-      // clearMessageState();
+      // clearNotificationState();
       // clearTransactionState();
     },
 

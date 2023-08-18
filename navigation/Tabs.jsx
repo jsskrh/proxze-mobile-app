@@ -58,10 +58,6 @@ const Tabs = () => {
 
   const [updateLocation, { isLoading }] = useUpdateUserLocationMutation();
 
-  // const handleUpdateLocation = (newLocation) => {
-  //   updateLocation(location);
-  // };
-
   useEffect(() => {
     if (currentLocation) {
       console.log(currentLocation);
@@ -72,19 +68,6 @@ const Tabs = () => {
       updateLocation({ location });
     }
   }, [currentLocation]);
-
-  // // Run the updateLocation function every 105 minutes
-  // const updateLocationInterval = 15 * 60 * 1000; // 105 minutes in milliseconds
-
-  // setInterval(() => {
-  //   // const [updateLocation] = useUpdateUserLocationMutation();
-
-  //   const newLocation = {
-  //     // Define the new location details here
-  //   };
-
-  //   updateLocation(newLocation);
-  // }, updateLocationInterval);
 
   const [errorMsg, setErrorMsg] = useState(null);
 

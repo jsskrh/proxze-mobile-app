@@ -182,7 +182,7 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
 
   const tabConfig = { title: "Taskpool", headerTitle: "Taskpool" };
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <TabLayout config={tabConfig}>

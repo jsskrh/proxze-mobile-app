@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import { useSelector, useDispatch } from "react-redux";
 import Task from "../components/Tasks/Task";
 import TabLayout from "../components/TabLayout";
 import {
@@ -140,6 +141,8 @@ const tasks = [
 ];
 
 const HomeScreen = ({ navigation: { navigate } }) => {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollRef = useRef(0);
 
@@ -155,7 +158,9 @@ const HomeScreen = ({ navigation: { navigate } }) => {
       <View className="mb-3 mx-5">
         <View className="mb-7">
           <Text className="text-gray-400 text-xl font-semibold">Welcome,</Text>
-          <Text className="text-white text-3xl font-bold">John Doe</Text>
+          <Text className="text-white text-3xl font-bold">
+            {userInfo.firstName} {userInfo.lastName}
+          </Text>
         </View>
       </View>
       <View className="mb-7 mx-5 flex-row justify-between items-center">
@@ -170,7 +175,7 @@ const HomeScreen = ({ navigation: { navigate } }) => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity className="mb-7 mx-5 bg-zinc-800 p-4 rounded-xl">
+      {/* <TouchableOpacity className="mb-7 mx-5 bg-zinc-800 p-4 rounded-xl">
         <View className="flex-row items-center">
           <View className="">
             <View className="flex-row items-center mb-2">
@@ -198,7 +203,7 @@ const HomeScreen = ({ navigation: { navigate } }) => {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View>
         <View className="flex-row justify-between items-center mb-3 mx-5">

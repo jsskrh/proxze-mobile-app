@@ -2,10 +2,11 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 // import { axiosInstance } from "../../utils/axios";
 
-export const getAllMessages = createAsyncThunk(
-  "messages/get-all",
+export const getAllNotifications = createAsyncThunk(
+  "notifications/get-all",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = credentials.userToken;
+    // const userToken = localStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -13,7 +14,10 @@ export const getAllMessages = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/message`, config);
+      const { data } = await axios.get(
+        `https://proxze-backend-app.onrender.com/api/notification`,
+        config
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -25,8 +29,8 @@ export const getAllMessages = createAsyncThunk(
   }
 );
 
-export const setMessagesSeen = createAsyncThunk(
-  "messages/set-seen",
+export const setNotificationsSeen = createAsyncThunk(
+  "notifications/set-seen",
   async (credentials, { rejectWithValue }) => {
     const userToken = localStorage.getItem("userToken");
     try {
@@ -37,7 +41,7 @@ export const setMessagesSeen = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/message/update/seen`,
+        `/api/notification/update/seen`,
         credentials,
         config
       );
@@ -52,9 +56,9 @@ export const setMessagesSeen = createAsyncThunk(
   }
 );
 
-export const setMessageRead = createAsyncThunk(
-  "messages/set-read",
-  async ({ message }, { rejectWithValue }) => {
+export const setNotificationRead = createAsyncThunk(
+  "notifications/set-read",
+  async ({ notification }, { rejectWithValue }) => {
     const userToken = localStorage.getItem("userToken");
     try {
       const config = {
@@ -64,8 +68,8 @@ export const setMessageRead = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/message/update/read/${message}`,
-        { message },
+        `/api/notification/update/read/${notification}`,
+        { notification },
         config
       );
       return data;

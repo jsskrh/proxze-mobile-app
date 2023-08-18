@@ -63,7 +63,10 @@ const Notification = ({
     <TouchableOpacity
       className={`${style.container} notification`}
       ref={boxRef}
-      onPress={() => navigate("Task")}
+      onPress={() =>
+        notification.type === "task" &&
+        navigate("Task", { taskId: notification.task.id })
+      }
     >
       <View className={style.containerInner}>
         {/* <View className="flex-row mb-7 justify-between items-center">
@@ -106,7 +109,7 @@ const Notification = ({
               {converserInfo.firstName.charAt(0)}
               {converserInfo.lastName.charAt(0)}
             </Text> */}
-              {notification.type === "credit" ? (
+              {notification.type === "wallet" ? (
                 <WalletIcon size={23} color="rgb(34, 197, 94)" />
               ) : notification.type === "review" ? (
                 <StarIcon size={23} color="#FFD700" />
@@ -130,41 +133,7 @@ const Notification = ({
               {mailDate(notification.createdAt)}
             </Text>
           </View>
-          <Text className="text-white text-base">
-            {notification.type === "offer" ? (
-              <>
-                An offer has been made for{" "}
-                <Text className={style.strong}>{notification.task.title}</Text>
-              </>
-            ) : notification.type === "approve" ? (
-              <>Your request has been approved</>
-            ) : notification.type === "confirm" ? (
-              <>Your task has been confirmed complete</>
-            ) : notification.type === "assign" ? (
-              <>You have been assigned a task</>
-            ) : notification.type === "start" ? (
-              <>Your task has started</>
-            ) : notification.type === "complete" ? (
-              <>Your request has been completed</>
-            ) : notification.type === "ticket" ? (
-              <>
-                Response for ticket{" "}
-                <Text className={style.strong}># {notification.ticket}</Text>{" "}
-              </>
-            ) : notification.type === "credit" ? (
-              <>
-                You have been payed{" "}
-                <Text className={style.strong}>₦{notification.amount}</Text>
-              </>
-            ) : notification.type === "debit" ? (
-              <>
-                <Text className={style.strong}>₦{notification.amount}</Text> has
-                been withdrawn from your wallet
-              </>
-            ) : (
-              "You have recieved a new review"
-            )}
-          </Text>
+          <Text className="text-white text-base">{notification.content}</Text>
         </View>
       </View>
     </TouchableOpacity>
