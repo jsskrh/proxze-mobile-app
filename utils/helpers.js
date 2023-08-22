@@ -251,3 +251,26 @@ export const timeDue = (endDate) => {
     }
   }
 };
+
+export const transformChatArray = (originalArray) => {
+  // Initialize an empty array to store the transformed data
+  const transformedArray = [];
+
+  // Iterate through the original array
+  for (const item of originalArray) {
+    // Create a new object in the desired format
+    const transformedItem = {
+      _id: item._id,
+      text: item.content,
+      createdAt: item.createdAt,
+      user: {
+        _id: item.sender,
+      },
+    };
+
+    // Push the transformed item into the new array
+    transformedArray.push(transformedItem);
+  }
+
+  return transformedArray;
+};

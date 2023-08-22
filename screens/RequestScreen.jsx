@@ -37,7 +37,6 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
-import Task from "../components/Task";
 import TabLayout from "../components/TabLayout";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";

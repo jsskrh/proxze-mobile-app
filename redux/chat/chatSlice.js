@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAllChats,
   createChat,
-  sendChat,
+  sendMessage,
   getChat,
   setChatRead,
   setChatsSeen,
 } from "./chatActions";
+import { transformChatArray } from "../../utils/helpers";
 
 const initialState = {
   loading: false,
@@ -41,6 +42,10 @@ const chatSlice = createSlice({
       state.chats.newCount = payload.data.count;
     },
 
+    clearChat: (state, { payload }) => {
+      state.chat = [];
+    },
+
     addText: (state, { payload }) => {
       state.chat = [...state.chat, payload];
     },
@@ -71,7 +76,7 @@ const chatSlice = createSlice({
     [createChat.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.submitSuccess = true;
-      state.chat = payload.data;
+      // state.chat = transformChatArray(payload.data);
     },
     [createChat.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -87,7 +92,7 @@ const chatSlice = createSlice({
     [getChat.fulfilled]: (state, { payload }) => {
       state.getChatLoading = false;
       state.getChatSuccess = true;
-      state.chat = payload.data;
+      state.chat = transformChatArray(payload.data);
     },
     [getChat.rejected]: (state, { payload }) => {
       state.getChatLoading = false;
@@ -95,17 +100,27 @@ const chatSlice = createSlice({
     },
 
     // send chat
-    [sendChat.pending]: (state) => {
+    [sendMessage.pending]: (state) => {
       state.textSuccess = false;
       state.loading = true;
       state.error = null;
     },
-    [sendChat.fulfilled]: (state, { payload }) => {
+    [sendMessage.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.textSuccess = true;
-      state.chat = [...state.chat, payload.data];
+      state.chat = [
+        ...state.chat,
+        {
+          _id: payload.data._id,
+          text: payload.data.content,
+          createdAt: payload.data.createdAt,
+          user: {
+            _id: payload.data.sender,
+          },
+        },
+      ];
     },
-    [sendChat.rejected]: (state, { payload }) => {
+    [sendMessage.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
@@ -146,4 +161,5 @@ const chatSlice = createSlice({
 });
 
 export default chatSlice.reducer;
-export const { clearChatState, setChats, addText } = chatSlice.actions;
+export const { clearChatState, setChats, addText, clearChat } =
+  chatSlice.actions;

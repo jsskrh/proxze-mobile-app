@@ -13,6 +13,7 @@ const RegisterContext = createContext();
 
 const RegisterProvider = ({ children }) => {
   const dispatch = useDispatch();
+
   const [userType, setUserType] = useState("");
   // const [firstName, setFirstName] = useState("");
   // const [lastName, setLastName] = useState("");

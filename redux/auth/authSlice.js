@@ -10,7 +10,7 @@ import {
   updateUserInfo,
 } from "../user/userActions";
 import { clearUserState } from "../user/userSlice";
-import { registerUser, userLogin } from "./authActions";
+import { registerUser, userLogin, getUser } from "./authActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // initialize userToken from local storage
@@ -49,7 +49,8 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       // localStorage.removeItem("userToken");
-      state.loading = true;
+      AsyncStorage.removeItem("userToken");
+      state.loading = false;
       state.loadingLocation = true;
       state.waiting = false;
       state.userInfo = null;
@@ -133,6 +134,25 @@ const authSlice = createSlice({
       state.error = payload;
     },
 
+    // get user
+    [getUser.pending]: (state) => {
+      if (!state.loading) {
+        state.loading = true;
+      }
+      state.error = null;
+    },
+    [getUser.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userInfo = payload.data;
+      state.userToken = payload.userToken;
+      state.userInfo.userToken = payload.userToken;
+      state.success = true; // registration successful
+    },
+    [getUser.rejected]: (state, { payload }) => {
+      state.waiting = false;
+      state.error = payload;
+    },
+
     // update basic info
     [updateUserInfo.fulfilled]: (state, { payload }) => {
       const { updateFunction, ...restPayload } = payload;
@@ -146,13 +166,13 @@ const authSlice = createSlice({
     },
 
     // deactivate user
-    // [deactivateAccount.fulfilled]: (state, { payload }) => {
-    //   // state.loading = false;
-    //   // state.userInfo = null;
-    //   // state.userToken = null;
-    //   // state.error = null;
-    //   // clearUserState();
-    // },
+    [deactivateAccount.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.userInfo = null;
+      state.userToken = null;
+      state.error = null;
+      clearUserState();
+    },
   },
 });
 

@@ -56,13 +56,18 @@ const OffersScreen = ({
           paddingTop: 4,
         }}
         renderItem={({ item, index }) => (
-          <Offer offer={item} taskId={taskId} goBack={goBack} />
+          <Offer
+            offer={item}
+            taskId={taskId}
+            goBack={goBack}
+            navigate={navigate}
+          />
         )}
         ItemSeparatorComponent={() => (
           <View className="h-[1px] bg-gray-600"></View>
         )}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.proxze.id}
       />
     </TabLayout>
   );

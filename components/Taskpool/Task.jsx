@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { MapPinIcon } from "react-native-heroicons/solid";
 import { useEffect, useState, useRef } from "react";
-import { timeAgo } from "../utils/helpers";
-import Rating from "./Rating";
+import { timeAgo } from "../../utils/helpers";
+import Rating from "../Rating";
 
 const style = {
   container: `mx-5 border rounded-[14px] bg-zinc-800`,
@@ -25,7 +25,7 @@ const style = {
   offers: `mb-3 text-xs`,
   offersText: `font-semibold`,
   heroIcon: `h-4 w-4`,
-  bottomInfo: `text-xs flex-row items-center`,
+  bottomInfo: `text-xs flex-row items-center truncate`,
   location: `flex-row ml-3 items-center`,
   locationText: `ml-1 text-gray-500`,
 };
@@ -84,7 +84,9 @@ const Task = ({ task, pending, navigate }) => {
           <Rating rating={task.rating} taskpool />
           <View className={style.location}>
             <MapPinIcon className={style.heroIcon} size={16} color="#91e6b3" />
-            <Text className={style.locationText}>{task.location.label}</Text>
+            <Text className={style.locationText} numberOfLines={1}>
+              {task.location.label}
+            </Text>
           </View>
         </View>
       </View>

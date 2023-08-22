@@ -16,8 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import TabLayout from "../components/TabLayout";
-import Task from "../components/Tasks/Task";
+import TabLayout from "../../components/TabLayout";
 
 const ContactInfoScreen = ({ navigation: { navigate } }) => {
   const { userToken, userInfo } = useSelector((state) => state.auth);
@@ -84,15 +83,28 @@ const ContactInfoScreen = ({ navigation: { navigate } }) => {
   //   fetcher();
   // }, []);
 
-  const contactData = [
-    { title: "User ID", value: userInfo.id, id: "0" },
-    { title: "Name", value: `${userInfo.firstName} ${userInfo.lastName}` },
-    { title: "Email", value: userInfo.email },
-    // {
-    //   title: "Location",
-    //   value: `[${userInfo.location.lat}, ${userInfo.location.lng}]`,
-    // },
-  ];
+  const basicInfo = {
+    title: "Basic Info",
+    data: [
+      { title: "User ID", value: userInfo.id, id: "0" },
+      { title: "Name", value: `${userInfo.firstName} ${userInfo.lastName}` },
+      { title: "Email", value: userInfo.email },
+      // {
+      //   title: "Location",
+      //   value: `[${userInfo.location.lat}, ${userInfo.location.lng}]`,
+      // },
+    ],
+  };
+
+  const location = {
+    title: "Location",
+    data: [
+      { title: "Phone", value: userInfo.phoneNumber },
+      { title: "Address", value: userInfo.address },
+    ],
+  };
+
+  const contactInfo = [basicInfo, location];
 
   useEffect(() => {
     console.log(userInfo);
@@ -105,49 +117,40 @@ const ContactInfoScreen = ({ navigation: { navigate } }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <FlatList
-          data={contactData}
-          ListHeaderComponent={() => (
-            <View className="pb-3 mx-5 border-b-[1px] border-zinc-600">
-              <View className="mb-7">
-                <Text className="text-white text-3xl font-bold">
-                  {tabConfig.title}
-                </Text>
-              </View>
-              {/* <Text className="text-white text-base font-semibold">
-              Tasks you might like...
-            </Text> */}
-            </View>
-          )}
-          // ListFooterComponent={() => (
-          //   <View className="mx-5 border-t-[1px] border-zinc-600"></View>
-          // )}
-          contentContainerStyle={{
-            // paddingBottom: useBottomTabBarHeight(),
-            paddingTop: 4,
-          }}
-          renderItem={({ item, index }) => (
-            <View className="px-5">
-              <Text className="text-white font-semibold mb-2">
-                {item.title}
+        <ScrollView>
+          <View className="pb-3 mx-5 border-zinc-600">
+            <View className="mb-7">
+              <Text className="text-white text-3xl font-bold">
+                {tabConfig.title}
               </Text>
-              <Text className="text-white">{item.value}</Text>
             </View>
-          )}
-          ItemSeparatorComponent={() => <View className="h-5"></View>}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => {
-                setRefreshing(true);
-                // dispatch(getOngoingTasks({ userToken }));
-                fetcher();
-              }}
-            />
-          }
-        />
+          </View>
+          <View className="gap-y-7">
+            {contactInfo.map((group, index) => (
+              <View className="mx-5 border border-gray-600 p-5 rounded-xl">
+                <Text className="text-white text-2xl font-semibold mb-5">
+                  {group.title}
+                </Text>
+                <View className="gap-y-5">
+                  {group.data.map((info, index) => (
+                    <View className="">
+                      <Text className="text-white font-semibold mb-2">
+                        {info.title}
+                      </Text>
+                      {info.value ? (
+                        <Text className="text-white">{info.value}</Text>
+                      ) : (
+                        <Text className="text-white font-semibold">
+                          You have not set up any {info.title} information yet.
+                        </Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       )}
     </TabLayout>
   );

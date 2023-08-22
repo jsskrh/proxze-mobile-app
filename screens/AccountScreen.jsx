@@ -21,6 +21,7 @@ import {
   UserIcon,
   DevicePhoneMobileIcon,
   UserGroupIcon,
+  DocumentTextIcon,
 } from "react-native-heroicons/outline";
 import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -76,16 +77,18 @@ const AccountScreen = ({ navigation: { navigate } }) => {
           icon: <DevicePhoneMobileIcon color="white" size={20} />,
           screen: "ContactInfo",
         },
-        // {
-        //   color: "rgb(107, 114, 128)",
-        //   title: "Account",
-        //   icon: <CogIcon color="white" size={20} />,
-        // },
-        // {
-        //   color: "#C0C0C0",
-        //   title: "Billing & Payment",
-        //   icon: <CreditCardIcon color="white" size={20} />,
-        // },
+        {
+          color: "rgb(107, 114, 128)",
+          title: "Account",
+          icon: <CogIcon color="white" size={20} />,
+          screen: "AccountSettings",
+        },
+        {
+          color: "#C0C0C0",
+          title: "Billing & Payment",
+          icon: <CreditCardIcon color="white" size={20} />,
+          screen: "Billing&Payment",
+        },
         // {
         //   color: "rgb(125, 211, 252)",
         //   title: "Profile Settings",
@@ -98,16 +101,22 @@ const AccountScreen = ({ navigation: { navigate } }) => {
         // },
       ],
     },
-    // {
-    //   title: "Resources",
-    //   data: [
-    //     {
-    //       color: "rgb(37, 99, 235)",
-    //       title: "Support",
-    //       icon: <UserGroupIcon color="white" size={20} />,
-    //     },
-    //   ],
-    // },
+    {
+      title: "Resources",
+      data: [
+        {
+          color: "rgb(20, 184, 166)",
+          title: "Legal",
+          icon: <DocumentTextIcon color="white" size={20} />,
+          screen: "Legal",
+        },
+        // {
+        //   color: "rgb(37, 99, 235)",
+        //   title: "Support",
+        //   icon: <UserGroupIcon color="white" size={20} />,
+        // },
+      ],
+    },
   ];
 
   const settingsOptions = [];
@@ -144,7 +153,7 @@ const AccountScreen = ({ navigation: { navigate } }) => {
         renderItem={({ item }) => (
           <TouchableHighlight
             className={`bg-zinc-900 mx-5`}
-            underlayColor="white"
+            underlayColor="rgb(63, 63, 70)"
             onPress={() => item.screen && navigate(item.screen)}
           >
             <View className="flex-row items-center gap-2 px-4 ">

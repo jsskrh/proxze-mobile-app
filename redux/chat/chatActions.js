@@ -1,11 +1,14 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 // import { axiosInstance } from "../../utils/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const baseURL = `https://proxze-backend-app.onrender.com`;
 
 export const getAllChats = createAsyncThunk(
   "chats/get-all",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -13,9 +16,10 @@ export const getAllChats = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/chat`, config);
+      const { data } = await axios.get(`${baseURL}/api/chat`, config);
       return data;
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -27,30 +31,8 @@ export const getAllChats = createAsyncThunk(
 
 export const createChat = createAsyncThunk(
   "chat/create",
-  async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      };
-      await axios.post(`/api/chat/create/${data.taskId}`, data, config);
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  }
-);
-
-export const getChat = createAsyncThunk(
-  "chats/get",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -58,8 +40,9 @@ export const getChat = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(
-        `/api/chat/view/${credentials.chatId}`,
+      const { data } = await axios.post(
+        `${baseURL}/api/chat/create/${credentials.taskId}`,
+        credentials,
         config
       );
       return data;
@@ -73,10 +56,36 @@ export const getChat = createAsyncThunk(
   }
 );
 
-export const sendChat = createAsyncThunk(
+export const getChat = createAsyncThunk(
+  "chats/get",
+  async (credentials, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${baseURL}/api/chat/view/${credentials.chatId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const sendMessage = createAsyncThunk(
   "chat/send",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -85,7 +94,7 @@ export const sendChat = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `/api/chat/view/${credentials.chatId}`,
+        `${baseURL}/api/chat/view/${credentials.chatId}`,
         credentials,
         config
       );

@@ -43,7 +43,11 @@ import {
   chatDate,
   validateInput,
   convertTo24HourFormat,
+  transformChatArray,
 } from "../utils/helpers";
+import { useSelector, useDispatch } from "react-redux";
+import { clearChat } from "../redux/chat/chatSlice";
+import { getChat, sendMessage, createChat } from "../redux/chat/chatActions";
 
 const chat = [
   {
@@ -578,139 +582,64 @@ const chat = [
   },
 ];
 
-const ChatScreen = () => {
+const ChatScreen = ({
+  route: {
+    params: { details },
+  },
+}) => {
+  // const { success, error, loading, chat } = useSelector((state) => state.chat);
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [chatId, setChatId] = useState(details.chatId);
+  const [chat, setChat] = useState([]);
+
+  const handleGetChat = async (message) => {
+    const {
+      payload: { data },
+    } = await dispatch(getChat({ chatId }));
+    setChat(transformChatArray(data));
+  };
+
+  useEffect(() => {
+    if (chatId) handleGetChat();
+  }, [chatId]);
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 12,
-        text: "Recommend:- If don't want to get the deleted document then have to use findByIdAndDelete because it's fast cause does not return the document.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 11,
-        text: "I got the reason findByIdAndRemove returns the deleted document & findByIdAndDelete does not return. If we want the deleted document then we can use findByIdAndRemove otherwise can use findByIdAndDelete.",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 10,
-        text: "Both functions return the found document if any.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 9,
-        text: "There is no difference between remark of them.",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 8,
-        text: "They both have the same signature because they each take two numbers as arguments and return a number, however one is adding those numbers and the other is mulitplying them",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 7,
-        text: "Having the same signature does not necessarily mean they do the same thing. For example, the following two functions have the same signature, but do very different things",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 6,
-        text: "For most mongoose use cases, this distinction is purely pedantic. You should use findOneAndDelete() unless you have a good reason not to.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 5,
-        text: "This function differs slightly from Model.findOneAndRemove() in that findOneAndRemove() becomes a MongoDB findAndModify() command, as opposed to a findOneAndDelete() command.",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 4,
-        text: "I am fine, this is a test.",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 3,
-        text: "How're you doing?",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 1,
-        text: "Hello world",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
-  }, []);
+    if (chat.length !== 0) {
+      const reversedChat = chat.slice().reverse();
+      setMessages(reversedChat);
+    }
+  }, [chat]);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
+  const send = async (message) => {
+    responseData = await dispatch(
+      createChat({
+        taskId: details.newChat.taskId,
+        message,
+        proxze: details.user.id,
+      })
     );
-  }, []);
+    const id = responseData.payload.data._id;
+    setChatId(id);
+  };
+
+  const onSend = useCallback(
+    (messages = []) => {
+      if (!chatId) {
+        const newChat = details.newChat;
+        send(messages[0].text);
+      } else {
+        dispatch(sendMessage({ message: messages[0].text, chatId }));
+      }
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
+    },
+    [chatId]
+  );
 
   const renderBubble = (props) => {
     return (
@@ -869,7 +798,7 @@ const ChatScreen = () => {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userInfo.id,
         }}
         renderBubble={renderBubble}
         renderSend={renderSend}

@@ -27,10 +27,13 @@ const MessageItem = ({ conversation, converserInfo, index, navigate }) => {
       className={`flex-row px-5`}
       onPress={() =>
         navigate("Chat", {
-          user: {
-            id: converserInfo._id,
-            firstName: converserInfo.firstName,
-            lastName: converserInfo.lastName,
+          details: {
+            user: {
+              id: converserInfo._id,
+              firstName: converserInfo.firstName,
+              lastName: converserInfo.lastName,
+            },
+            chatId: conversation._id,
           },
         })
       }

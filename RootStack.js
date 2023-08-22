@@ -13,14 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import WelcomeScreen from "./screens/WelcomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterOneScreen from "./screens/Register/RegisterOneScreen";
-import RegisterTwoScreen from "./screens/Register/RegisterTwoScreen";
-import RegisterThreeScreen from "./screens/Register/RegisterThreeScreen";
 import TaskpoolScreen from "./screens/TaskpoolScreen";
-import AccountScreen from "./screens/AccountScreen";
-import MessagesScreen from "./screens/MessagesScreen";
-import NotificationsScreen from "./screens/NotificationsScreen";
 import TasksScreen from "./screens/TasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import OffersScreen from "./screens/OffersScreen";
@@ -30,7 +23,10 @@ import WelcomeStack from "./navigation/WelcomeStack";
 import RequestStack from "./navigation/RequestStack";
 import AddressScreen from "./screens/AddressScreen";
 import OfferScreen from "./screens/OfferScreen";
-import ContactInfoScreen from "./screens/ContactInfoScreen";
+import ContactInfoScreen from "./screens/Settings/ContactInfoScreen";
+import AccountScreen from "./screens/Settings/AccountScreen";
+import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
+import LegalScreen from "./screens/Settings/LegalScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import Tabs from "./navigation/Tabs";
 import { Provider } from "react-redux";
@@ -48,6 +44,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading } from "./redux/auth/authSlice";
+import { getUser } from "./redux/auth/authActions";
 import {
   setPushToken,
   setUserToken,
@@ -81,7 +78,7 @@ const RootStack = () => {
     let userToken = null;
     try {
       userToken = await AsyncStorage.getItem("userToken");
-      if (userToken) dispatch(setUserToken(userToken));
+      if (userToken) dispatch(getUser({ userToken }));
     } catch (error) {
       console.log(error);
     }
@@ -89,24 +86,24 @@ const RootStack = () => {
 
   useEffect(() => {
     setTimeout(() => {
+      if (!userToken) {
+        handleUserTokenFetch();
+      }
       dispatch(setLoading(false));
     }, 4000);
   }, []);
 
-  useEffect(() => {
-    if (!userToken) {
-      handleUserTokenFetch();
-    }
-  }, []);
+  // useEffect(() => {
+  // }, []);
 
-  const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
-    // perform a refetch every 15mins
-    // pollingInterval: 900000,
-  });
+  // const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
+  //   // perform a refetch every 15mins
+  //   // pollingInterval: 900000,
+  // });
 
-  useEffect(() => {
-    if (data) dispatch(setCredentials(data));
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) dispatch(setCredentials(data));
+  // }, [data]);
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -282,11 +279,78 @@ const RootStack = () => {
                 </TouchableOpacity>
               ),
               headerTitle: () => (
+                <Text className="text-white font-semibold">Account</Text>
+              ),
+            })}
+            name="AccountSettings"
+            component={AccountScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">
+                  Billing & Payment
+                </Text>
+              ),
+            })}
+            name="Billing&Payment"
+            component={BillingPaymentScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Legal</Text>
+              ),
+            })}
+            name="Legal"
+            component={LegalScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
                 <Text
                   className="text-white font-semibold"
                   style={{ color: "white", fontWeight: 600 }}
                 >
-                  {route.params.user.firstName} {route.params.user.lastName}
+                  {route.params.details.user.name
+                    ? `${route.params.details.user.name}`
+                    : `${route.params.details.user.firstName} ${route.params.details.user.lastName}`}
                 </Text>
               ),
             })}
