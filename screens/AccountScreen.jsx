@@ -52,15 +52,10 @@ const AccountScreen = ({ navigation: { navigate } }) => {
 
   const tabConfig = { title: "Account", headerTitle: "Jesse Akorah" };
 
-  const accountSections = [
+  const principalAccountSections = [
     // {
     //   title: "Settings",
     //   data: [
-    //     {
-    //       title: "Earnings",
-    //       color: "rgb(22, 163, 74)",
-    //       icon: <CurrencyDollarIcon color="white" size={20} />,
-    //     },
     //     // {
     //     //   title: "Rating & Reviews",
     //     //   color: "#FFD700",
@@ -68,6 +63,74 @@ const AccountScreen = ({ navigation: { navigate } }) => {
     //     // },
     //   ],
     // },
+    {
+      title: "Settings",
+      data: [
+        {
+          color: "rgb(156 163 175)",
+          title: "Contact Info",
+          icon: <DevicePhoneMobileIcon color="white" size={20} />,
+          screen: "ContactInfo",
+        },
+        {
+          color: "rgb(107, 114, 128)",
+          title: "Account",
+          icon: <CogIcon color="white" size={20} />,
+          screen: "AccountSettings",
+        },
+        {
+          color: "#C0C0C0",
+          title: "Billing & Payment",
+          icon: <CreditCardIcon color="white" size={20} />,
+          screen: "Billing&Payment",
+        },
+        // {
+        //   color: "rgb(125, 211, 252)",
+        //   title: "Profile Settings",
+        //   icon: <UserIcon color="white" size={20} />,
+        // },
+        // {
+        //   color: "#000",
+        //   title: "Password & Security",
+        //   icon: <LockClosedIcon color="white" size={20} />,
+        // },
+      ],
+    },
+    {
+      title: "Resources",
+      data: [
+        {
+          color: "rgb(20, 184, 166)",
+          title: "Legal",
+          icon: <DocumentTextIcon color="white" size={20} />,
+          screen: "Legal",
+        },
+        // {
+        //   color: "rgb(37, 99, 235)",
+        //   title: "Support",
+        //   icon: <UserGroupIcon color="white" size={20} />,
+        // },
+      ],
+    },
+  ];
+
+  const proxzeAccountSections = [
+    {
+      title: "Settings",
+      data: [
+        {
+          title: "Earnings",
+          color: "rgb(22, 163, 74)",
+          icon: <CurrencyDollarIcon color="white" size={20} />,
+          screen: "Earnings",
+        },
+        //     // {
+        //     //   title: "Rating & Reviews",
+        //     //   color: "#FFD700",
+        //     //   icon: <StarIcon color="white" size={20} />,
+        //     // },
+      ],
+    },
     {
       title: "Settings",
       data: [
@@ -148,7 +211,11 @@ const AccountScreen = ({ navigation: { navigate } }) => {
             </View>
           </View>
         )}
-        sections={accountSections}
+        sections={
+          userInfo.userType === "principal"
+            ? principalAccountSections
+            : proxzeAccountSections
+        }
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <TouchableHighlight

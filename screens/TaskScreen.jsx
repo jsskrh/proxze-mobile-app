@@ -35,6 +35,7 @@ import { timeAgo, shortenId } from "../utils/helpers";
 import { getTask } from "../redux/task/taskActions";
 import { Paystack } from "react-native-paystack-webview";
 import { PAYSTACK_PUBLIC_KEY } from "@env";
+import { NodePlayerView } from "react-native-nodemediaclient";
 
 const style = {
   topSubSection: `text-sm mb-1 flex-row justify-between mx-5`,
@@ -314,6 +315,29 @@ const TasksScreen = ({
                   task={task.id}
                   // proxzeStream={task.proxzeStream}
                 />
+              )}
+
+              {/* {userInfo.userType === "principal" && (
+                <NodePlayerView
+                  style={{ height: 200 }}
+                  ref={(vp) => {
+                    this.vp = vp;
+                  }}
+                  inputUrl={"rtmp://192.168.0.10/live/stream"}
+                  scaleMode={"ScaleAspectFit"}
+                  bufferTime={300}
+                  maxBufferTime={1000}
+                  autoplay={true}
+                />
+              )} */}
+
+              {userInfo.userType === "proxze" && (
+                <TouchableOpacity
+                  className="py-7 mx-5 border-b border-gray-600 justify-between flex-row items-center"
+                  onPress={() => navigate("Stream")}
+                >
+                  <Text className="text-white text-xl">Stream</Text>
+                </TouchableOpacity>
               )}
 
               <Details task={task} />

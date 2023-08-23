@@ -23,10 +23,12 @@ import WelcomeStack from "./navigation/WelcomeStack";
 import RequestStack from "./navigation/RequestStack";
 import AddressScreen from "./screens/AddressScreen";
 import OfferScreen from "./screens/OfferScreen";
+import StreamScreen from "./screens/StreamScreen";
 import ContactInfoScreen from "./screens/Settings/ContactInfoScreen";
 import AccountScreen from "./screens/Settings/AccountScreen";
 import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
 import LegalScreen from "./screens/Settings/LegalScreen";
+import EarningsScreen from "./screens/Settings/EarningsScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import Tabs from "./navigation/Tabs";
 import { Provider } from "react-redux";
@@ -161,6 +163,7 @@ const RootStack = () => {
             name="Tabs"
             component={Tabs}
           />
+
           <Stack.Screen
             options={{
               headerShown: false,
@@ -202,6 +205,7 @@ const RootStack = () => {
             name="Offer"
             component={OfferScreen}
           />
+
           <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
@@ -328,6 +332,48 @@ const RootStack = () => {
             })}
             name="Legal"
             component={LegalScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Earnings</Text>
+              ),
+            })}
+            name="Earnings"
+            component={EarningsScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Stream</Text>
+              ),
+            })}
+            name="Stream"
+            component={StreamScreen}
           />
 
           <Stack.Screen
