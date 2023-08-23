@@ -331,14 +331,14 @@ const TasksScreen = ({
                 />
               )} */}
 
-              {userInfo.userType === "proxze" && (
+              {/* {userInfo.userType === "proxze" && (
                 <TouchableOpacity
                   className="py-7 mx-5 border-b border-gray-600 justify-between flex-row items-center"
                   onPress={() => navigate("Stream")}
                 >
                   <Text className="text-white text-xl">Stream</Text>
                 </TouchableOpacity>
-              )}
+              )} */}
 
               <Details task={task} />
 

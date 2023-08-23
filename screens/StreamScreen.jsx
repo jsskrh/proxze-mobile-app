@@ -70,7 +70,7 @@ const StreamScreen = () => {
         color="#841584"
       /> */}
 
-      <NodeCameraView
+      {/* <NodeCameraView
         style={{ height: 400 }}
         ref={vbRef}
         outputUrl={"rtmp://192.168.0.10/live/stream"}
@@ -84,7 +84,7 @@ const StreamScreen = () => {
           videoFrontMirror: false,
         }}
         autopreview={true}
-      />
+      /> */}
       <Button onPress={togglePublish} title={publishBtnTitle} color="#841584" />
     </View>
   );
