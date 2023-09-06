@@ -23,18 +23,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { getEarnings } from "../../redux/transaction/transactionActions";
 import TabLayout from "../../components/TabLayout";
 import EarningsChart from "../../components/Account/EarningsChart";
+import TransactionItem from "../../components/Account/TransactionItem";
+import TransactionView from "../../components/Account/TransactionView";
 import { timeAgo, shortenId } from "../../utils/helpers";
 
 const tabConfig = { title: "Earnings", headerTitle: "Earnings" };
 
-const EarningsScreen = () => {
+const EarningsScreen = ({ navigation: { navigate } }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const { width } = useWindowDimensions();
-
   const [earningsData, setEarningsData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [activeTransaction, setActiveTransaction] = useState(false);
+
+  const handleActiveTransaction = (transaction) => {
+    setActiveTransaction(transaction);
+    setVisible(true);
+  };
 
   const handleGetEarningsData = async (message) => {
     const {
@@ -96,60 +103,27 @@ const EarningsScreen = () => {
               <Text className="text-base font-semibold text-white">
                 Recent Transactions
               </Text>
-              <Text className="text-gray-500 font-light">View all</Text>
+              <TouchableOpacity onPress={() => navigate("Transactions")}>
+                <Text className="text-gray-500 font-light">View all</Text>
+              </TouchableOpacity>
             </View>
             <View>
               {earningsData.recentTransactions?.map((transaction, index) => (
-                <TouchableOpacity
-                  key={transaction._id}
-                  className="relative px-5 flex-1 flex-row items-center"
-                >
-                  <View className="w-1/5 rounded-l-xl items-center justify-center">
-                    <View className="h-[52px] w-[52px] p-3 rounded-full justify-center items-center bg-neutral-700">
-                      {transaction.transactionType === "CR" ? (
-                        <ArrowDownRightIcon color="#38a139" />
-                      ) : (
-                        <ArrowUpRightIcon color="rgb(220, 38, 38)" />
-                      )}
-                    </View>
-                  </View>
-                  <View
-                    className={`mx-2 py-3 ${
-                      earningsData.recentTransactions.length === index + 1
-                        ? ""
-                        : "border-b"
-                    } border-gray-400 flex-1`}
-                  >
-                    <View className="flex-row justify-between items-center mb-2">
-                      <Text className="text-white">
-                        {transaction.createdAt}
-                      </Text>
-                      <Text className="text-white font-bold">
-                        {transaction.transactionType === "CR" ? "+" : "-"}{" "}
-                        {parseFloat(transaction.amount.toString())}
-                      </Text>
-                    </View>
-                    <View className="">
-                      <Text className="text-base font-semibold text-white">
-                        # {transaction._id}
-                      </Text>
-                      {/* <Text className="font-light mb-1 text-xs text-neutral-400">
-                      {transaction.summary}
-                    </Text> */}
-                      {/* <View>
-                          <View className="flex-row items-center">
-                            <Ionicons name="shirt" color="#e6b89c" size={16} />
-                            <Text className="ml-1 text-xs">
-                              {order.numOfClothes}
-                            </Text>
-                          </View>
-                        </View> */}
-                    </View>
-                  </View>
-                </TouchableOpacity>
+                <TransactionItem
+                  key={index}
+                  item={transaction}
+                  setVisible={handleActiveTransaction}
+                  recent
+                />
               ))}
             </View>
           </View>
+
+          <TransactionView
+            visible={visible}
+            setVisible={setVisible}
+            item={activeTransaction}
+          />
         </ScrollView>
       )}
     </TabLayout>

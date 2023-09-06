@@ -35,7 +35,7 @@ export const getEarnings = createAsyncThunk(
 export const getAllTransactions = createAsyncThunk(
   "transactions/get-all",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -43,7 +43,7 @@ export const getAllTransactions = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`/api/transaction`, config);
+      const { data } = await axios.get(`${baseURL}/api/transaction`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

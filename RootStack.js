@@ -29,6 +29,7 @@ import AccountScreen from "./screens/Settings/AccountScreen";
 import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
 import LegalScreen from "./screens/Settings/LegalScreen";
 import EarningsScreen from "./screens/Settings/EarningsScreen";
+import TransactionsScreen from "./screens/Settings/TransactionsScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import Tabs from "./navigation/Tabs";
 import { Provider } from "react-redux";
@@ -353,6 +354,27 @@ const RootStack = () => {
             })}
             name="Earnings"
             component={EarningsScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Transactions</Text>
+              ),
+            })}
+            name="Transactions"
+            component={TransactionsScreen}
           />
 
           <Stack.Screen
