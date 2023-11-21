@@ -490,7 +490,7 @@ const TasksScreen = ({
       {pay && (
         <View style={{ flex: 1 }}>
           <Paystack
-            paystackKey={PAYSTACK_PUBLIC_KEY}
+            paystackKey={process.env.PAYSTACK_PUBLIC_KEY || PAYSTACK_PUBLIC_KEY}
             amount={500}
             billingEmail={userInfo.email}
             billingMobile={userInfo.phone}

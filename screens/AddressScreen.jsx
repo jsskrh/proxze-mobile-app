@@ -173,7 +173,7 @@ const AddressScreen = ({ navigation: { navigate, goBack } }) => {
           goBack();
         }}
         query={{
-          key: GOOGLE_API_KEY,
+          key: process.env.GOOGLE_API_KEY || GOOGLE_API_KEY,
           language: "en",
           components: "country:ng",
         }}
