@@ -12,13 +12,16 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.proxze.proxzemobileapp",
+      "buildNumber": "0.0.1",
       "infoPlist": {
         "UIBackgroundModes": "remote-notification"
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w"
       }
     },
     "android": {
@@ -26,11 +29,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.proxze.proxzemobileapp",
+      "versionCode": "0.0.1",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
-      ]
+      ],
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w" }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

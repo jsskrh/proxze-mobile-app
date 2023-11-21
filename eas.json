@@ -6,14 +6,31 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
+      "channel": "development",
+      "env": {
+        "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
+        "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
+        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+      }
     },
     "preview": {
       "distribution": "internal",
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
+        "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
+        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+      }
+    },
+    "test": {
+      "env": {
+        "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
+        "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
+        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+      }
     }
   },
   "submit": {
