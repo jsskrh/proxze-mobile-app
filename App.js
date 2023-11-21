@@ -22,6 +22,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +31,9 @@ export default function App() {
     <NavigationContainer>
       <TailwindProvider>
         <Provider store={store}>
-          <RootStack />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <RootStack />
+          </GestureHandlerRootView>
           {/* <View
             style={{
               flex: 1,

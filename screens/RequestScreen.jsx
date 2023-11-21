@@ -28,7 +28,9 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useMemo,
   useContext,
+  useCallback,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Controller } from "react-hook-form";
@@ -37,11 +39,13 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import BottomSheet from "@gorhom/bottom-sheet";
 import TabLayout from "../components/TabLayout";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
 import { RequestContext } from "../components/RequestProvider";
 import { setLocation } from "../redux/task/taskSlice";
+import billingAlgorithm from "../utils/billingAlgorithm";
 
 const requestTypes = ["Verification"];
 
@@ -91,10 +95,73 @@ const RequestScreen = ({
   //   header();
   // }, []);
 
+  const [bill, setBill] = useState(0);
+  const [serviceCharge, setServiceCharge] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const [placesAuto, setPlacesAuto] = useState(null);
+  // const [location, setLocation] = useState(null);
+  const [lga, setLga] = useState("");
+  const [state, setState] = useState("");
+
+  // useEffect(() => {
+  //   if (location) {
+  //     geocodeByAddress(placesAuto.label).then((results) => {
+  //       setLga(
+  //         results[0].address_components.find((component) =>
+  //           component.types.includes("administrative_area_level_2")
+  //         ).long_name
+  //       );
+  //       setState(
+  //         results[0].address_components.find((component) =>
+  //           component.types.includes("administrative_area_level_1")
+  //         ).long_name
+  //       );
+  //     });
+  //   }
+  // }, [location]);
+
+  const type = watch("type");
+  const dateBlock = watch("dateBlock");
+  const timeBlock = watch("timeBlock");
+  const duration = watch("duration");
+  // const startDate = watch("startDate");
+  // const endDate = watch("endDate");
+  const searchRange = watch("searchRange");
+  // const lga = watch("lga");
+  const skillLevel = watch("skillLevel");
+  const educationLevel = watch("educationLevel");
+  const isCertified = watch("isCertified");
+  const yearsOfExperience = watch("yearsOfExperience");
+
+  useEffect(() => {
+    console.log(location);
+    const bill = billingAlgorithm(
+      type,
+      location?.lga,
+      location?.state,
+      dateBlock,
+      timeBlock,
+      searchRange,
+      duration,
+      false
+    );
+    setBill(bill);
+  }, [type, location, dateBlock, timeBlock, searchRange, duration]);
+
+  useEffect(() => {
+    const serviceCharge = (bill * 0.015).toFixed(2);
+    setServiceCharge(serviceCharge);
+    setTotal(Number(bill) + Number(serviceCharge));
+  }, [bill]);
+
   useEffect(() => {
     setValue("requestType", "Verification");
     setValue("endDate", new Date());
     setValue("startDate", new Date());
+    setValue("dateBlock", "Week Range (7 days)");
+    setValue("timeBlock", "Range (6am - 6pm daily)");
+    setValue("duration", "1");
   }, []);
 
   const [startDate, setStartDate] = useState(new Date());
@@ -144,6 +211,8 @@ const RequestScreen = ({
     description,
     startDate,
     endDate,
+    dateBlock,
+    timeBlock,
     // location,
   }) => {
     const data = {
@@ -151,13 +220,27 @@ const RequestScreen = ({
       description,
       startDate,
       endDate,
-      location,
-      bill: 500500,
+      location: { label: location.label, coords: location.coords },
+      bill,
     };
     console.log(data);
     // dispatch(makeRequest(data));
     makeRequest(data);
   };
+
+  const bottomSheetRef = useRef(null);
+
+  const [active, setActive] = useState("");
+
+  const handleOpenPress = () => bottomSheetRef.current.expand();
+
+  // variables
+  const snapPoints = useMemo(() => ["30%"], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
 
   return (
     <TabLayout config={tabConfig}>
@@ -183,6 +266,54 @@ const RequestScreen = ({
             )}
           </View>
         </TouchableWithoutFeedback>
+
+        <View className="mt-8 mx-5 rounded-lg bg-zinc-800">
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setActive("date");
+              handleOpenPress();
+            }}
+          >
+            <View className=" px-5 py-1 flex-row justify-between items-center">
+              <Text className="text-white capitalize text-base">
+                Date Block
+              </Text>
+              <View className="flex-row items-center py-1">
+                <Text className="text-base" style={{ color: "gray" }}>
+                  {watch("dateBlock")}
+                </Text>
+                <View className="ml-2">
+                  <ChevronUpIcon size={14} color="rgb(156, 163, 175)" />
+                  <ChevronDownIcon size={14} color="rgb(156, 163, 175)" />
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <View className="mx-5 h-0.5 w-full self-stretch border-gray-600"></View>
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setActive("time");
+              handleOpenPress();
+            }}
+          >
+            <View className="px-5 py-2 flex-row justify-between items-center">
+              <Text className="text-white capitalize text-base">
+                Time Block
+              </Text>
+              <View className="flex-row items-center py-1">
+                <Text className="text-base" style={{ color: "gray" }}>
+                  {watch("timeBlock")}
+                </Text>
+                <View className="ml-2">
+                  <ChevronUpIcon size={14} color="rgb(156, 163, 175)" />
+                  <ChevronDownIcon size={14} color="rgb(156, 163, 175)" />
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
 
         <View className="mt-8 mx-5 rounded-lg bg-zinc-800">
           <View className=" px-5 py-1 flex-row justify-between items-center">
@@ -246,6 +377,31 @@ const RequestScreen = ({
           </View>
         </View>
 
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setActive("duration");
+            handleOpenPress();
+          }}
+        >
+          <View className="mx-5 px-5 mt-8 py-2 bg-zinc-800 rounded-lg flex-row justify-between items-center">
+            <Text className="text-white capitalize text-base">Duration</Text>
+            <View className="flex-row items-center">
+              <Text className="text-base" style={{ color: "gray" }}>
+                {watch("duration")}
+              </Text>
+              <View className="ml-2">
+                <ChevronUpIcon size={14} color="rgb(156, 163, 175)" />
+                <ChevronDownIcon size={14} color="rgb(156, 163, 175)" />
+              </View>
+            </View>
+            {errors.requestType && (
+              <Text className={`text-[#ff0000] mx-5 text-xs`}>
+                {errors.requestType.message}
+              </Text>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+
         <TouchableWithoutFeedback onPress={() => navigate("Address")}>
           <View className="mx-5 px-5 py-2 mt-8 bg-zinc-800 rounded-lg flex-row justify-between items-center">
             {location ? (
@@ -301,7 +457,7 @@ const RequestScreen = ({
             <Text className="capitalize text-base text-white">Bill</Text>
             <View className="flex-row items-center h-10">
               <Text className="capitalize text-base" style={{ color: "gray" }}>
-                N500000
+                N{bill}
               </Text>
             </View>
           </View>
@@ -309,7 +465,7 @@ const RequestScreen = ({
             <Text className="capitalize text-base text-white">Service Fee</Text>
             <View className="flex-row items-center h-10">
               <Text className="capitalize text-base" style={{ color: "gray" }}>
-                N500
+                N{serviceCharge}
               </Text>
             </View>
           </View>
@@ -322,7 +478,7 @@ const RequestScreen = ({
                 className="capitalize text-base font-semibold"
                 style={{ color: "gray" }}
               >
-                N500500
+                N{total}
               </Text>
             </View>
           </View>
@@ -357,6 +513,83 @@ const RequestScreen = ({
           )}
         </View>
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        enablePanDownToClose={true}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        // backgroundStyle={{ backgroundColor: "#e6f7ff" }}
+        backgroundStyle={{ backgroundColor: "rgb(39 39 42)" }}
+      >
+        {active === "date" ? (
+          // <View className="flex-row justify-between mx-5 bg-zinc-800">
+          <Controller
+            name="dateBlock"
+            control={control}
+            rules={{
+              required: "Please select a date block",
+            }}
+            render={({ field }) => (
+              <Picker
+                selectedValue={field.value}
+                onValueChange={field.onChange}
+                id="dateBlock"
+                name="dateBlock"
+                itemStyle={{ color: "white" }}
+              >
+                {["Week Range (7 days)", "Specify"].map((option, index) => (
+                  <Picker.Item label={option} value={option} key={index} />
+                ))}
+              </Picker>
+            )}
+          />
+        ) : active === "time" ? (
+          <Controller
+            name="timeBlock"
+            control={control}
+            rules={{
+              required: "Please select a time block",
+            }}
+            render={({ field }) => (
+              <Picker
+                selectedValue={field.value}
+                onValueChange={field.onChange}
+                id="timeBlock"
+                name="timeBlock"
+                itemStyle={{ color: "white" }}
+              >
+                {["Range (6am - 6pm daily)", "Specify"].map((option, index) => (
+                  <Picker.Item label={option} value={option} key={index} />
+                ))}
+              </Picker>
+            )}
+          />
+        ) : (
+          // </View>
+          <Controller
+            name="duration"
+            control={control}
+            rules={{
+              required: "Please select a duration",
+            }}
+            render={({ field }) => (
+              <Picker
+                selectedValue={field.value}
+                onValueChange={field.onChange}
+                id="duration"
+                name="duration"
+                itemStyle={{ color: "white" }}
+              >
+                {["1", "2", "3", "4"].map((option, index) => (
+                  <Picker.Item label={option} value={option} key={index} />
+                ))}
+              </Picker>
+            )}
+          />
+          // </View>
+        )}
+      </BottomSheet>
       <TypePicker
         showTypePicker={showTypePicker}
         setShowTypePicker={setShowTypePicker}

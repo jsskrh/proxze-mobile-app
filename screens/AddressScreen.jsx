@@ -162,6 +162,12 @@ const AddressScreen = ({ navigation: { navigate, goBack } }) => {
             setLocation({
               label: data.description,
               coords: details.geometry.location,
+              lga: details.address_components.find((component) =>
+                component.types.includes("administrative_area_level_2")
+              ).long_name,
+              state: details.address_components.find((component) =>
+                component.types.includes("administrative_area_level_1")
+              ).long_name,
             })
           );
           goBack();
