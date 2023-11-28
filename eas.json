@@ -34,6 +34,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "jesseakorah@yahoo.com",
+        "ascAppId": "6473255406",
+        "appleTeamId": "AG3VAJSZLJ"
+      }
+    }
   }
 }
