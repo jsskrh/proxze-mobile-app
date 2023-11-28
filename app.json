@@ -2,7 +2,7 @@
   "expo": {
     "name": "Proxze",
     "slug": "proxze-mobile-app",
-    "owner": "Proxze Limited",
+    "owner": "proxze-limited",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
