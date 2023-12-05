@@ -5,12 +5,12 @@
     "owner": "proxze-limited",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ecffe0"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -26,8 +26,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ecffe0"
       },
       "package": "com.proxze.proxzemobileapp",
       "versionCode": 1,
@@ -49,7 +49,21 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Wasshh to use your location."
         }
+      ],
+      [
+        "react-native-nodemediaclient",
+        {
+          "cameraPermission": "Allow Proxze to access your camera.",
+          "microphonePermission": "Allow Proxze to access your microphone."
+        }
       ]
+      // [
+      //   "expo-camera",
+      //   {
+      //     "cameraPermission": "Allow Proxze to access your camera.",
+      //     "microphonePermission": "Allow Proxze to access your microphone."
+      //   }
+      // ]
     ],
     "extra": {
       "eas": {
