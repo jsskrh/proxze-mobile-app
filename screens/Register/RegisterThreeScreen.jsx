@@ -31,31 +31,23 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
     registerHandler,
   } = useContext(RegisterContext);
 
-  const { waiting, error, success, userInfo, userToken } = useSelector(
+  const { waiting, error, registerSuccess, userInfo, userToken } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (success) {
+    if (registerSuccess) {
       navigate("Login");
     }
     if (error) {
       console.log(error);
     }
-  }, [success, error]);
+  }, [registerSuccess, error]);
 
   const userType = watch("userType");
 
   const validationChecker = async () => {
-    if (
-      (await trigger([
-        "email",
-        "password",
-        "confirmPassword",
-        "phoneNumber",
-      ])) === false
-    )
-      return false;
+    if ((await trigger(["email", "phoneNumber"])) === false) return false;
     return true;
   };
 
@@ -161,95 +153,18 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
                 </>
               )}
             />
-
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: "Please enter your password",
-                minLength: {
-                  value: 6,
-                  message: "Password should be more than 5 characters",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "Password should be less than 20 characters",
-                },
-                pattern: {
-                  value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$/,
-                  message: "Please enter valid password",
-                },
-              }}
-              render={({ field }) => (
-                <>
-                  <TextInput
-                    value={field.value}
-                    onChangeText={field.onChange}
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    placeholderTextColor={"grey"}
-                    autoCapitalize="none"
-                    secureTextEntry
-                    className={`p-5 border rounded-md ${
-                      errors.password ? "border-red-500 border-2 mt-5" : "mt-7"
-                    }`}
-                  />
-                  {errors.password && (
-                    <Text className={`text-[#ff0000] text-xs`}>
-                      {errors.password.message}
-                    </Text>
-                  )}
-                </>
-              )}
-            />
-
-            <Controller
-              name="confirmPassword"
-              control={control}
-              rules={{
-                required: "Please confirm your password",
-                validate: (value) => value === getValues("password"),
-              }}
-              render={({ field }) => (
-                <>
-                  <TextInput
-                    value={field.value}
-                    onChangeText={field.onChange}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    placeholderTextColor={"grey"}
-                    autoCapitalize="none"
-                    secureTextEntry
-                    className={`p-5 border rounded-md ${
-                      errors.confirmPassword
-                        ? "border-red-500 border-2 mt-5"
-                        : "mt-7"
-                    }`}
-                  />
-                  {errors.confirmPassword && (
-                    <Text className={`text-[#ff0000] text-xs`}>
-                      {errors.confirmPassword.message}
-                    </Text>
-                  )}
-                </>
-              )}
-            />
           </KeyboardAvoidingView>
 
           <View className="mt-14">
             <TouchableOpacity
               onPress={async () => {
-                if (await validationChecker()) registerHandler();
+                if (await validationChecker()) {
+                  navigate("RegisterFour");
+                }
               }}
               className="border flex p-4 rounded-xl bg-black"
             >
-              {waiting ? (
-                <ActivityIndicator size="small" />
-              ) : (
-                <Text className="text-center text-white">Register</Text>
-              )}
+              <Text className="text-center text-white">Continue</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -9,6 +9,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterOneScreen from "../screens/Register/RegisterOneScreen";
 import RegisterTwoScreen from "../screens/Register/RegisterTwoScreen";
 import RegisterThreeScreen from "../screens/Register/RegisterThreeScreen";
+import RegisterFourScreen from "../screens/Register/RegisterFourScreen";
 import Tabs from "./Tabs";
 import {
   View,
@@ -53,6 +54,13 @@ const WelcomeStack = () => {
           }}
           name="RegisterThree"
           component={RegisterThreeScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="RegisterFour"
+          component={RegisterFourScreen}
         />
         <Stack.Screen
           options={{

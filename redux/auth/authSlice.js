@@ -40,6 +40,7 @@ const initialState = {
   pushToken: null,
   error: null,
   success: false,
+  registerSuccess: false,
   currentLocation: null,
 };
 
@@ -57,6 +58,8 @@ const authSlice = createSlice({
       state.userToken = null;
       state.error = null;
       state.currentLocation = null;
+      state.success = false;
+      state.registerSuccess = false;
       // clearUserState();
       clearTaskState();
       // clearNotifications();
@@ -127,7 +130,7 @@ const authSlice = createSlice({
     },
     [registerUser.fulfilled]: (state, { payload }) => {
       state.waiting = false;
-      state.success = true; // registration successful
+      state.registerSuccess = true; // registration successful
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.waiting = false;
