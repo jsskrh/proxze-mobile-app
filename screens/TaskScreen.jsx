@@ -35,7 +35,7 @@ import { timeAgo, shortenId } from "../utils/helpers";
 import { getTask } from "../redux/task/taskActions";
 import { Paystack } from "react-native-paystack-webview";
 import { PAYSTACK_PUBLIC_KEY } from "@env";
-import { NodePlayerView } from "react-native-nodemediaclient";
+// import { NodePlayerView } from "react-native-nodemediaclient";
 
 const style = {
   topSubSection: `text-sm mb-1 flex-row justify-between mx-5`,

@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useState, useRef } from "react";
-import { NodeCameraView } from "react-native-nodemediaclient";
+// import { NodeCameraView } from "react-native-nodemediaclient";
 
 const StreamScreen = () => {
   const [isPublish, setIsPublish] = useState(false);

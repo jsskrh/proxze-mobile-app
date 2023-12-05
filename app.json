@@ -49,14 +49,14 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Wasshh to use your location."
         }
-      ],
-      [
-        "react-native-nodemediaclient",
-        {
-          "cameraPermission": "Allow Proxze to access your camera.",
-          "microphonePermission": "Allow Proxze to access your microphone."
-        }
       ]
+      // [
+      //   "react-native-nodemediaclient",
+      //   {
+      //     "cameraPermission": "Allow Proxze to access your camera.",
+      //     "microphonePermission": "Allow Proxze to access your microphone."
+      //   }
+      // ]
       // [
       //   "expo-camera",
       //   {
