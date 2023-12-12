@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.proxze.proxzemobileapp",
-      "buildNumber": "0.0.3",
+      "buildNumber": "0.0.4",
       "infoPlist": {
         "UIBackgroundModes": "remote-notification"
       },
