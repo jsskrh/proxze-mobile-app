@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { TailwindProvider } from "tailwindcss-react-native";
+// import { TailwindProvider } from "tailwindcss-react-native";
 import { RegisterProvider } from "./components/RegisterProvider";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -29,12 +29,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <TailwindProvider>
-        <Provider store={store}>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <RootStack />
-          </GestureHandlerRootView>
-          {/* <View
+      {/* <TailwindProvider> */}
+      <Provider store={store}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <RootStack />
+        </GestureHandlerRootView>
+        {/* <View
             style={{
               flex: 1,
               alignItems: "center",
@@ -62,8 +62,8 @@ export default function App() {
               }}
             />
           </View> */}
-        </Provider>
-      </TailwindProvider>
+      </Provider>
+      {/* </TailwindProvider> */}
     </NavigationContainer>
   );
 }

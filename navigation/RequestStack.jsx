@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
-import { TailwindProvider } from "tailwindcss-react-native";
+// import { TailwindProvider } from "tailwindcss-react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RequestProvider } from "../components/RequestProvider";

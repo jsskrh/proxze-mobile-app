@@ -70,15 +70,15 @@ const TasksScreen = ({ navigation: { navigate } }) => {
 
   useEffect(() => {
     const test = fetcher();
-    console.log(test);
+    // console.log(test);
     if (!loading) {
       setRefreshing(false);
-      console.log("ongoingTasks", ongoingTasks);
+      // console.log("ongoingTasks", ongoingTasks);
     }
   }, [loading]);
 
   useEffect(() => {
-    console.log("test", test);
+    // console.log("test", test);
   }, [test]);
 
   return (

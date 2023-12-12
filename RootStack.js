@@ -8,7 +8,7 @@ import React, {
   useMemo,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TailwindProvider } from "tailwindcss-react-native";
+// import { TailwindProvider } from "tailwindcss-react-native";
 import { RegisterProvider } from "./components/RegisterProvider";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -292,279 +292,277 @@ function MainScreen() {
   return (
     <Stack.Navigator>
       {userToken && userInfo ? (
-        // <>
-        //   <Stack.Screen
-        //     options={{
-        //       headerShown: false,
-        //     }}
-        //     name="Tabs"
-        //     component={Tabs}
-        //   />
+        <>
+          <Stack.Screen
+            options={{
+              headerShown: false,
+            }}
+            name="Tabs"
+            component={Tabs}
+          />
 
-        //   <Stack.Screen
-        //     options={{
-        //       headerShown: false,
-        //       presentation: "modal",
-        //     }}
-        //     name="RequestStack"
-        //     component={RequestStack}
-        //   />
+          <Stack.Screen
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+            name="RequestStack"
+            component={RequestStack}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "rgb(39 39 42)",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <Button
-        //           className="text-white"
-        //           title="Cancel"
-        //           onPress={() => goBack()}
-        //         />
-        //       ),
-        //       headerTitle: () => (
-        //         <Text
-        //           className="text-white font-semibold"
-        //           style={{
-        //             color: "white",
-        //             fontWeight: 600,
-        //             fontSize: 18,
-        //           }}
-        //         >
-        //           Make Offer
-        //         </Text>
-        //       ),
-        //       presentation: "modal",
-        //     })}
-        //     name="Offer"
-        //     component={OfferScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "rgb(39 39 42)",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <Button
+                  className="text-white"
+                  title="Cancel"
+                  onPress={() => goBack()}
+                />
+              ),
+              headerTitle: () => (
+                <Text
+                  className="text-white font-semibold"
+                  style={{
+                    color: "white",
+                    fontWeight: 600,
+                    fontSize: 18,
+                  }}
+                >
+                  Make Offer
+                </Text>
+              ),
+              presentation: "modal",
+            })}
+            name="Offer"
+            component={OfferScreen}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Task</Text>
-        //       ),
-        //     })}
-        //     name="Task"
-        //     component={TaskScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Task</Text>
+              ),
+            })}
+            name="Task"
+            component={TaskScreen}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Offers</Text>
-        //       ),
-        //     })}
-        //     name="Offers"
-        //     component={OffersScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Offers</Text>
+              ),
+            })}
+            name="Offers"
+            component={OffersScreen}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Contact Info</Text>
-        //       ),
-        //     })}
-        //     name="ContactInfo"
-        //     component={ContactInfoScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Contact Info</Text>
+              ),
+            })}
+            name="ContactInfo"
+            component={ContactInfoScreen}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Account</Text>
-        //       ),
-        //     })}
-        //     name="AccountSettings"
-        //     component={AccountScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Account</Text>
+              ),
+            })}
+            name="AccountSettings"
+            component={AccountScreen}
+          />
 
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">
-        //           Billing & Payment
-        //         </Text>
-        //       ),
-        //     })}
-        //     name="Billing&Payment"
-        //     component={BillingPaymentScreen}
-        //   />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">
+                  Billing & Payment
+                </Text>
+              ),
+            })}
+            name="Billing&Payment"
+            component={BillingPaymentScreen}
+          />
 
-        <Stack.Screen
-          options={({ route, navigation: { goBack } }) => ({
-            headerStyle: {
-              backgroundColor: "#000000",
-              elevation: 0,
-              shadowOpacity: 0,
-              borderBottomWidth: 0,
-            },
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => goBack()}>
-                <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-              </TouchableOpacity>
-            ),
-            headerTitle: () => (
-              <Text className="text-white font-semibold">Legal</Text>
-            ),
-          })}
-          name="Legal"
-          component={LegalScreen}
-        />
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Legal</Text>
+              ),
+            })}
+            name="Legal"
+            component={LegalScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Earnings</Text>
+              ),
+            })}
+            name="Earnings"
+            component={EarningsScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Transactions</Text>
+              ),
+            })}
+            name="Transactions"
+            component={TransactionsScreen}
+          />
+
+          {/* <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Stream</Text>
+              ),
+            })}
+            name="Stream"
+            component={StreamScreen}
+          /> */}
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text
+                  className="text-white font-semibold"
+                  style={{ color: "white", fontWeight: 600 }}
+                >
+                  {route.params.details.user.name
+                    ? `${route.params.details.user.name}`
+                    : `${route.params.details.user.firstName} ${route.params.details.user.lastName}`}
+                </Text>
+              ),
+            })}
+            name="Chat"
+            component={ChatScreen}
+          />
+        </>
       ) : (
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Earnings</Text>
-        //       ),
-        //     })}
-        //     name="Earnings"
-        //     component={EarningsScreen}
-        //   />
-
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Transactions</Text>
-        //       ),
-        //     })}
-        //     name="Transactions"
-        //     component={TransactionsScreen}
-        //   />
-
-        //   {/* <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text className="text-white font-semibold">Stream</Text>
-        //       ),
-        //     })}
-        //     name="Stream"
-        //     component={StreamScreen}
-        //   /> */}
-
-        //   <Stack.Screen
-        //     options={({ route, navigation: { goBack } }) => ({
-        //       headerStyle: {
-        //         backgroundColor: "#000000",
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //         borderBottomWidth: 0,
-        //       },
-        //       headerLeft: () => (
-        //         <TouchableOpacity onPress={() => goBack()}>
-        //           <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-        //         </TouchableOpacity>
-        //       ),
-        //       headerTitle: () => (
-        //         <Text
-        //           className="text-white font-semibold"
-        //           style={{ color: "white", fontWeight: 600 }}
-        //         >
-        //           {route.params.details.user.name
-        //             ? `${route.params.details.user.name}`
-        //             : `${route.params.details.user.firstName} ${route.params.details.user.lastName}`}
-        //         </Text>
-        //       ),
-        //     })}
-        //     name="Chat"
-        //     component={ChatScreen}
-        //   />
-        // </>
-        // <View>
-        //   <Text>This is a test</Text>
-        // </View>
         <Stack.Screen
           options={{
             headerShown: false,

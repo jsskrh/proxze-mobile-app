@@ -344,7 +344,7 @@ const ArchivedTasksScreen = ({ navigation: { navigate } }) => {
   }, [loading]);
 
   useEffect(() => {
-    console.log("archive", archive);
+    // console.log("archive", archive);
   }, [archive]);
 
   // useEffect(() => {

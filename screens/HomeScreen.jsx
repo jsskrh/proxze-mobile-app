@@ -217,7 +217,7 @@ const HomeScreen = ({ navigation: { navigate } }) => {
         <View>
           <View className="h-[1px] bg-zinc-600 mx-5"></View>
           {tasks.map((item, index) => (
-            <>
+            <View key={index}>
               <Task
                 home
                 key={index}
@@ -230,7 +230,7 @@ const HomeScreen = ({ navigation: { navigate } }) => {
                 key={index + 10}
                 className="h-[1px] bg-zinc-600 mx-5"
               ></View>
-            </>
+            </View>
           ))}
         </View>
       </View>
