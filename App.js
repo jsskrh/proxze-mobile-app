@@ -6,7 +6,6 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-// import { TailwindProvider } from "tailwindcss-react-native";
 import { RegisterProvider } from "./components/RegisterProvider";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
