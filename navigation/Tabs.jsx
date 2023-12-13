@@ -105,17 +105,17 @@ const Tabs = () => {
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#91e6b3",
         tabBarStyle: {
-          //   backgroundColor: "#18181B",
+          backgroundColor: "#18181B",
           borderTopWidth: 0,
           position: "absolute",
         },
-        tabBarBackground: () => (
-          <BlurView
-            tint="dark"
-            intensity={85}
-            style={StyleSheet.absoluteFill}
-          />
-        ),
+        // tabBarBackground: () => (
+        //   <BlurView
+        //     tint="dark"
+        //     intensity={85}
+        //     style={StyleSheet.absoluteFill}
+        //   />
+        // ),
       }}
     >
       {userInfo.userType === "proxze" ? (
