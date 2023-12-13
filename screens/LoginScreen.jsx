@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             Don't have an account?
           </Text>
           <TouchableOpacity onPress={() => navigate("RegisterOne")}>
-            <Text className="text-sm font-poppins mt-3 text-center font-semibold ml-2 text-black relative after:content-[''] after:bg-[#757575] after:absolute after:w-full after:top-5 after:h-0.5 after:left-0 after:right-0">
+            <Text className="text-sm font-poppins mt-3 text-center font-semibold ml-2 text-black relative">
               Register
             </Text>
           </TouchableOpacity>

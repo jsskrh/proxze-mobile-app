@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 
-const OnboardingItem = ({ item }) => {
+const OnboardingItem = ({ item, theme }) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -17,7 +17,11 @@ const OnboardingItem = ({ item }) => {
         <Text>Art goes here</Text>
       </View>
       <View className="px-10 pt-10">
-        <Text className="text-3xl font-poppins font-bold text-center text-white">
+        <Text
+          className={`text-3xl font-poppins font-bold text-center ${
+            theme === "light" ? "text-[#135446]" : "text-white"
+          }`}
+        >
           {item.title}
         </Text>
         <Text className="text-sm font-poppins mt-5 text-center text-gray-500">

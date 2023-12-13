@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
+  useColorScheme,
   useWindowDimensions,
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
@@ -44,6 +45,8 @@ const slides = [
 ];
 
 const WelcomeScreen = ({ navigation: { navigate } }) => {
+  const theme = useColorScheme();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef(null);
@@ -61,11 +64,15 @@ const WelcomeScreen = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <SafeAreaView className=" bg-black flex-1">
+    <SafeAreaView
+      className={`${theme === "light" ? "bg-[#ecffe0]" : "bg-black"} flex-1`}
+    >
       <View className="flex-[3]">
         <FlatList
           data={slides}
-          renderItem={({ item }) => <OnboardingItem item={item} />}
+          renderItem={({ item }) => (
+            <OnboardingItem item={item} theme={theme} />
+          )}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
@@ -90,7 +97,13 @@ const WelcomeScreen = ({ navigation: { navigate } }) => {
             className="py-4 px-5 w-[48%] rounded-xl items-center border border-gray-700"
             onPress={() => navigate("Login")}
           >
-            <Text className="font-poppins font-semibold text-white">Login</Text>
+            <Text
+              className={`"font-poppins font-semibold ${
+                theme === "light" ? "text-black" : "text-white"
+              }"`}
+            >
+              Login
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="py-4 px-5 w-[48%] rounded-xl items-center bg-gray-700"

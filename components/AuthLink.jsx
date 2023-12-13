@@ -23,7 +23,7 @@ const AuthLink = ({ navigate, userType }) => {
               : userType === "principal"
               ? "text-white"
               : "text-black"
-          } relative after:content-[''] after:bg-[#757575] after:absolute after:w-full after:top-5 after:h-0.5 after:left-0 after:right-0`}
+          }`}
         >
           Login
         </Text>
