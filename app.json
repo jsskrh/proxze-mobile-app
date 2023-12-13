@@ -16,7 +16,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.proxze.proxzemobileapp",
-      "buildNumber": "0.0.6",
+      "buildNumber": "0.0.7",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      },
       "config": {
         "googleMapsApiKey": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w"
       }
