@@ -42,10 +42,10 @@ import { BlurView } from "expo-blur";
 import { useSelector, useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import { setCurrentLocation, setLocationError } from "../redux/auth/authSlice";
-import {
-  useGetUserDetailsQuery,
-  useUpdateUserLocationMutation,
-} from "../redux/services/authService";
+// import {
+//   useGetUserDetailsQuery,
+//   useUpdateUserLocationMutation,
+// } from "../redux/services/authService";
 
 const Tab = createBottomTabNavigator();
 
@@ -56,47 +56,47 @@ const Tabs = () => {
 
   const dispatch = useDispatch();
 
-  const [updateLocation, { isLoading }] = useUpdateUserLocationMutation();
+  // const [updateLocation, { isLoading }] = useUpdateUserLocationMutation();
 
-  useEffect(() => {
-    if (currentLocation) {
-      console.log(currentLocation);
-      const location = {
-        lat: currentLocation.coords.latitude,
-        lng: currentLocation.coords.longitude,
-      };
-      updateLocation({ location });
-    }
-  }, [currentLocation]);
+  // useEffect(() => {
+  //   if (currentLocation) {
+  //     console.log(currentLocation);
+  //     const location = {
+  //       lat: currentLocation.coords.latitude,
+  //       lng: currentLocation.coords.longitude,
+  //     };
+  //     updateLocation({ location });
+  //   }
+  // }, [currentLocation]);
 
   const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    const fetchLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        dispatch(setLocationError("Permission to access location was denied"));
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchLocation = async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       dispatch(setLocationError("Permission to access location was denied"));
+  //       return;
+  //     }
 
-      let location = await Location.getCurrentPositionAsync({});
-      // console.log(location);
-      dispatch(setCurrentLocation(location));
-      // setLocation(location);
-    };
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     // console.log(location);
+  //     dispatch(setCurrentLocation(location));
+  //     // setLocation(location);
+  //   };
 
-    // Fetch location initially
-    fetchLocation();
+  //   // Fetch location initially
+  //   fetchLocation();
 
-    // Set up an interval to fetch a new location every 15 minutes
-    const locationUpdateInterval = setInterval(fetchLocation, 15 * 60 * 1000); // 15 minutes in milliseconds
+  //   // Set up an interval to fetch a new location every 15 minutes
+  //   const locationUpdateInterval = setInterval(fetchLocation, 15 * 60 * 1000); // 15 minutes in milliseconds
 
-    // Clean up the interval when the component unmounts
-    return () => {
-      clearInterval(locationUpdateInterval);
-    };
-  }, []);
+  //   // Clean up the interval when the component unmounts
+  //   return () => {
+  //     clearInterval(locationUpdateInterval);
+  //   };
+  // }, []);
 
   return (
     <Tab.Navigator
