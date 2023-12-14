@@ -129,16 +129,16 @@ const LegalScreen = ({ navigation: { navigate, goBack } }) => {
           ItemSeparatorComponent={() => <View className="h-5"></View>}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => {
-                setRefreshing(true);
-                // dispatch(getOngoingTasks({ userToken }));
-                // fetcher();
-              }}
-            />
-          }
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={refreshing}
+          //     onRefresh={() => {
+          //       setRefreshing(true);
+          //       // dispatch(getOngoingTasks({ userToken }));
+          //       // fetcher();
+          //     }}
+          //   />
+          // }
         />
       )}
     </TabLayout>
