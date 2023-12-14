@@ -20,13 +20,13 @@ import {
   Bars3BottomRightIcon,
   ArchiveBoxIcon,
 } from "react-native-heroicons/outline";
-import TaskpoolScreen from "../screens/TaskpoolScreen";
-import HomeScreen from "../screens/HomeScreen";
+// import TaskpoolScreen from "../screens/TaskpoolScreen";
+// import HomeScreen from "../screens/HomeScreen";
 import AccountScreen from "../screens/AccountScreen";
-import MessagesScreen from "../screens/MessagesScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
-import TasksScreen from "../screens/TasksScreen";
-import TasksStack from "./TasksStack";
+// import MessagesScreen from "../screens/MessagesScreen";
+// import NotificationsScreen from "../screens/NotificationsScreen";
+// import TasksScreen from "../screens/TasksScreen";
+// import TasksStack from "./TasksStack";
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import {
   View,
@@ -100,7 +100,8 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Taskpool"
+      initialRouteName="Account"
+      // initialRouteName="Taskpool"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#91e6b3",
@@ -118,7 +119,7 @@ const Tabs = () => {
         // ),
       }}
     >
-      {userInfo.userType === "proxze" ? (
+      {/* {userInfo.userType === "proxze" ? (
         <Tab.Screen
           options={{
             headerStyle: {
@@ -188,9 +189,9 @@ const Tabs = () => {
           name="Home"
           component={HomeScreen}
         />
-      )}
+      )} */}
 
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => (
@@ -275,7 +276,7 @@ const Tabs = () => {
         }}
         name="Notifications"
         component={NotificationsScreen}
-      />
+      /> */}
 
       <Tab.Screen
         options={{
