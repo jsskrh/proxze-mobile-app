@@ -15,24 +15,24 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { Asset } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
-// import WelcomeScreen from "./screens/WelcomeScreen";
-// import TaskpoolScreen from "./screens/TaskpoolScreen";
-// import TasksScreen from "./screens/TasksScreen";
-// import TaskScreen from "./screens/TaskScreen";
-// import OffersScreen from "./screens/OffersScreen";
-// import RequestScreen from "./screens/RequestScreen";
-// import ChatScreen from "./screens/ChatScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import TaskpoolScreen from "./screens/TaskpoolScreen";
+import TasksScreen from "./screens/TasksScreen";
+import TaskScreen from "./screens/TaskScreen";
+import OffersScreen from "./screens/OffersScreen";
+import RequestScreen from "./screens/RequestScreen";
+import ChatScreen from "./screens/ChatScreen";
 import WelcomeStack from "./navigation/WelcomeStack";
-// import RequestStack from "./navigation/RequestStack";
-// import AddressScreen from "./screens/AddressScreen";
-// import OfferScreen from "./screens/OfferScreen";
-// // import StreamScreen from "./screens/StreamScreen";
-// import ContactInfoScreen from "./screens/Settings/ContactInfoScreen";
-// import AccountScreen from "./screens/Settings/AccountScreen";
-// import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
+import RequestStack from "./navigation/RequestStack";
+import AddressScreen from "./screens/AddressScreen";
+import OfferScreen from "./screens/OfferScreen";
+// import StreamScreen from "./screens/StreamScreen";
+import ContactInfoScreen from "./screens/Settings/ContactInfoScreen";
+import AccountScreen from "./screens/Settings/AccountScreen";
+import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
 import LegalScreen from "./screens/Settings/LegalScreen";
-// import EarningsScreen from "./screens/Settings/EarningsScreen";
-// import TransactionsScreen from "./screens/Settings/TransactionsScreen";
+import EarningsScreen from "./screens/Settings/EarningsScreen";
+import TransactionsScreen from "./screens/Settings/TransactionsScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import Tabs from "./navigation/Tabs";
 import { Provider } from "react-redux";
@@ -294,7 +294,7 @@ function MainScreen() {
     <Stack.Navigator>
       {userToken && userInfo ? (
         <>
-          {/* <Stack.Screen
+          <Stack.Screen
             options={{
               headerShown: false,
             }}
@@ -449,30 +449,30 @@ function MainScreen() {
             })}
             name="Billing&Payment"
             component={BillingPaymentScreen}
-          /> */}
+          />
 
           <Stack.Screen
-            // options={({ route, navigation: { goBack } }) => ({
-            //   headerStyle: {
-            //     backgroundColor: "#000000",
-            //     elevation: 0,
-            //     shadowOpacity: 0,
-            //     borderBottomWidth: 0,
-            //   },
-            //   headerLeft: () => (
-            //     <TouchableOpacity onPress={() => goBack()}>
-            //       <Ionicons name="arrow-back" size={30} color="#91e6b3" />
-            //     </TouchableOpacity>
-            //   ),
-            //   headerTitle: () => (
-            //     <Text className="text-white font-semibold">Legal</Text>
-            //   ),
-            // })}
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Legal</Text>
+              ),
+            })}
             name="Legal"
             component={LegalScreen}
           />
 
-          {/* <Stack.Screen
+          <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
                 backgroundColor: "#000000",
@@ -512,7 +512,7 @@ function MainScreen() {
             })}
             name="Transactions"
             component={TransactionsScreen}
-          /> */}
+          />
 
           {/* <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
@@ -535,7 +535,7 @@ function MainScreen() {
             component={StreamScreen}
           /> */}
 
-          {/* <Stack.Screen
+          <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
                 backgroundColor: "#000000",
@@ -561,7 +561,7 @@ function MainScreen() {
             })}
             name="Chat"
             component={ChatScreen}
-          /> */}
+          />
         </>
       ) : (
         <Stack.Screen

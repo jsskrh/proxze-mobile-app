@@ -3,6 +3,7 @@ import {
   Text,
   SafeAreaView,
   Image,
+  Platform,
   TextInput,
   ScrollView,
   ActivityIndicator,
@@ -34,8 +35,13 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
     // Perform login logic here using email and password
     // console.log("Email:", email);
     // console.log("Password:", password);
-    const data = { email, password };
-    // const data = { email, password, token: pushToken.data };
+    let data;
+
+    if (Platform.OS === "android") {
+      data = { email, password };
+    } else {
+      data = { email, password, token: pushToken.data };
+    }
     console.log(data);
     dispatch(userLogin(data));
 

@@ -1,7 +1,6 @@
 import { View, Text, Animated, useWindowDimensions } from "react-native";
-import React from "react";
 
-const Paginator = ({ data, scrollX }) => {
+const Paginator = ({ data, scrollX, theme }) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -23,7 +22,9 @@ const Paginator = ({ data, scrollX }) => {
 
         return (
           <Animated.View
-            className="h-2 w-2 rounded-full mx-2 bg-white"
+            className={`h-2 w-2 rounded-full mx-2 ${
+              theme === "light" ? "bg-principal" : "bg-white"
+            }`}
             style={[{ width: dotWidth, opacity }]}
             key={i.toString()}
           />

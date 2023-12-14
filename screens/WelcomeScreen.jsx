@@ -89,7 +89,7 @@ const WelcomeScreen = ({ navigation: { navigate } }) => {
         />
       </View>
       <View className="items-center my-7">
-        <Paginator data={slides} scrollX={scrollX} />
+        <Paginator data={slides} scrollX={scrollX} theme={theme} />
       </View>
       {currentIndex === 3 ? (
         <View className="px-5 py-10 flex-row justify-between">
@@ -98,9 +98,9 @@ const WelcomeScreen = ({ navigation: { navigate } }) => {
             onPress={() => navigate("Login")}
           >
             <Text
-              className={`"font-poppins font-semibold ${
+              className={`font-poppins font-semibold ${
                 theme === "light" ? "text-black" : "text-white"
-              }"`}
+              }`}
             >
               Login
             </Text>
@@ -117,7 +117,9 @@ const WelcomeScreen = ({ navigation: { navigate } }) => {
       ) : (
         <View className="px-5 py-10">
           <TouchableOpacity
-            className="py-4 px-5 w-full rounded-xl items-center bg-white"
+            className={`py-4 px-5 w-full rounded-xl items-center ${
+              theme === "light" ? "bg-principal" : "bg-white"
+            }`}
             onPress={scrollTo}
           >
             <Text className="font-poppins font-semibold text-[#5B7184]">
