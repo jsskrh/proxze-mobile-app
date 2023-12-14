@@ -294,7 +294,7 @@ function MainScreen() {
     <Stack.Navigator>
       {userToken && userInfo ? (
         <>
-          <Stack.Screen
+          {/* <Stack.Screen
             options={{
               headerShown: false,
             }}
@@ -449,7 +449,7 @@ function MainScreen() {
             })}
             name="Billing&Payment"
             component={BillingPaymentScreen}
-          />
+          /> */}
 
           <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
@@ -472,7 +472,7 @@ function MainScreen() {
             component={LegalScreen}
           />
 
-          <Stack.Screen
+          {/* <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
                 backgroundColor: "#000000",
@@ -512,7 +512,7 @@ function MainScreen() {
             })}
             name="Transactions"
             component={TransactionsScreen}
-          />
+          /> */}
 
           {/* <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
@@ -535,7 +535,7 @@ function MainScreen() {
             component={StreamScreen}
           /> */}
 
-          <Stack.Screen
+          {/* <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
                 backgroundColor: "#000000",
@@ -561,7 +561,7 @@ function MainScreen() {
             })}
             name="Chat"
             component={ChatScreen}
-          />
+          /> */}
         </>
       ) : (
         <Stack.Screen
