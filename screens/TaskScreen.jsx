@@ -3,6 +3,7 @@ import {
   Text,
   SafeAreaView,
   Image,
+  Platform,
   TextInput,
   ScrollView,
   StyleSheet,
@@ -422,68 +423,131 @@ const TasksScreen = ({
             </View>
           </ScrollView>
           {isTabVisible && (
-            <BlurView
-              tint="dark"
-              intensity={65}
-              className="pt-5 px-5 absolute left-0 right-0 bottom-0"
-            >
-              {userInfo.userType === "proxze" &&
-                (taskStatus === "created" && task.offers.length === 0 ? (
-                  <TouchableOpacity
-                    className="p-3 items-center bg-[#38a139] rounded-lg"
-                    onPress={() => navigate("Offer", { taskId })}
-                  >
-                    <Text className="text-white capitalize font-semibold text-base">
-                      Make Offer
-                    </Text>
-                  </TouchableOpacity>
-                ) : taskStatus === "approved" &&
-                  task.paymentStatus &&
-                  userInfo.id === task.proxze.id ? (
-                  <TouchableOpacity
-                    className="p-3 items-center bg-[#38a139] rounded-lg"
-                    onPress={() => startTask()}
-                  >
-                    <Text className="text-white capitalize font-semibold text-base">
-                      Start Task
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  taskStatus === "started" &&
-                  userInfo.id === task.proxze.id && (
-                    <TouchableOpacity
-                      className="p-3 items-center bg-[#38a139] rounded-lg"
-                      onPress={() => completeTask()}
-                    >
-                      <Text className="text-white capitalize font-semibold text-base">
-                        Complete Task
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                ))}
-              {userInfo.userType === "principal" &&
-                (taskStatus === "assigned" && !task.paymentStatus ? (
-                  <TouchableOpacity
-                    className="p-3 items-center bg-[#38a139] rounded-lg"
-                    onPress={() => setPay(true)}
-                  >
-                    <Text className="text-white capitalize font-semibold text-base">
-                      Make Payment
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  taskStatus === "completed" && (
-                    <TouchableOpacity
-                      className="p-3 items-center bg-[#38a139] rounded-lg"
-                      onPress={() => confirmTask()}
-                    >
-                      <Text className="text-white capitalize font-semibold text-base">
-                        Confirm Task
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                ))}
-            </BlurView>
+            <>
+              {Platform.OS === "android" ? (
+                <View className="pt-5 px-5 absolute left-0 right-0 bottom-0 bg-black">
+                  {userInfo.userType === "proxze" &&
+                    (taskStatus === "created" && task.offers.length === 0 ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => navigate("Offer", { taskId })}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Make Offer
+                        </Text>
+                      </TouchableOpacity>
+                    ) : taskStatus === "approved" &&
+                      task.paymentStatus &&
+                      userInfo.id === task.proxze.id ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => startTask()}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Start Task
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      taskStatus === "started" &&
+                      userInfo.id === task.proxze.id && (
+                        <TouchableOpacity
+                          className="p-3 items-center bg-[#38a139] rounded-lg"
+                          onPress={() => completeTask()}
+                        >
+                          <Text className="text-white capitalize font-semibold text-base">
+                            Complete Task
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    ))}
+                  {userInfo.userType === "principal" &&
+                    (taskStatus === "assigned" && !task.paymentStatus ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => setPay(true)}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Make Payment
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      taskStatus === "completed" && (
+                        <TouchableOpacity
+                          className="p-3 items-center bg-[#38a139] rounded-lg"
+                          onPress={() => confirmTask()}
+                        >
+                          <Text className="text-white capitalize font-semibold text-base">
+                            Confirm Task
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    ))}
+                </View>
+              ) : (
+                <BlurView
+                  tint="dark"
+                  intensity={65}
+                  className="pt-5 px-5 absolute left-0 right-0 bottom-0"
+                >
+                  {userInfo.userType === "proxze" &&
+                    (taskStatus === "created" && task.offers.length === 0 ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => navigate("Offer", { taskId })}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Make Offer
+                        </Text>
+                      </TouchableOpacity>
+                    ) : taskStatus === "approved" &&
+                      task.paymentStatus &&
+                      userInfo.id === task.proxze.id ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => startTask()}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Start Task
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      taskStatus === "started" &&
+                      userInfo.id === task.proxze.id && (
+                        <TouchableOpacity
+                          className="p-3 items-center bg-[#38a139] rounded-lg"
+                          onPress={() => completeTask()}
+                        >
+                          <Text className="text-white capitalize font-semibold text-base">
+                            Complete Task
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    ))}
+                  {userInfo.userType === "principal" &&
+                    (taskStatus === "assigned" && !task.paymentStatus ? (
+                      <TouchableOpacity
+                        className="p-3 items-center bg-[#38a139] rounded-lg"
+                        onPress={() => setPay(true)}
+                      >
+                        <Text className="text-white capitalize font-semibold text-base">
+                          Make Payment
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      taskStatus === "completed" && (
+                        <TouchableOpacity
+                          className="p-3 items-center bg-[#38a139] rounded-lg"
+                          onPress={() => confirmTask()}
+                        >
+                          <Text className="text-white capitalize font-semibold text-base">
+                            Confirm Task
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    ))}
+                </BlurView>
+              )}
+            </>
           )}
         </>
       )}
