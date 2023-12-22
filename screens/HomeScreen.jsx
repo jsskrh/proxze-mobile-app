@@ -4,10 +4,12 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  Animated,
   FlatList,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
 import {
   FunnelIcon,
@@ -20,128 +22,39 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { useSelector, useDispatch } from "react-redux";
+import { MotiView } from "moti";
+import { Skeleton } from "moti/skeleton";
 import Task from "../components/Tasks/Task";
 import TabLayout from "../components/TabLayout";
+import ServiceCard from "../components/ServiceCard";
+import { getOngoingTasks } from "../redux/task/taskActions";
+import { getAllChats } from "../redux/chat/chatActions";
+import { getAllNotifications } from "../redux/notification/notificationActions";
 import {
   shortenId,
   updateColor,
+  timeAgo,
   timeDue,
   convertDateWithoutTime,
 } from "../utils/helpers";
-
-const tasks = [
-  {
-    id: "64391815e99e092cf77b97ad",
-    type: "Verification",
-    timeline: [
-      {
-        status: "created",
-        timestamp: "2023-04-14T09:08:37.481Z",
-        _id: "64391815e99e092cf77b97ae",
-      },
-      {
-        status: "approved",
-        timestamp: "2023-04-14T09:09:36.364Z",
-        _id: "64391850e99e092cf77b97d6",
-      },
-      {
-        status: "assigned",
-        timestamp: "2023-04-19T07:47:52.038Z",
-        _id: "643f9ca9261473e60da204a2",
-      },
-      {
-        status: "started",
-        timestamp: "2023-04-19T07:48:47.382Z",
-        _id: "643f9cdf261473e60da2052f",
-      },
-      {
-        status: "completed",
-        timestamp: "2023-04-19T07:52:14.139Z",
-        _id: "643f9daf261473e60da20645",
-      },
-    ],
-    bill: 4572288,
-    proxze: "Test1 Akorah",
-    principal: "Jesse Akorah",
-    startDate: "2023-03-14T07:15:11.345Z",
-    endDate: "2023-07-14T07:15:11.345Z",
-  },
-  {
-    id: "643ea5a8807a4de5bdd67ce7",
-    type: "Verification",
-    timeline: [
-      {
-        status: "created",
-        timestamp: "2023-04-18T14:14:00.958Z",
-        _id: "643ea5a8807a4de5bdd67ce8",
-      },
-      {
-        status: "approved",
-        timestamp: "2023-04-18T14:16:53.342Z",
-        _id: "643ea655376f6a8d70369054",
-      },
-      {
-        status: "assigned",
-        timestamp: "2023-05-22T19:24:57.190Z",
-        _id: "646bc18a34865ff36f32d4b4",
-      },
-      {
-        status: "started",
-        timestamp: "2023-05-22T19:28:00.959Z",
-        _id: "646bc24134865ff36f32d57e",
-      },
-      {
-        status: "completed",
-        timestamp: "2023-06-22T19:02:02.930Z",
-        _id: "64949aab8e1f8887ba0727df",
-      },
-    ],
-    bill: 1469664,
-    proxze: "Test1 Akorah",
-    principal: "Jesse Akorah",
-    startDate: "2023-05-14T07:15:11.345Z",
-    endDate: "2023-09-14T07:15:11.345Z",
-  },
-  {
-    id: "647928de06b56acb9134d574",
-    type: "Verification",
-    timeline: [
-      {
-        status: "created",
-        timestamp: "2023-06-01T23:25:18.310Z",
-        _id: "647928de06b56acb9134d575",
-      },
-      {
-        status: "approved",
-        timestamp: "2023-06-01T23:26:18.929Z",
-        _id: "6479291a06b56acb9134d614",
-      },
-      {
-        status: "assigned",
-        timestamp: "2023-06-02T09:16:40.708Z",
-        _id: "6479b37968b699ea77c6fcd3",
-      },
-      {
-        status: "started",
-        timestamp: "2023-06-22T19:02:44.517Z",
-        _id: "64949ad48e1f8887ba07286f",
-      },
-      {
-        status: "completed",
-        timestamp: "2023-06-22T19:17:44.647Z",
-        _id: "64949e598e1f8887ba0728f9",
-      },
-    ],
-    bill: 1306368,
-    proxze: "Test1 Akorah",
-    principal: "Jesse Akorah",
-    startDate: "2023-07-14T07:15:11.345Z",
-    endDate: "2023-08-14T07:15:11.345Z",
-  },
-];
+import Enterprise from "../assets/images/enterprise.svg";
+import Verification from "../assets/images/client-verify.svg";
 
 const HomeScreen = ({ navigation: { navigate } }) => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { loading: taskLoading, ongoingTasks } = useSelector(
+    (state) => state.task
+  );
+  const { loading: chatLoading } = useSelector((state) => state.chat);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (ongoingTasks.length === 0) {
+      dispatch(getOngoingTasks());
+      dispatch(getAllChats());
+      dispatch(getAllNotifications());
+    }
+  }, []);
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollRef = useRef(0);
@@ -153,8 +66,136 @@ const HomeScreen = ({ navigation: { navigate } }) => {
 
   const tabConfig = { title: "Home", headerTitle: "Home" };
 
+  const { width } = useWindowDimensions();
+
+  // const [currentIndex, setCurrentIndex] = useState(0);
+  // const scrollX = useRef(new Animated.Value(0)).current;
+  // const slidesRef = useRef(null);
+
+  // const viewableItemsChanged = useRef(({ viewableItems }) => {
+  //   setCurrentIndex(viewableItems[0].id);
+  // }).current;
+
+  // const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+
+  // const scrollTo = () => {
+  //   if (currentIndex < slides.length - 1) {
+  //     slidesRef.current.scrollToIndex({ index: currentIndex + 1 });
+  //   }
+  // };
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const slidesRef = useRef(null);
+
+  // useEffect(() => {
+  //   console.log(scrollX);
+  // });
+
+  useEffect(() => {
+    if (slidesRef.current)
+      slidesRef.current.scrollToOffset({
+        offset: (width - 40) * (3 / 4),
+        animated: false,
+      });
+  }, [slidesRef]);
+
+  const viewableItemsChanged = useRef(({ viewableItems }) => {
+    setCurrentIndex(viewableItems[0]?.index || 0);
+  }).current;
+
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+
+  const scrollTo = () => {
+    if (currentIndex < tasks.length - 1) {
+      slidesRef.current.scrollToIndex({ index: currentIndex + 1 });
+    }
+  };
+
+  // Calculate margin for the FlatList items based on the current index
+  const getItemMargin = (index) => {
+    const marginLeft = index === 0 ? 0 : 20;
+    const marginRight = index === tasks.length - 1 ? 20 : 0;
+    return { marginLeft, marginRight };
+  };
+
+  const calculateScrollOffset = (index) => {
+    return index * (width - 60); // Adjust as needed based on your item width and spacing
+  };
+
+  const snapToOffsets = ongoingTasks.slice(0, 3).map((x, i) => {
+    return i * (width - 40) + (width - 40) * (3 / 4);
+  });
+
+  if (taskLoading || chatLoading) {
+    return (
+      <View className="bg-black flex-1">
+        <MotiView
+          transition={{
+            type: "timing",
+          }}
+          style={[styles.container, styles.padded]}
+          animate={{ backgroundColor: "#000000" }}
+        >
+          <View className="flex-row justify-between bg-black">
+            <View className="flex-row gap-x-4 bg-black">
+              <View className="justify-between bg-black">
+                <Skeleton colorMode="dark" width={80} height={16} />
+                <Spacer height={12} />
+                <Skeleton colorMode="dark" width={150} height={20} />
+              </View>
+            </View>
+          </View>
+          <Spacer height={40} />
+          <Skeleton colorMode="dark" height={140} width={"100%"} />
+          <Spacer height={40} />
+          <Skeleton colorMode="dark" width={200} />
+          <Spacer height={20} />
+          <Skeleton colorMode="dark" height={140} width={"100%"} />
+          <Spacer height={40} />
+          <Skeleton colorMode="dark" width={200} />
+          <Spacer height={20} />
+          <View className="flex-row justify-between">
+            <View className="w-[30%]">
+              <Skeleton
+                colorMode="dark"
+                radius={12}
+                height={96}
+                width={"100%"}
+              />
+            </View>
+            <View className="w-[30%]">
+              <Skeleton
+                colorMode="dark"
+                radius={12}
+                height={96}
+                width={"100%"}
+              />
+            </View>
+            <View className="w-[30%]">
+              <Skeleton
+                colorMode="dark"
+                radius={12}
+                height={96}
+                width={"100%"}
+              />
+            </View>
+          </View>
+          <Spacer height={40} />
+          <Skeleton colorMode="dark" height={140} width={"100%"} />
+        </MotiView>
+      </View>
+    );
+  }
+
   return (
-    <TabLayout config={tabConfig}>
+    <ScrollView
+      contentContainerStyle={{
+        paddingBottom: useBottomTabBarHeight(),
+      }}
+      showsVerticalScrollIndicator={false}
+      className="bg-black"
+    >
       <View className="mb-3 mx-5">
         <View className="mb-7">
           <Text className="text-gray-400 text-xl font-semibold">Welcome,</Text>
@@ -163,79 +204,210 @@ const HomeScreen = ({ navigation: { navigate } }) => {
           </Text>
         </View>
       </View>
-      <View className="mb-7 mx-5 flex-row justify-between items-center">
-        {/* <View></View> */}
-        <TouchableOpacity
-          className="px-3 py-2 bg-[#38a139] rounded-lg items-center"
-          onPress={() => navigate("RequestStack")}
-        >
-          <Text className="text-white capitalize font-semibold text-sm">
-            New Request
-          </Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* <TouchableOpacity className="mb-7 mx-5 bg-zinc-800 p-4 rounded-xl">
-        <View className="flex-row items-center">
-          <View className="">
-            <View className="flex-row items-center mb-2">
-              <Text className={`text-base font-semibold text-white`}>
-                Verification
+      <TouchableOpacity
+        className="px-5 py-3 mb-7 mx-5 bg-proxze rounded-lg"
+        onPress={() => navigate("RequestStack")}
+      >
+        <View>
+          <View className=" justify-between">
+            <View className="">
+              <Text className="font-bold text-xl pb-2 text-principal">
+                New Request
               </Text>
-              <View className="p-1 px-3 ml-3 rounded bg-blue-300">
-                <Text className="text-blue-700 font-semibold">
-                  {shortenId("64391815e99e092cf77b97ad")}
-                </Text>
-              </View>
+              <Text className="text-black">Start a new request</Text>
             </View>
-            <Text className={`flex-row items-center mb-2`}>
-              <MapPinIcon size={16} color="#91e6b3" />
-              <Text className="text-gray-500 ml-2">Apapa, Lagos</Text>
-            </Text>
-            <View className="flex-row pl-1 items-center">
-              <View className="h-2.5 w-2.5 rounded-full mr-1 bg-red-600"></View>
-              <Text className="text-base text-white">Live</Text>
-            </View>
-          </View>
-          <View className="flex-1 flex-row justify-end items-center">
-            <View className="justify-center items-center h-20 w-20 rounded-full bg-white mr-5">
-              <View className="h-[76px] w-[76px] rounded-full bg-black"></View>
+            <View className="mt-7 p-2 px-3 rounded-xl flex-row items-center justify-between bg-principal">
+              <Text className="text-white">Begin request</Text>
+              <Ionicons name="arrow-forward" size={20} color="white" />
             </View>
           </View>
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
+      {/* </View> */}
 
-      <View>
+      <View className="mb-7">
         <View className="flex-row justify-between items-center mb-3 mx-5">
           <Text className="text-white font-semibold text-lg">
             Ongoing Tasks
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigate("TasksStack", {
+                screen: "Tasks",
+              })
+            }
+          >
+            <Text className="text-gray-500">View all</Text>
+          </TouchableOpacity>
+        </View>
+        <View className="">
+          <FlatList
+            data={ongoingTasks.slice(0, 3)}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() => navigate("Task", { taskId: item.id })}
+                className={`h-36 bg-blue-500 rounded-xl flex-row`}
+                style={{ width: width - 60 }}
+              >
+                <View className="px-5 py-3 justify-between">
+                  <View className="">
+                    <View className="flex-row pb-2 gap-2 items-center">
+                      <Text className="font-bold text-xl text-white">
+                        {item.type}
+                      </Text>
+                      <Text className="text-white">•</Text>
+                      <Text className="text-xl font-extralight text-white">
+                        {shortenId(item.id)}
+                      </Text>
+                    </View>
+                    <Text className="text-white capitalize">
+                      {item.timeline[item.timeline.length - 1].status}{" "}
+                      {timeAgo(
+                        item.timeline[item.timeline.length - 1].timestamp
+                      )}
+                    </Text>
+                  </View>
+                  <View className="py-2 flex-row items-center">
+                    <Text>View</Text>
+                    <Ionicons name="arrow-forward" size={20} color="black" />
+                  </View>
+                </View>
+                <View className="h-full p-4  justify-center items-center">
+                  <Verification width={100} height={100} />
+                </View>
+              </TouchableOpacity>
+            )}
+            contentContainerStyle={{
+              marginLeft: 20,
+              paddingRight: 40,
+            }}
+            ItemSeparatorComponent={() => <View className="w-5"></View>}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            // pagingEnabled
+            bounces={false}
+            keyExtractor={(item) => item.id}
+            // snapToOffsets={snapToOffsets}
+            // snapToAlignment={"center"}
+            // onScroll={Animated.event(
+            //   [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            //   {
+            //     useNativeDriver: false,
+            //     listener: (event) => {
+            //       const offsetX = event.nativeEvent.contentOffset.x;
+            //       console.log(offsetX);
+            //       const currentIndex = Math.floor(offsetX / (width + 20));
+            //       console.log(currentIndex);
+            //       const targetOffset = currentIndex * (width + 20);
+
+            //       // Set the adjusted scroll position
+            //       if (slidesRef.current) {
+            //         slidesRef.current.scrollToOffset({
+            //           offset: targetOffset,
+            //           animated: true,
+            //         });
+            //       }
+
+            //       // Update the current index state if needed
+            //       setCurrentIndex(currentIndex);
+            //     },
+            //   }
+            // )}
+            // onScroll={Animated.event(
+            //   [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            //   { useNativeDriver: false }
+            // )}
+            // onScroll={(event) => {
+            //   const offsetX = event.nativeEvent.contentOffset.x;
+            //   const index = Math.round(offsetX / (width - 60));
+            //   const targetOffset = calculateScrollOffset(index);
+            //   scrollX.setValue(targetOffset);
+            // }}
+            // scrollEventThrottle={32}
+            // onViewableItemsChanged={viewableItemsChanged}
+            // viewabilityConfig={viewConfig}
+            ref={slidesRef}
+          />
+        </View>
+
+        {/* <View className="items-center mt-2">
+          <Paginator data={adverts} scrollX={scrollX} />
+        </View> */}
+      </View>
+
+      <View className="mb-7">
+        <View className="flex-row justify-between items-center mb-3 mx-5">
+          <Text className="text-white font-semibold text-lg">Services</Text>
+          <TouchableOpacity onPress={() => navigate("Services")}>
             <Text className="text-gray-500">View all</Text>
           </TouchableOpacity>
         </View>
         <View>
-          <View className="h-[1px] bg-zinc-600 mx-5"></View>
-          {tasks.map((item, index) => (
-            <View key={index}>
-              <Task
-                home
+          <View className="flex-row justify-between px-5">
+            {/* <ScrollView
+            contentContainerStyle={{ paddingHorizontal: 20 }}
+            // className="pt-[10px] px-[15px]"
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          > */}
+            {["verififaction"].map((service, index) => (
+              <ServiceCard
                 key={index}
-                task={item}
-                index={index}
                 navigate={navigate}
-                lastActivity={item.timeline[item.timeline.length - 1]}
+                service={service}
+                title={service}
               />
-              <View
-                key={index + 10}
-                className="h-[1px] bg-zinc-600 mx-5"
-              ></View>
-            </View>
-          ))}
+            ))}
+            {/* </ScrollView> */}
+          </View>
         </View>
       </View>
-    </TabLayout>
+
+      <TouchableOpacity
+        className="mb-7 mx-5 flex-row bg-blue-900 rounded-lg"
+        // onPress={() => navigate("RequestStack")}
+      >
+        <View className="px-5 py-3 flex-1">
+          <View className="justify-between">
+            <View className="">
+              <Text className="font-bold text-xl pb-2 text-secondary">
+                Enterprise
+              </Text>
+              <Text className="text-gray-200">Are you an organization?</Text>
+            </View>
+            <View className="mt-7 flex-row items-center">
+              <Text className="text-black">Learn more</Text>
+              <Ionicons name="arrow-forward" size={20} color="black" />
+            </View>
+          </View>
+        </View>
+        <View className="w-[30%] items-center justify-center">
+          <Enterprise width="100%" height={100} />
+        </View>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
+
+const Spacer = ({ height = 16 }) => <View style={{ height }} />;
+
+const styles = StyleSheet.create({
+  shape: {
+    justifyContent: "center",
+    height: 250,
+    width: 250,
+    borderRadius: 25,
+    marginRight: 10,
+    backgroundColor: "gray",
+  },
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+  },
+  padded: {
+    padding: 16,
+  },
+});
 
 export default HomeScreen;
