@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 // import { axiosInstance } from "../../utils/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const makeRequest = createAsyncThunk(
   "task/create",
@@ -57,9 +58,8 @@ export const getPendingRequests = createAsyncThunk(
 export const getOngoingTasks = createAsyncThunk(
   "task/get-ongoing-tasks",
   async (credentials, { rejectWithValue }) => {
-    // const userToken = localStorage.getItem("userToken");
-    const userToken = credentials.userToken;
-    console.log("userToken", userToken);
+    const userToken = await AsyncStorage.getItem("userToken");
+
     try {
       const config = {
         headers: {
@@ -67,10 +67,12 @@ export const getOngoingTasks = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
+
       const { data } = await axios.get(
         `https://proxze-backend-app.onrender.com/api/task/ongoing`,
         config
       );
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -84,8 +86,9 @@ export const getOngoingTasks = createAsyncThunk(
 
 export const getTaskHistory = createAsyncThunk(
   "task/get-task-history",
-  async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+  async (body, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+
     try {
       const config = {
         headers: {
@@ -93,10 +96,12 @@ export const getTaskHistory = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
+
       const { data } = await axios.get(
         `https://proxze-backend-app.onrender.com/api/task/history`,
         config
       );
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

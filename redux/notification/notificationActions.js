@@ -1,12 +1,13 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 // import { axiosInstance } from "../../utils/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getAllNotifications = createAsyncThunk(
   "notifications/get-all",
-  async (credentials, { rejectWithValue }) => {
-    const userToken = credentials.userToken;
-    // const userToken = localStorage.getItem("userToken");
+  async (body, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+
     try {
       const config = {
         headers: {
@@ -14,10 +15,12 @@ export const getAllNotifications = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
+
       const { data } = await axios.get(
         `https://proxze-backend-app.onrender.com/api/notification`,
         config
       );
+
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
