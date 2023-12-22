@@ -59,9 +59,9 @@ export const userLogin = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
   "auth/get-user",
-  async (data, { rejectWithValue }) => {
-    const userToken = data.userToken;
-    console.log(userToken);
+  async (body, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+
     try {
       const config = {
         headers: {
@@ -70,7 +70,9 @@ export const getUser = createAsyncThunk(
         },
       };
       const { data } = await axios.get(`${baseURL}/api/user/profile`, config);
-      console.log({ data, userToken });
+
+      data.userToken = userToken;
+
       return { data, userToken };
     } catch (error) {
       console.log(error);
@@ -85,7 +87,7 @@ export const getUser = createAsyncThunk(
 
 export const deactivateAccount = createAsyncThunk(
   "user/deactivate",
-  async ({ password,userToken }, { rejectWithValue }) => {
+  async ({ password, userToken }, { rejectWithValue }) => {
     // const userToken = localStorage.getItem("userToken");
     try {
       const config = {

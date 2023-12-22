@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clearMessageState } from "../notification/notificationSlice";
-// import { clearNotifications } from "../notifications/notificationsSlice";
+// import { clearMessageState } from "../notification/notificationSlice";
+import { clearNotificationState } from "../notification/notificationSlice";
 import { clearTaskState } from "../task/taskSlice";
 import { clearTicketState } from "../ticket/ticketSlice";
 import { clearTransactionState } from "../transaction/transactionSlice";
+import { clearChatState } from "../chat/chatSlice";
 import {
   deactivateAccount,
   updatePaymentInfo,
@@ -32,7 +33,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // console.log(userToken);
 
 const initialState = {
-  loading: true,
+  loading: false,
   waiting: false,
   loadingLocation: true,
   userInfo: null,
@@ -62,8 +63,10 @@ const authSlice = createSlice({
       state.registerSuccess = false;
       // clearUserState();
       clearTaskState();
+      clearNotificationState();
+      clearChatState();
       // clearNotifications();
-      // clearTransactionState();
+      clearTransactionState();
       // clearTicketState();
       // clearNotificationState();
       // clearTransactionState();
@@ -147,8 +150,7 @@ const authSlice = createSlice({
     [getUser.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.userInfo = payload.data;
-      state.userToken = payload.userToken;
-      state.userInfo.userToken = payload.userToken;
+      state.userToken = payload.data.userToken;
       state.success = true; // registration successful
     },
     [getUser.rejected]: (state, { payload }) => {
