@@ -20,6 +20,7 @@ import TaskpoolScreen from "./screens/TaskpoolScreen";
 import TasksScreen from "./screens/TasksScreen";
 import TaskScreen from "./screens/TaskScreen";
 import OffersScreen from "./screens/OffersScreen";
+import ServicesScreen from "./screens/ServicesScreen";
 import RequestScreen from "./screens/RequestScreen";
 import ChatScreen from "./screens/ChatScreen";
 import WelcomeStack from "./navigation/WelcomeStack";
@@ -384,6 +385,27 @@ function MainScreen() {
             })}
             name="Offers"
             component={OffersScreen}
+          />
+
+          <Stack.Screen
+            options={({ route, navigation: { goBack } }) => ({
+              headerStyle: {
+                backgroundColor: "#000000",
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Ionicons name="arrow-back" size={30} color="#91e6b3" />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <Text className="text-white font-semibold">Services</Text>
+              ),
+            })}
+            name="Services"
+            component={ServicesScreen}
           />
 
           <Stack.Screen
