@@ -9,7 +9,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: { primary: "#ecffe0", principal: "#135446", proxze: "#91e6b3" },
+      colors: { secondary: "#ecffe0", principal: "#135446", proxze: "#91e6b3" },
       // fontFamily: {
       //   poppins: ["Poppins", "sans-serif"],
       // },

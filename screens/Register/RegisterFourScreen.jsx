@@ -184,17 +184,17 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                   )}
                 />
                 <View className="mt-10">
-                  <Text className="font-semibold text-primary mb-3">
+                  <Text className="font-semibold text-secondary mb-3">
                     At least:
                   </Text>
                   <View className="flex-row gap-2 mb-2">
                     <View
-                      className={`border border-primary rounded p-1 px-2 ${
+                      className={`border border-secondary rounded p-1 px-2 ${
                         isMinChar && "bg-black"
                       }`}
                     >
                       <Text
-                        className={`text-xs text-primary ${
+                        className={`text-xs text-secondary ${
                           isMinChar && "text-white"
                         }`}
                       >
@@ -202,7 +202,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                       </Text>
                     </View>
                     <View
-                      className={`border border-primary rounded p-1 px-2 ${
+                      className={`border border-secondary rounded p-1 px-2 ${
                         hasUppercase && "bg-black"
                       }`}
                     >
@@ -215,7 +215,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                   </View>
                   <View className="flex-row gap-2">
                     <View
-                      className={`border border-primary rounded p-1 px-2 ${
+                      className={`border border-secondary rounded p-1 px-2 ${
                         hasLowercase && "bg-black"
                       }`}
                     >
@@ -226,7 +226,7 @@ const RegisterTwoScreen = ({ navigation: { navigate, goBack } }) => {
                       </Text>
                     </View>
                     <View
-                      className={`border border-primary rounded p-1 px-2 ${
+                      className={`border border-secondary rounded p-1 px-2 ${
                         hasNumber && "bg-black"
                       }`}
                     >
