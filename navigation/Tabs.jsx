@@ -109,13 +109,13 @@ const Tabs = () => {
           borderTopWidth: 0,
           position: "absolute",
         },
-        tabBarBackground: () => (
-          <BlurView
-            tint="dark"
-            intensity={85}
-            style={StyleSheet.absoluteFill}
-          />
-        ),
+        // tabBarBackground: () => (
+        //   <BlurView
+        //     tint="dark"
+        //     intensity={85}
+        //     style={StyleSheet.absoluteFill}
+        //   />
+        // ),
       }}
     >
       {userInfo.userType === "proxze" ? (
