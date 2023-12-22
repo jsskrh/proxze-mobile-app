@@ -109,13 +109,13 @@ const Tabs = () => {
           borderTopWidth: 0,
           position: "absolute",
         },
-        // tabBarBackground: () => (
-        //   <BlurView
-        //     tint="dark"
-        //     intensity={85}
-        //     style={StyleSheet.absoluteFill}
-        //   />
-        // ),
+        tabBarBackground: () => (
+          <BlurView
+            tint="dark"
+            intensity={85}
+            style={StyleSheet.absoluteFill}
+          />
+        ),
       }}
     >
       {userInfo.userType === "proxze" ? (
@@ -218,16 +218,16 @@ const Tabs = () => {
           headerTitle: () => (
             <Text className="text-white font-semibold">Messages</Text>
           ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row", marginRight: 20 }}>
-              <TouchableOpacity style={{ marginRight: 12 }}>
-                <FunnelIcon color="#91e6b3" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Bars3BottomRightIcon color="#91e6b3" />
-              </TouchableOpacity>
-            </View>
-          ),
+          // headerRight: () => (
+          //   <View style={{ flexDirection: "row", marginRight: 20 }}>
+          //     <TouchableOpacity style={{ marginRight: 12 }}>
+          //       <FunnelIcon color="#91e6b3" />
+          //     </TouchableOpacity>
+          //     <TouchableOpacity>
+          //       <Bars3BottomRightIcon color="#91e6b3" />
+          //     </TouchableOpacity>
+          //   </View>
+          // ),
           tabBarIcon: ({ color, size, focused }) => (
             <View>
               {focused ? (

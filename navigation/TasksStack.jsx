@@ -51,16 +51,16 @@ const TasksStack = () => {
           headerTitle: () => (
             <Text className="text-white font-semibold">Tasks</Text>
           ),
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity style={{ marginRight: 12 }}>
-                <FunnelIcon color="#91e6b3" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Bars3BottomRightIcon color="#91e6b3" />
-              </TouchableOpacity>
-            </View>
-          ),
+          // headerRight: () => (
+          //   <View style={{ flexDirection: "row" }}>
+          //     <TouchableOpacity style={{ marginRight: 12 }}>
+          //       <FunnelIcon color="#91e6b3" />
+          //     </TouchableOpacity>
+          //     <TouchableOpacity>
+          //       <Bars3BottomRightIcon color="#91e6b3" />
+          //     </TouchableOpacity>
+          //   </View>
+          // ),
         })}
         name="Tasks"
         component={TasksScreen}
