@@ -31,7 +31,7 @@ const RegisterThreeScreen = ({ navigation: { navigate, goBack } }) => {
     registerHandler,
   } = useContext(RegisterContext);
 
-  const { waiting, error, registerSuccess, userInfo, userToken } = useSelector(
+  const { loading, error, registerSuccess, userInfo, userToken } = useSelector(
     (state) => state.auth
   );
 

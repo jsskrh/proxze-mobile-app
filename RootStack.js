@@ -52,13 +52,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { setLoading } from "./redux/auth/authSlice";
 import { getUser } from "./redux/auth/authActions";
-import {
-  setPushToken,
-  setUserToken,
-  setCredentials,
-} from "./redux/auth/authSlice";
+import { setPushToken } from "./redux/auth/authSlice";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -212,9 +207,8 @@ function AnimatedSplashScreen({ children, image }) {
   const handleUserTokenFetch = async () => {
     let userToken = null;
     try {
-      userToken = await AsyncStorage.getItem("userToken");
       if (userToken) {
-        const response = dispatch(getUser({ userToken }));
+        const response = dispatch(getUser());
         return response;
       }
     } catch (error) {

@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { userLogin } from "../redux/auth/authActions";
 
 const LoginScreen = ({ navigation: { navigate, goBack } }) => {
-  const { loading, waiting, error, success, userInfo, userToken, pushToken } =
+  const { loading, error, success, userInfo, userToken, pushToken } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -149,7 +149,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             onPress={handleLogin}
             className="border flex p-4 rounded-xl bg-black"
           >
-            {waiting ? (
+            {loading ? (
               <ActivityIndicator size="small" />
             ) : (
               <Text className="text-center text-white">Login</Text>

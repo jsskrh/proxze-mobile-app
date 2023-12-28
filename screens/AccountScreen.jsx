@@ -29,7 +29,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import TabLayout from "../components/TabLayout";
-import { testLogout, logout } from "../redux/auth/authSlice";
+import { logout } from "../redux/auth/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AccountScreen = ({ navigation: { navigate } }) => {
@@ -48,6 +48,10 @@ const AccountScreen = ({ navigation: { navigate } }) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("userToken");
     dispatch(logout());
+    // await dispatch(clearUserState());
+    // await dispatch(clearCartState());
+    // await dispatch(clearOrderState());
+    // await dispatch(clearLocationState());
   };
 
   const tabConfig = { title: "Account", headerTitle: "Jesse Akorah" };
