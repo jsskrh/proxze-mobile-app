@@ -201,9 +201,9 @@ const AccountScreen = ({ navigation: { navigate } }) => {
               {tabConfig.title}
             </Text> */}
             <View className="mx-5 flex-row items-center">
-              <View
+              {/* <View
                 className={`h-20 w-20 mr-4 bg-gray-400 rounded-full`}
-              ></View>
+              ></View> */}
               <View className="">
                 <Text className="text-white text-3xl font-semibold">
                   {userInfo.firstName} {userInfo.lastName}
