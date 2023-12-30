@@ -14,7 +14,7 @@ const OnboardingItem = ({ item, theme }) => {
     <View className="flex-1" style={[{ width }]}>
       {/* <Image source={item.image} className='flex-[0.7] justify-center' /> */}
       <View className="flex-1 flex justify-center items-center">
-        <Text>Art goes here</Text>
+        {item.image}
       </View>
       <View className="px-10 pt-10">
         <Text

@@ -15,32 +15,37 @@ import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import OnboardingItem from "../components/OnboardingItem";
 import Paginator from "../components/Paginator";
+import Verification from "../assets/images/client-verify.svg";
+import Errand from "../assets/images/errand.svg";
+import Kyc from "../assets/images/kyc4.svg";
+import Map from "../assets/images/map2.svg";
+import Consultation from "../assets/images/consultation.svg";
 
 const slides = [
   {
     id: "1",
     title: "Lorem Ipsum Dolor",
     description: "Lorem ipsum dolor sit amet consectetur",
-    image: "",
+    image: <Errand width={250} height={300} />,
   },
   {
     id: "2",
     title: "Lorem Ipsum Dolor",
     description: "Lorem ipsum dolor sit amet consectetur",
-    image: "",
+    image: <Kyc width={250} height={300} />,
   },
   {
     id: "3",
     title: "Lorem Ipsum Dolor",
     description: "Lorem ipsum dolor sit amet consectetur",
-    image: "",
+    image: <Consultation width={400} height={250} />,
   },
   {
     id: "4",
     title: "Have work done anywhere and anytime",
     description:
       "Find the proxze or task that best fits your skills, interests or job",
-    image: "",
+    image: <Map width={400} height={300} />,
   },
 ];
 
