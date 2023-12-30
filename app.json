@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.proxze.proxzemobileapp",
-      "buildNumber": "0.0.9",
+      "buildNumber": "0.0.10",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"]
       },
@@ -30,7 +30,7 @@
         "backgroundColor": "#ecffe0"
       },
       "package": "com.proxze.proxzemobileapp",
-      "versionCode": 3,
+      "versionCode": 4,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
