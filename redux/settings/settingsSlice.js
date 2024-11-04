@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBillingAlgorithm, updateBillingAlgorithm } from "./settingsActions";
+import {
+  getBanks,
+  getBillingAlgorithm,
+  updateBillingAlgorithm,
+} from "./settingsActions";
 
 const initialState = {
   loading: false,
@@ -7,6 +11,7 @@ const initialState = {
   success: false,
   billingAlgorithm: null,
   updateFunction: null,
+  banks: [],
 };
 
 const settingsSlice = createSlice({
@@ -19,6 +24,7 @@ const settingsSlice = createSlice({
       state.success = false;
       state.billingAlgorithm = null;
       state.updateFunction = null;
+      state.banks = [];
     },
 
     resetSettingsSuccessState: (state) => {
@@ -31,38 +37,63 @@ const settingsSlice = createSlice({
     // },
   },
 
-  extraReducers: {
+  extraReducers: (builder) => {
+    // get banks
+    builder
+      .addCase(getBanks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(getBanks.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        const transformedBanks = payload.data.map((item) => ({
+          id: item._id,
+          name: item.name,
+          code: item.code,
+        }));
+        Promise.all(transformedBanks).then((state.banks = transformedBanks));
+      })
+      .addCase(getBanks.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
+
     // get billing algorithm
-    [getBillingAlgorithm.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [getBillingAlgorithm.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.billingAlgorithm = payload.data;
-    },
-    [getBillingAlgorithm.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(getBillingAlgorithm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(getBillingAlgorithm.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        state.billingAlgorithm = payload.data;
+      })
+      .addCase(getBillingAlgorithm.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
 
     // update billing algorithm
-    [updateBillingAlgorithm.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [updateBillingAlgorithm.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.success = true;
-      state.billingAlgorithm = payload.data;
-      state.updateFunction = payload.updateFunction;
-    },
-    [updateBillingAlgorithm.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(updateBillingAlgorithm.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateBillingAlgorithm.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        state.billingAlgorithm = payload.data;
+        state.updateFunction = payload.updateFunction;
+      })
+      .addCase(updateBillingAlgorithm.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
   },
 });
 

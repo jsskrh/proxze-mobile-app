@@ -36,6 +36,7 @@ import { timeAgo, shortenId } from "../utils/helpers";
 import { getTask } from "../redux/task/taskActions";
 import { Paystack } from "react-native-paystack-webview";
 import { PAYSTACK_PUBLIC_KEY } from "@env";
+import { useGetTaskQuery } from "../redux/task/taskApi";
 // import { NodePlayerView } from "react-native-nodemediaclient";
 
 const style = {
@@ -52,37 +53,23 @@ const TasksScreen = ({
     params: { taskId },
   },
 }) => {
+  const {
+    data: task,
+    isLoading,
+    isSuccess,
+  } = useGetTaskQuery(taskId, {
+    skip: !taskId,
+  });
   const { userInfo, userToken } = useSelector((state) => state.auth);
   // const { success, error, loading, task } = useSelector((state) => state.task);
 
-  const [loading, setLoading] = useState(true);
-  const [task, setTask] = useState(null);
-  const [pay, setPay] = useState(false);
+  useEffect(() => {
+    console.log("taskId", taskId);
+  }, [taskId]);
 
-  const fetcher = async () => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      };
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}`,
-        config
-      );
-      setTask(data.data);
-      setLoading(false);
-      return data;
-    } catch (error) {
-      return error;
-      // if (error.response && error.response.data.message) {
-      //   return rejectWithValue(error.response.data.message);
-      // } else {
-      //   return rejectWithValue(error.message);
-      // }
-    }
-  };
+  const [loading, setLoading] = useState(true);
+  // const [task, setTask] = useState(null);
+  const [pay, setPay] = useState(false);
 
   const startTask = async () => {
     setLoading(true);
@@ -94,7 +81,7 @@ const TasksScreen = ({
         },
       };
       const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/admin/start-task`,
+        `http://172.20.10.3:3001/api/task/view/${taskId}/admin/start-task`,
         { task: taskId, timestamp: Date.now() },
         config
       );
@@ -118,7 +105,7 @@ const TasksScreen = ({
         },
       };
       const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/proxze/complete-task`,
+        `http://172.20.10.3:3001/api/task/view/${taskId}/proxze/complete-task`,
         { timestamp: Date.now() },
         config
       );
@@ -142,7 +129,7 @@ const TasksScreen = ({
         },
       };
       const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/transaction/deposit/task/${taskId}`,
+        `http://172.20.10.3:3001/api/transaction/deposit/task/${taskId}`,
         { taskId },
         config
       );
@@ -167,7 +154,7 @@ const TasksScreen = ({
       };
       const { data } = await axios.put(
         // `/api/task/view/${task}/principal/confirm-task`,
-        `https://proxze-backend-app.onrender.com/api/transaction/transfer/task/${taskId}`,
+        `http://172.20.10.3:3001/api/transaction/transfer/task/${taskId}`,
         { timestamp: Date.now() },
         config
       );
@@ -180,15 +167,6 @@ const TasksScreen = ({
       return error;
     }
   };
-
-  useEffect(() => {
-    const test = fetcher();
-    console.log(test);
-    if (!loading) {
-      setRefreshing(false);
-      console.log("ongoingTasks", task);
-    }
-  }, [loading]);
 
   useEffect(() => {
     console.log("test", task);
@@ -244,7 +222,7 @@ const TasksScreen = ({
 
   return (
     <TabLayout config={tabConfig}>
-      {loading || !task ? (
+      {isLoading || !isSuccess ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" />
         </View>
@@ -259,7 +237,7 @@ const TasksScreen = ({
               <Text className="text-white text-3xl font-bold">{task.type}</Text>
               <View className="p-1 px-3 ml-5 rounded bg-blue-300">
                 <Text className="text-blue-700 font-semibold">
-                  {shortenId(task.id)}
+                  {shortenId(task._id)}
                 </Text>
               </View>
             </View>
@@ -513,14 +491,26 @@ const TasksScreen = ({
                     ) : (
                       taskStatus === "started" &&
                       userInfo.id === task.proxze.id && (
-                        <TouchableOpacity
-                          className="p-3 items-center bg-[#38a139] rounded-lg"
-                          onPress={() => completeTask()}
-                        >
-                          <Text className="text-white capitalize font-semibold text-base">
-                            Complete Task
-                          </Text>
-                        </TouchableOpacity>
+                        <>
+                          <TouchableOpacity
+                            className="p-3 items-center bg-[#38a139] rounded-lg"
+                            onPress={() =>
+                              navigate("Stream", { taskId: task._id })
+                            }
+                          >
+                            <Text className="text-white capitalize font-semibold text-base">
+                              Go Live
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            className="p-3 items-center bg-[#38a139] rounded-lg"
+                            onPress={() => completeTask()}
+                          >
+                            <Text className="text-white capitalize font-semibold text-base">
+                              Complete Task
+                            </Text>
+                          </TouchableOpacity>
+                        </>
                       )
                     ))}
                   {userInfo.userType === "principal" &&

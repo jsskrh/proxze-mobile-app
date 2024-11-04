@@ -24,8 +24,15 @@ import {
   Bars3BottomRightIcon,
   ArchiveBoxIcon,
 } from "react-native-heroicons/outline";
+import { useGetOngoingTasksQuery } from "../redux/task/taskApi";
 
 const TasksScreen = ({ navigation: { navigate, setOptions } }) => {
+  const {
+    data: tasks,
+    isLoading,
+    isSuccess,
+    refetch,
+  } = useGetOngoingTasksQuery();
   const { userToken } = useSelector((state) => state.auth);
   const { loading, ongoingTasks } = useSelector((state) => state.task);
   const dispatch = useDispatch();
@@ -46,7 +53,7 @@ const TasksScreen = ({ navigation: { navigate, setOptions } }) => {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
 
   const [sort, setSort] = useState(true);
 
@@ -65,21 +72,21 @@ const TasksScreen = ({ navigation: { navigate, setOptions } }) => {
     });
   }, [setOptions]);
 
-  useEffect(() => {
-    let tasks = [...ongoingTasks];
-    const sorted = tasks.sort((a, b) => {
-      // const dateA = new Date(a.createdBy);
-      // const dateB = new Date(b.createdBy);
+  // useEffect(() => {
+  //   let tasks = [...ongoingTasks];
+  //   const sorted = tasks.sort((a, b) => {
+  //     // const dateA = new Date(a.createdBy);
+  //     // const dateB = new Date(b.createdBy);
 
-      if (sort) {
-        return a.createdAt - b.createdAt;
-      } else {
-        return b.createdAt - a.createdAt;
-      }
-    });
+  //     if (sort) {
+  //       return a.createdAt - b.createdAt;
+  //     } else {
+  //       return b.createdAt - a.createdAt;
+  //     }
+  //   });
 
-    setTasks(tasks);
-  }, [ongoingTasks, sort]);
+  //   setTasks(tasks);
+  // }, [ongoingTasks, sort]);
 
   useEffect(() => {
     if (!loading) {
@@ -95,7 +102,7 @@ const TasksScreen = ({ navigation: { navigate, setOptions } }) => {
         </View>
       ) : ( */}
       <FlatList
-        data={tasks}
+        data={tasks?.data}
         ListHeaderComponent={() => (
           <View className="pb-3 mx-5 border-b-[1px] border-zinc-600">
             <View className="mb-7">
@@ -127,15 +134,9 @@ const TasksScreen = ({ navigation: { navigate, setOptions } }) => {
           <View className="h-[1px] bg-zinc-600 mx-5"></View>
         )}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              setRefreshing(true);
-              dispatch(getOngoingTasks());
-            }}
-          />
+          <RefreshControl refreshing={isLoading} onRefresh={() => refetch()} />
         }
       />
       {/* )} */}

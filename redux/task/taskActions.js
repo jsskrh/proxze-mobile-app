@@ -1,12 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { axiosInstance } from "../../utils/axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { axiosInstance } from "../../utils/axios";
 
 export const makeRequest = createAsyncThunk(
   "task/create",
   async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -14,12 +13,10 @@ export const makeRequest = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      await axios.post(
-        `https://proxze-backend-app.onrender.com/api/task`,
-        data,
-        config
-      );
+      console.log(data);
+      await axiosInstance.post(`/api/task`, data, config);
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -32,7 +29,7 @@ export const makeRequest = createAsyncThunk(
 export const getPendingRequests = createAsyncThunk(
   "task/get-pending-requests",
   async (data, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -40,10 +37,7 @@ export const getPendingRequests = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/pending`,
-        config
-      );
+      const { data } = await axiosInstance.get(`/api/task/pending`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -57,9 +51,8 @@ export const getPendingRequests = createAsyncThunk(
 
 export const getOngoingTasks = createAsyncThunk(
   "task/get-ongoing-tasks",
-  async (credentials, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     const userToken = await AsyncStorage.getItem("userToken");
-
     try {
       const config = {
         headers: {
@@ -67,12 +60,7 @@ export const getOngoingTasks = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/ongoing`,
-        config
-      );
-
+      const { data } = await axiosInstance.get(`/api/task/ongoing`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -86,9 +74,8 @@ export const getOngoingTasks = createAsyncThunk(
 
 export const getTaskHistory = createAsyncThunk(
   "task/get-task-history",
-  async (body, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     const userToken = await AsyncStorage.getItem("userToken");
-
     try {
       const config = {
         headers: {
@@ -96,12 +83,7 @@ export const getTaskHistory = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/history`,
-        config
-      );
-
+      const { data } = await axiosInstance.get(`/api/task/history`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -116,11 +98,7 @@ export const getTaskHistory = createAsyncThunk(
 export const getTask = createAsyncThunk(
   "task/get-task",
   async (credentials, { rejectWithValue }) => {
-    console.log(credentials);
-    const userToken = credentials.userToken;
-    // const userToken = await AsyncStorage.getItem("userToken");
-    console.log("userToken", userToken);
-    // const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -128,14 +106,12 @@ export const getTask = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/view/${credentials.taskId}`,
+      const { data } = await axiosInstance.get(
+        `/api/task/view/${credentials.id}`,
         config
       );
-      console.log(data);
       return data;
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
@@ -148,7 +124,7 @@ export const getTask = createAsyncThunk(
 export const approveRejectRequest = createAsyncThunk(
   "task/approve-rejects",
   async ({ task, type }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -156,8 +132,8 @@ export const approveRejectRequest = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${task}/admin/approve/${type}`,
+      const { data } = await axiosInstance.put(
+        `/api/task/view/${task}/admin/approve/${type}`,
         { task, type },
         config
       );
@@ -175,7 +151,7 @@ export const approveRejectRequest = createAsyncThunk(
 export const makeRequestPayment = createAsyncThunk(
   "task/deposit",
   async ({ task }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -183,8 +159,8 @@ export const makeRequestPayment = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/transaction/deposit/task/${task}`,
+      const { data } = await axiosInstance.put(
+        `/api/transaction/deposit/task/${task}`,
         { task },
         config
       );
@@ -201,10 +177,8 @@ export const makeRequestPayment = createAsyncThunk(
 
 export const getTaskpool = createAsyncThunk(
   "task/get-taskpool",
-  async (credentials, { rejectWithValue }) => {
-    console.log("touched", credentials);
-    const userToken = credentials.userToken;
-    // const userToken = await AsyncStorage.getItem("userToken");
+  async (data, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -212,10 +186,7 @@ export const getTaskpool = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/task/taskpool`,
-        config
-      );
+      const { data } = await axiosInstance.get(`/api/task/taskpool`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -229,12 +200,8 @@ export const getTaskpool = createAsyncThunk(
 
 export const makeOffer = createAsyncThunk(
   "task/make-offer",
-  async (
-    { taskId, coverLetter, userToken, timestamp },
-    { rejectWithValue }
-  ) => {
-    // const userToken = localStorage.getItem("userToken");
-    console.log("temptation");
+  async ({ task, coverLetter, timestamp }, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -242,8 +209,8 @@ export const makeOffer = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/proxze/make-offer`,
+      const { data } = await axiosInstance.put(
+        `/api/task/view/${task}/proxze/make-offer`,
         { coverLetter, timestamp },
         config
       );
@@ -261,7 +228,7 @@ export const makeOffer = createAsyncThunk(
 export const acceptOffer = createAsyncThunk(
   "task/accept-offer",
   async ({ task, proxze, timestamp }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -269,8 +236,35 @@ export const acceptOffer = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/principal/accept-offer`,
+        { proxze, timestamp },
+        config
+      );
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const rejectOffer = createAsyncThunk(
+  "task/reject-offer",
+  async ({ task, proxze, timestamp }, { rejectWithValue }) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      };
+      const { data } = await axiosInstance.put(
+        `/api/task/view/${task}/principal/reject-offer`,
         { proxze, timestamp },
         config
       );
@@ -288,7 +282,7 @@ export const acceptOffer = createAsyncThunk(
 export const startTask = createAsyncThunk(
   "task/start-task",
   async ({ task, timestamp }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -296,7 +290,7 @@ export const startTask = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/admin/start-task`,
         { task, timestamp },
         config
@@ -315,7 +309,7 @@ export const startTask = createAsyncThunk(
 export const uploadAttachment = createAsyncThunk(
   "task/upload-attachment",
   async ({ task, url, timestamp, location }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -323,7 +317,7 @@ export const uploadAttachment = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/proxze/upload`,
         { url, timestamp, location },
         config
@@ -342,7 +336,7 @@ export const uploadAttachment = createAsyncThunk(
 export const completeTask = createAsyncThunk(
   "task/complete-task",
   async ({ task, timestamp }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -350,7 +344,7 @@ export const completeTask = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/proxze/complete-task`,
         { timestamp },
         config
@@ -369,7 +363,7 @@ export const completeTask = createAsyncThunk(
 export const confirmTask = createAsyncThunk(
   "task/confirm-task",
   async ({ task, timestamp }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -377,7 +371,7 @@ export const confirmTask = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         // `/api/task/view/${task}/principal/confirm-task`,
         `/api/transaction/transfer/task/${task}`,
         { timestamp },
@@ -397,7 +391,7 @@ export const confirmTask = createAsyncThunk(
 export const updateLastViewed = createAsyncThunk(
   "task/last-viewed",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -405,7 +399,7 @@ export const updateLastViewed = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/principal/last-viewed`,
         config
       );
@@ -423,7 +417,7 @@ export const updateLastViewed = createAsyncThunk(
 export const startLive = createAsyncThunk(
   "task/start-live",
   async ({ task }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -431,7 +425,7 @@ export const startLive = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/task/view/${task}/stream`,
         { type: true },
         config

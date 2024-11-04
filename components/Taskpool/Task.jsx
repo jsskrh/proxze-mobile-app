@@ -53,7 +53,7 @@ const Task = ({ task, pending, navigate }) => {
       ref={boxRef}
       // onMouseEnter={handleHover}
       // onMouseLeave={handleHoverExit}
-      onPress={() => navigate("Task", { taskId: task.id })}
+      onPress={() => navigate("Task", { taskId: task._id })}
     >
       <View className={style.containerInner}>
         <Text className={style.title}>{task.type}</Text>

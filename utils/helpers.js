@@ -174,7 +174,7 @@ export const validateInput = (input) => {
 };
 
 export const shortenId = (id) => {
-  return id.toString().slice(19, 24);
+  return id?.toString().slice(19, 24);
 };
 
 export const formatStringCamelCase = (str) => {

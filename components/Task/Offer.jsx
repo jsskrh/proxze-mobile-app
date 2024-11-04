@@ -32,7 +32,7 @@ const Offer = ({ offer, navigate, taskId, goBack }) => {
         },
       };
       const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/principal/accept-offer`,
+        `http://172.20.10.3:3001/api/task/view/${taskId}/principal/accept-offer`,
         { proxze: offer.proxze.id, timestamp: Date.now() },
         config
       );
@@ -57,7 +57,7 @@ const Offer = ({ offer, navigate, taskId, goBack }) => {
         },
       };
       const { data } = await axios.put(
-        `https://proxze-backend-app.onrender.com/api/task/view/${taskId}/principal/reject-offer`,
+        `http://172.20.10.3:3001/api/task/view/${taskId}/principal/reject-offer`,
         { proxze: offer.proxze.id, timestamp: Date.now() },
         config
       );

@@ -14,8 +14,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogin } from "../redux/auth/authActions";
+import { useLoginMutation } from "../redux/auth/authApi";
+import { setUserInfo, setUserToken } from "../redux/auth/authSlice";
 
 const LoginScreen = ({ navigation: { navigate, goBack } }) => {
+  const [login, { isLoading, isSuccess, data }] = useLoginMutation();
   const { loading, error, success, userInfo, userToken, pushToken } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -40,10 +43,11 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
     if (Platform.OS === "android") {
       data = { email, password };
     } else {
-      data = { email, password, token: pushToken.data };
+      data = { email, password, token: pushToken?.data };
     }
-    console.log(data);
-    dispatch(userLogin(data));
+    // console.log(data);
+    // dispatch(userLogin(data));
+    login(data);
 
     // if (email === "principal@sage-grey.com") {
     //   dispatch(testLogin("principal"));
@@ -51,6 +55,16 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
     //   dispatch(testLogin("proxze"));
     // }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      (async () => {
+        await AsyncStorage.setItem("userToken", data.userToken);
+      })();
+      dispatch(setUserInfo(data));
+      dispatch(setUserToken(data.userToken));
+    }
+  }, [isSuccess]);
 
   return (
     // <SafeAreaView className=" bg-black flex-1">
@@ -149,7 +163,7 @@ const LoginScreen = ({ navigation: { navigate, goBack } }) => {
             onPress={handleLogin}
             className="border flex p-4 rounded-xl bg-black"
           >
-            {loading ? (
+            {isLoading ? (
               <ActivityIndicator size="small" />
             ) : (
               <Text className="text-center text-white">Login</Text>

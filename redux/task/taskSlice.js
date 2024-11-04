@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   acceptOffer,
+  rejectOffer,
   approveRejectRequest,
   completeTask,
   confirmTask,
@@ -22,7 +23,6 @@ const initialState = {
   error: null,
   success: false,
   uploadSuccess: false,
-  location: null,
   tasks: [],
   taskpool: [],
   ongoingTasks: [],
@@ -43,20 +43,10 @@ const taskSlice = createSlice({
       state.task = null;
       state.tasks = [];
       state.taskpool = [];
-      state.location = null;
       state.ongoingTasks = [];
       state.taskHistory = [];
       state.newRequests = [];
     },
-
-    setLocation: (state, { payload }) => {
-      state.location = payload;
-    },
-
-    resetLocation: (state) => {
-      state.location = null;
-    },
-
     resetTaskState: (state) => {
       state.loading = false;
       state.error = null;
@@ -132,6 +122,7 @@ const taskSlice = createSlice({
       state.success = true;
       console.log(payload.data);
       state.task = payload.data;
+      console.log(payload.data);
     },
     [makeRequestPayment.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -206,6 +197,21 @@ const taskSlice = createSlice({
       state.task = payload.data;
     },
     [acceptOffer.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+
+    // reject offer
+    [rejectOffer.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [rejectOffer.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.success = true;
+      state.task = payload.data;
+    },
+    [rejectOffer.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
@@ -289,5 +295,4 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const { clearTaskState, resetTaskState, setLocation, resetLocation } =
-  taskSlice.actions;
+export const { clearTaskState, resetTaskState } = taskSlice.actions;

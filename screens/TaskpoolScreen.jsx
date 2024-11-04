@@ -24,18 +24,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import Task from "../components/Taskpool/Task";
 import TabLayout from "../components/TabLayout";
+import { useGetTaskpoolQuery } from "../redux/task/taskApi";
 
 const tasks = [];
 
 const TaskpoolScreen = ({ navigation: { navigate } }) => {
-  const { success, error, loading, taskpool } = useSelector(
-    (state) => state.task
-  );
+  const {
+    data: taskpool,
+    isLoading,
+    isSuccess,
+    refetch,
+  } = useGetTaskpoolQuery();
+  const { success, error, loading } = useSelector((state) => state.task);
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (taskpool.length === 0)
+    if (taskpool?.length === 0)
       dispatch(getTaskpool({ userToken: userInfo.userToken }));
   }, []);
 
@@ -58,7 +63,7 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
 
   return (
     <TabLayout config={tabConfig}>
-      {loading ? (
+      {isLoading ? (
         <View className="flex-1 pt-1">
           <View className="mb-3 mx-5">
             <View className="mb-7">
@@ -93,7 +98,7 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
         </View>
       ) : (
         <FlatList
-          data={taskpool}
+          data={taskpool.data}
           ListHeaderComponent={() => (
             <View className="mb-3 mx-5">
               <View className="mb-7">
@@ -117,9 +122,7 @@ const TaskpoolScreen = ({ navigation: { navigate } }) => {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() =>
-                dispatch(getTaskpool({ userToken: userInfo.userToken }))
-              }
+              onRefresh={() => refetch()}
             />
           }
         />

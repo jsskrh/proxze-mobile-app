@@ -26,7 +26,7 @@ import TransactionItem from "../../components/Account/TransactionItem";
 import TransactionView from "../../components/Account/TransactionView";
 import TabLayout from "../../components/TabLayout";
 import { timeAgo, shortenId, convertDate } from "../../utils/helpers";
-import { getAllTransactions } from "../../redux/transaction/transactionActions";
+import { getAllTransactions } from "../../redux/transaction/transactionActions.js";
 
 const tabConfig = { title: "Transactions", headerTitle: "Transactions" };
 

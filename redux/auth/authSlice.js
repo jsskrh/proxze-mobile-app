@@ -70,6 +70,14 @@ const authSlice = createSlice({
       // clearTransactionState();
     },
 
+    setUserToken: (state, { payload }) => {
+      state.userToken = payload;
+    },
+
+    setUserInfo: (state, { payload }) => {
+      state.userInfo = payload;
+    },
+
     setPushToken: (state, { payload }) => {
       state.pushToken = payload;
     },
@@ -164,4 +172,6 @@ export const {
   setPushToken,
   setCurrentLocation,
   setLocationError,
+  setUserInfo,
+  setUserToken,
 } = authSlice.actions;

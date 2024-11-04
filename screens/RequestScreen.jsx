@@ -189,7 +189,7 @@ const RequestScreen = ({
         },
       };
       const { data } = await axios.post(
-        `https://proxze-backend-app.onrender.com/api/task`,
+        `http://172.20.10.3:3001/api/task`,
         details,
         config
       );
@@ -242,6 +242,8 @@ const RequestScreen = ({
     console.log("handleSheetChanges", index);
   }, []);
 
+  const [date, setDate] = useState(new Date());
+
   return (
     <TabLayout config={tabConfig}>
       <ScrollView className="pt-5">
@@ -266,6 +268,8 @@ const RequestScreen = ({
             )}
           </View>
         </TouchableWithoutFeedback>
+
+        <DatePicker date={date} onDateChange={setDate} />
 
         <View className="mt-8 mx-5 rounded-lg bg-zinc-800">
           <TouchableWithoutFeedback

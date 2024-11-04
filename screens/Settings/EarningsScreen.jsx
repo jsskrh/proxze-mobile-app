@@ -20,7 +20,7 @@ import {
   ArrowDownRightIcon,
 } from "react-native-heroicons/outline";
 import { useSelector, useDispatch } from "react-redux";
-import { getEarnings } from "../../redux/transaction/transactionActions";
+import { getEarnings } from "../../redux/transaction/transactionActions.js";
 import TabLayout from "../../components/TabLayout";
 import EarningsChart from "../../components/Account/EarningsChart";
 import TransactionItem from "../../components/Account/TransactionItem";

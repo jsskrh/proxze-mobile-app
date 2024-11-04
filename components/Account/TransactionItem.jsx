@@ -15,7 +15,7 @@ import {
 } from "react-native-heroicons/outline";
 import TabLayout from "../../components/TabLayout";
 import { timeAgo, shortenId, convertDate } from "../../utils/helpers";
-import { getAllTransactions } from "../../redux/transaction/transactionActions";
+import { getAllTransactions } from "../../redux/transaction/transactionActions.js";
 
 const TransactionItem = ({ item, recent, setVisible }) => {
   return (

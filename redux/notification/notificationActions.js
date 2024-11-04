@@ -1,13 +1,12 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// import { axiosInstance } from "../../utils/axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { axiosInstance } from "../../utils/axios";
 
 export const getAllNotifications = createAsyncThunk(
   "notifications/get-all",
-  async (body, { rejectWithValue }) => {
+  async (credentials, { rejectWithValue }) => {
+    // const userToken = credentials.userToken;
     const userToken = await AsyncStorage.getItem("userToken");
-
     try {
       const config = {
         headers: {
@@ -15,12 +14,7 @@ export const getAllNotifications = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-
-      const { data } = await axios.get(
-        `https://proxze-backend-app.onrender.com/api/notification`,
-        config
-      );
-
+      const { data } = await axiosInstance.get(`/api/notification`, config);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -35,7 +29,7 @@ export const getAllNotifications = createAsyncThunk(
 export const setNotificationsSeen = createAsyncThunk(
   "notifications/set-seen",
   async (credentials, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -43,7 +37,7 @@ export const setNotificationsSeen = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/notification/update/seen`,
         credentials,
         config
@@ -62,7 +56,7 @@ export const setNotificationsSeen = createAsyncThunk(
 export const setNotificationRead = createAsyncThunk(
   "notifications/set-read",
   async ({ notification }, { rejectWithValue }) => {
-    const userToken = localStorage.getItem("userToken");
+    const userToken = await AsyncStorage.getItem("userToken");
     try {
       const config = {
         headers: {
@@ -70,7 +64,7 @@ export const setNotificationRead = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/notification/update/read/${notification}`,
         { notification },
         config

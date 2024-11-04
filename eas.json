@@ -10,7 +10,7 @@
       "env": {
         "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
         "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
-        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+        "BACKEND_URL": "http://172.20.10.3:3001"
       }
     },
     "preview": {
@@ -22,14 +22,14 @@
       "env": {
         "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
         "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
-        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+        "BACKEND_URL": "http://172.20.10.3:3001"
       }
     },
     "test": {
       "env": {
         "PAYSTACK_PUBLIC_KEY": "pk_test_66115846e1650e71d72ea0a9ca032dcc7f8a76dc",
         "GOOGLE_API_KEY": "AIzaSyBRVe2GBoJpinoUXASqCdUSxfA5RnMb08w",
-        "BACKEND_URL": "https://proxze-backend-app.onrender.com"
+        "BACKEND_URL": "http://172.20.10.3:3001"
       }
     }
   },

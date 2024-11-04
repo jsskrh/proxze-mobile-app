@@ -42,10 +42,7 @@ import { BlurView } from "expo-blur";
 import { useSelector, useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import { setCurrentLocation, setLocationError } from "../redux/auth/authSlice";
-import {
-  useGetUserDetailsQuery,
-  useUpdateUserLocationMutation,
-} from "../redux/services/authService";
+import { useUpdateUserLocationMutation } from "../redux/location/locationApi";
 
 const Tab = createBottomTabNavigator();
 
@@ -110,15 +107,15 @@ const Tabs = () => {
           position: "absolute",
         },
         tabBarBackground: () => {
-          if (Platform.OS === "ios") {
-            return (
-              <BlurView
-                tint="dark"
-                intensity={85}
-                style={StyleSheet.absoluteFill}
-              />
-            );
-          }
+          // if (Platform.OS === "ios") {
+          return (
+            <BlurView
+              tint="dark"
+              intensity={85}
+              style={StyleSheet.absoluteFill}
+            />
+          );
+          // }
         },
       }}
     >

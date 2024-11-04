@@ -47,7 +47,15 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow Wasshh to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Proxze to use your location."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Proxze to access your camera",
+          "microphonePermission": "Allow Proxze to access your microphone",
+          "recordAudioAndroid": true
         }
       ]
     ],

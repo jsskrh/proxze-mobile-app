@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const backendURL = process.env.EXPO_PUBLIC_BACKEND_URL;
+
 export const chatsApi = createApi({
   reducerPath: "chatsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: backendURL,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.userToken;
       if (token) {

@@ -50,7 +50,7 @@ const Task = ({ task, lastActivity, pending, home, navigate, archive }) => {
     <TouchableOpacity
       className={`${style.container} task`}
       ref={boxRef}
-      onPress={() => navigate("Task", { taskId: task.id })}
+      onPress={() => navigate("Task", { taskId: task._id })}
     >
       <View className={style.containerInner}>
         <View className="flex-row mb-3 justify-between items-center">
@@ -58,7 +58,7 @@ const Task = ({ task, lastActivity, pending, home, navigate, archive }) => {
             <Text className={style.title}>{task.type}</Text>
             <View className="p-1 px-3 ml-3 rounded bg-blue-300">
               <Text className="text-blue-700 font-semibold">
-                {shortenId(task.id)}
+                {shortenId(task._id)}
               </Text>
             </View>
           </View>

@@ -7,7 +7,6 @@ import {
   setChatRead,
   setChatsSeen,
 } from "./chatActions";
-import { transformChatArray } from "../../utils/helpers";
 
 const initialState = {
   loading: false,
@@ -42,10 +41,6 @@ const chatSlice = createSlice({
       state.chats.newCount = payload.data.count;
     },
 
-    clearChat: (state, { payload }) => {
-      state.chat = [];
-    },
-
     addText: (state, { payload }) => {
       state.chat = [...state.chat, payload];
     },
@@ -74,9 +69,11 @@ const chatSlice = createSlice({
       state.error = null;
     },
     [createChat.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.submitSuccess = true;
-      // state.chat = transformChatArray(payload.data);
+      // state.loading = false;
+      // state.submitSuccess = true;
+      // state.chat = payload.data;
+
+      getChatReducer(state, payload);
     },
     [createChat.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -92,14 +89,14 @@ const chatSlice = createSlice({
     [getChat.fulfilled]: (state, { payload }) => {
       state.getChatLoading = false;
       state.getChatSuccess = true;
-      state.chat = transformChatArray(payload.data);
+      state.chat = payload.data;
     },
     [getChat.rejected]: (state, { payload }) => {
       state.getChatLoading = false;
       state.error = payload;
     },
 
-    // send chat
+    // send message
     [sendMessage.pending]: (state) => {
       state.textSuccess = false;
       state.loading = true;
@@ -108,17 +105,7 @@ const chatSlice = createSlice({
     [sendMessage.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.textSuccess = true;
-      state.chat = [
-        ...state.chat,
-        {
-          _id: payload.data._id,
-          text: payload.data.content,
-          createdAt: payload.data.createdAt,
-          user: {
-            _id: payload.data.sender,
-          },
-        },
-      ];
+      state.chat = [...state.chat, payload.data];
     },
     [sendMessage.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -150,16 +137,25 @@ const chatSlice = createSlice({
     //   // state.loading = false;
     //   // state.success = true;
     //   state.chats.all.find(
-    //     (chat) => message.id === payload.data
+    //     (chat) => chat.id === payload.data
     //   ).read = true;
     // },
-    [setChatRead.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    // [setChatRead.rejected]: (state, { payload }) => {
+    //   state.loading = false;
+    //   state.error = payload;
+    // },
   },
 });
 
 export default chatSlice.reducer;
-export const { clearChatState, setChats, addText, clearChat } =
-  chatSlice.actions;
+export const { clearChatState, setChats, addText } = chatSlice.actions;
+
+const getChatReducer = async (state, payload) => {
+  try {
+    getChat({ chatId: payload.data._id });
+    // chatSlice.caseReducers[getChat.fulfilled](state, getChatPayload);
+  } catch (error) {
+    // Handle errors if needed
+    console.log(error);
+  }
+};

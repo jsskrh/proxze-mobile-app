@@ -1,20 +1,22 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { axiosInstance } from "../../utils/axios";
-
-const baseURL = `https://proxze-backend-app.onrender.com`;
+import { axiosInstance } from "../../utils/axios";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (data, { rejectWithValue }) => {
+  async (body, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
       };
-      await axios.post(`${baseURL}/api/user/register`, data, config);
+      const { data } = await axiosInstance.post(
+        `/api/user/register`,
+        body,
+        config
+      );
+      return data;
     } catch (error) {
       // return custom error message from backend if present
       if (error.response && error.response.data.message) {
@@ -36,15 +38,13 @@ export const userLogin = createAsyncThunk(
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post(
-        `${baseURL}/api/user/login`,
+      const { data } = await axiosInstance.post(
+        `/api/user/login`,
         credentials,
         config
       );
-      await AsyncStorage.setItem("userToken", data.userToken);
       // store user's token in local storage
-      // localStorage.setItem("userToken", data.userToken);
-      console.log(data);
+      await AsyncStorage.setItem("userToken", data.userToken);
       return data;
     } catch (error) {
       // return custom error message from API if any
@@ -69,7 +69,7 @@ export const getUser = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.get(`${baseURL}/api/user/profile`, config);
+      const { data } = await axiosInstance.get(`/user/profile`, config);
 
       data.userToken = userToken;
 
@@ -96,7 +96,7 @@ export const deactivateAccount = createAsyncThunk(
           Authorization: `Bearer ${userToken}`,
         },
       };
-      const { data } = await axios.put(
+      const { data } = await axiosInstance.put(
         `/api/user/settings/deactivate`,
         { password },
         config

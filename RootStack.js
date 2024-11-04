@@ -27,7 +27,7 @@ import WelcomeStack from "./navigation/WelcomeStack";
 import RequestStack from "./navigation/RequestStack";
 import AddressScreen from "./screens/AddressScreen";
 import OfferScreen from "./screens/OfferScreen";
-// import StreamScreen from "./screens/StreamScreen";
+import StreamScreen from "./screens/StreamScreen";
 import ContactInfoScreen from "./screens/Settings/ContactInfoScreen";
 import AccountScreen from "./screens/Settings/AccountScreen";
 import BillingPaymentScreen from "./screens/Settings/BillingPaymentScreen";
@@ -58,7 +58,6 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
-import { useGetUserDetailsQuery } from "./redux/services/authService";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -530,7 +529,7 @@ function MainScreen() {
             component={TransactionsScreen}
           />
 
-          {/* <Stack.Screen
+          <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({
               headerStyle: {
                 backgroundColor: "#000000",
@@ -549,7 +548,7 @@ function MainScreen() {
             })}
             name="Stream"
             component={StreamScreen}
-          /> */}
+          />
 
           <Stack.Screen
             options={({ route, navigation: { goBack } }) => ({

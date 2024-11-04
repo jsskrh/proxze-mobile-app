@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://proxze-backend-app.onrender.com",
+  baseURL: "http://172.20.10.3:3001",
 });

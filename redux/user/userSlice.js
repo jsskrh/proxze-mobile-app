@@ -2,9 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { logout } from "../auth/authSlice";
 import {
   deactivateAccount,
+  resendToken,
+  sendToken,
   updatePassword,
   updatePaymentInfo,
   updateUserInfo,
+  verifyEmail,
 } from "./userActions";
 
 const initialState = {
@@ -26,67 +29,119 @@ const userSlice = createSlice({
     },
   },
 
-  extraReducers: {
+  extraReducers: (builder) => {
+    // verify email
+    builder
+      .addCase(verifyEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(verifyEmail.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(verifyEmail.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
+
+    // resend token
+    builder
+      .addCase(resendToken.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(resendToken.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(resendToken.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
+
+    // send token
+    builder
+      .addCase(sendToken.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(sendToken.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(sendToken.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
+
     // update basic info
-    [updateUserInfo.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [updateUserInfo.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.success = true;
-      state.updateFunction = payload.updateFunction;
-    },
-    [updateUserInfo.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(updateUserInfo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        state.updateFunction = payload.updateFunction;
+      })
+      .addCase(updateUserInfo.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
 
     // update payment info
-    [updatePaymentInfo.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [updatePaymentInfo.fulfilled]: (state) => {
-      state.loading = false;
-      state.success = true;
-    },
-    [updatePaymentInfo.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(updatePaymentInfo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updatePaymentInfo.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(updatePaymentInfo.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
 
     // update password info
-    [updatePassword.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [updatePassword.fulfilled]: (state) => {
-      state.loading = false;
-      state.success = true;
-    },
-    [updatePassword.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(updatePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updatePassword.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(updatePassword.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
 
     // deactivate user
-    [deactivateAccount.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    },
-    [deactivateAccount.fulfilled]: (state) => {
-      state.loading = false;
-      state.success = true;
-    },
-    [deactivateAccount.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.error = payload;
-    },
+    builder
+      .addCase(deactivateAccount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deactivateAccount.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(deactivateAccount.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
   },
 });
 

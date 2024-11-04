@@ -44,7 +44,7 @@ const NotificationsScreen = ({ navigation: { navigate } }) => {
   //       },
   //     };
   //     const { data } = await axios.get(
-  //       `https://proxze-backend-app.onrender.com/api/notification`,
+  //       `http://172.20.10.3:3001/api/notification`,
   //       config
   //     );
   //     setNotifications(data.data);

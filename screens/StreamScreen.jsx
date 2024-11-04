@@ -1,93 +1,102 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
-  Text,
-  SafeAreaView,
-  Image,
   Button,
-  TextInput,
-  ScrollView,
   StyleSheet,
-  Dimensions,
-  ActivityIndicator,
-  useWindowDimensions,
-  TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
 } from "react-native";
-import { useState, useRef } from "react";
-// import { NodeCameraView } from "react-native-nodemediaclient";
+import { NodePublisher } from "react-native-nodemediaclient";
 
-const StreamScreen = () => {
-  const [isPublish, setIsPublish] = useState(false);
-  const [publishBtnTitle, setPublishBtnTitle] = useState("Start Publish");
-  const vbRef = useRef(null);
+const StreamScreen = ({
+  route: {
+    params: { taskId },
+  },
+}) => {
+  const cameraRef = useRef(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [frontCamera, setFrontCamera] = useState(false);
+  const [torchEnable, setTorchEnable] = useState(false);
+  const [mute, setMute] = useState(false);
 
-  const togglePublish = () => {
-    if (isPublish) {
-      setPublishBtnTitle("Start Publish");
-      setIsPublish(false);
-      vbRef.current.stop();
-    } else {
-      setPublishBtnTitle("Stop Publish");
-      setIsPublish(true);
-      vbRef.current.start();
+  const startPreview = () => {
+    if (cameraRef.current) {
+      cameraRef.current.startPreview();
+      setIsPreviewing(true);
+    }
+  };
+
+  const stopPreview = () => {
+    if (cameraRef.current) {
+      cameraRef.current.stopPreview();
+      setIsPreviewing(false);
+    }
+  };
+
+  const startStream = () => {
+    if (cameraRef.current) {
+      cameraRef.current.start();
+      setIsStreaming(true);
+    }
+  };
+
+  const stopStream = () => {
+    if (cameraRef.current) {
+      cameraRef.current.stop();
+      setIsStreaming(false);
     }
   };
 
   return (
-    <View>
-      {/* <NodeCameraView
-        style={{ height: 400 }}
-        ref={(vb) => {
-          this.vb = vb;
+    <View style={styles.container}>
+      <NodePublisher
+        ref={cameraRef}
+        style={{ flex: 1 }}
+        url={`rtmp://172.20.10.3:1935/live/${taskId}`}
+        audioParam={{
+          codecid: NodePublisher.NMC_CODEC_ID_AAC,
+          profile: NodePublisher.NMC_PROFILE_AUTO,
+          samplerate: 48000,
+          channels: 1,
+          bitrate: 64 * 1000,
         }}
-        outputUrl={"rtmp://192.168.0.10/live/stream"}
-        camera={{ cameraId: 1, cameraFrontMirror: true }}
-        audio={{ bitrate: 32000, profile: 1, samplerate: 44100 }}
-        video={{
-          preset: 12,
-          bitrate: 400000,
-          profile: 1,
-          fps: 15,
-          videoFrontMirror: false,
-        }}
-        autopreview={true}
-      /> */}
-
-      {/* <Button title="request permissions" onPress={requestCameraPermission} /> */}
-      {/* <Button
-        onPress={() => {
-          if (this.state.isPublish) {
-            this.setState({
-              publishBtnTitle: "Start Publish",
-              isPublish: false,
-            });
-            this.vb.stop();
-          } else {
-            this.setState({ publishBtnTitle: "Stop Publish", isPublish: true });
-            this.vb.start();
-          }
-        }}
-        title={this.state.publishBtnTitle}
-        color="#841584"
-      /> */}
-
-      {/* <NodeCameraView
-        style={{ height: 400 }}
-        ref={vbRef}
-        outputUrl={"rtmp://192.168.0.10/live/stream"}
-        camera={{ cameraId: 1, cameraFrontMirror: true }}
-        audio={{ bitrate: 32000, profile: 1, samplerate: 44100 }}
-        video={{
-          preset: 12,
-          bitrate: 400000,
-          profile: 1,
-          fps: 15,
-          videoFrontMirror: false,
+        videoParam={{
+          codecid: NodePublisher.NMC_CODEC_ID_H264,
+          profile: NodePublisher.NMC_PROFILE_AUTO,
+          width: 720,
+          height: 1280,
+          fps: 30,
+          bitrate: 2000 * 1000,
         }}
         autopreview={true}
-      /> */}
-      <Button onPress={togglePublish} title={publishBtnTitle} color="#841584" />
+        frontCamera={frontCamera}
+        HWAccelEnable={true}
+        denoiseEnable={true}
+        torchEnable={torchEnable}
+        keyFrameInterval={2}
+        volume={mute ? 0.0 : 1.0}
+        videoOrientation={NodePublisher.VIDEO_ORIENTATION_PORTRAIT}
+      ></NodePublisher>
+      <Button
+        title={isPreviewing ? "Stop Previewing" : "Start Previewing"}
+        onPress={isPreviewing ? stopPreview : startPreview}
+      />
+      <Button
+        title={isStreaming ? "Stop Streaming" : "Start Streaming"}
+        onPress={isStreaming ? stopStream : startStream}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  camera: {
+    flex: 1,
+  },
+});
 
 export default StreamScreen;

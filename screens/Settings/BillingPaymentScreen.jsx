@@ -51,7 +51,7 @@ const BillingPaymentScreen = ({ navigation: { navigate, goBack } }) => {
   //       },
   //     };
   //     const { data } = await axios.get(
-  //       `https://proxze-backend-app.onrender.com/api/task/history`,
+  //       `http://172.20.10.3:3001/api/task/history`,
   //       config
   //     );
   //     setArchive(data.data);
